@@ -1,0 +1,60 @@
+# Steam Games & Applications
+client:
+  name: "Steam"
+  version: "2.10.91.91"
+
+utilities:
+  - name: "SteamVR"
+    appid: "250820"
+    size_gb: 5.42
+    category: "vr"
+  - name: "Wallpaper Engine"
+    appid: "431960"
+    size_gb: 0.77
+    category: "utility"
+  - name: "Steamworks Common Redistributables"
+    appid: "228980"
+    size_gb: 0.25
+    category: "runtime"
+
+games:
+  - name: "NTE: Neverness to Everness"
+    size_gb: 98.72
+    genre: "Open World RPG"
+  - name: "THE FINALS"
+    appid: "2073850"
+    size_gb: 90.28
+    genre: "Multiplayer FPS"
+  - name: "Battlefield™ 6"
+    size_gb: 73.40
+    genre: "Tactical FPS"
+  - name: "Counter-Strike 2"
+    appid: "730"
+    size_gb: 68.88
+    genre: "Competitive Tactical Shooter"
+  - name: "Bodycam"
+    appid: "2406770"
+    size_gb: 55.77
+    genre: "Photorealistic Shooter"
+  - name: "Tom Clancy's Rainbow Six Siege"
+    appid: "359550"
+    size_gb: 49.43
+    genre: "Tactical CQC Shooter"
+  - name: "PEAK"
+    size_gb: 15.31
+    genre: "Action"
+  - name: "Turbo Overkill"
+    appid: "1328350"
+    size_gb: 7.03
+    genre: "Cyberpunk Retro FPS"
+  - name: "STRAFTAT"
+    appid: "2358480"
+    size_gb: 6.31
+    genre: "Arena PvP FPS"
+  - name: "The Forest"
+    appid: "242760"
+    size_gb: 5.54
+    genre: "Survival Horror"
+  - name: "Silly Linguine Cat Simulator Deluxe Online"
+    size_gb: 1.75
+    genre: "Indie Sandbox"

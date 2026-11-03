@@ -1,0 +1,49 @@
+# Google Antigravity Configuration & Tooling Profile
+assistant:
+  name: "Google Antigravity"
+  version: "2.28.2"
+  config_path: "~/.gemini"
+
+installed_plugins:
+  - id: "chrome-devtools-plugin"
+    role: "Browser automation, DOM inspection, accessibility & cookie debugging"
+  - id: "data-agent-kit-plugin"
+    role: "BigQuery, Spark, Dataproc, and data pipeline management"
+  - id: "flutter"
+    role: "Dart & Flutter static analysis, testing, and widget inspection"
+  - id: "google-cloud-developer"
+    role: "Google Cloud Platform CLI tools and architecture recipes"
+  - id: "science"
+    role: "Scientific research, AlphaFold, PDB, NCBI, and literature search"
+  - id: "firebase"
+    role: "Firebase hosting, authentication, rules, and Firestore"
+  - id: "gemini-api"
+    role: "Gemini 3.x API development, Live streaming, and multimodal integration"
+  - id: "gworkspace"
+    role: "Docs, Sheets, Slides, Drive, and Calendar tools"
+  - id: "android-cli-plugin"
+    role: "Android CLI, virtual devices, and SDK component management"
+
+builtin_skills:
+  - "agy-customizations (Customization system guide & loader)"
+  - "automation (Scheduled recurring background tasks)"
+  - "generative_ui (Interactive HTML/visual artifacts)"
+  - "migrate-workflows (Legacy workflow migration)"
+  - "ui-plugin-navigation (UI plugin toggle and discovery)"
+  - "antigravity_guide (Comprehensive CLI & IDE guide)"
+
+mcp_servers:
+  serena:
+    type: "semantic_code_intelligence"
+    tools: ["find_symbol", "replace_symbol_body", "get_symbols_overview", "find_declaration"]
+  context7:
+    type: "live_documentation"
+    tools: ["resolve-library-id", "query-docs"]
+  github:
+    type: "repository_management"
+  playwright:
+    type: "headless_browser_automation"
+  vercel:
+    type: "cloud_deployment"
+  dart-mcp-server:
+    type: "dart_language_server"

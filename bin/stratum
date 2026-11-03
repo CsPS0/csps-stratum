@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# Master Stratum Orchestration CLI for POSIX (Linux / macOS / Termux)
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+HOSTS_DIR="${REPO_ROOT}/hosts"
+STRATA_DIR="${REPO_ROOT}/strata"
+
+ACTION="${1:-check}"
+PROFILE="${2:-laptop}"
+DRY_RUN=0
+
+for arg in "$@"; do
+    case "$arg" in
+        --dry-run|-n)
+            DRY_RUN=1
+            ;;
+    esac
+done
+
+echo ">>> csps-stratum POSIX CLI Orchestrator"
+echo "    Repository: ${REPO_ROOT}"
+echo "    Action    : ${ACTION}"
+echo "    Profile   : ${PROFILE}"
+echo ""
+
+case "${ACTION}" in
+    list)
+        echo "Available Host Profiles:"
+        if [ -d "${HOSTS_DIR}" ]; then
+            for d in "${HOSTS_DIR}"/*/; do
+                [ -d "$d" ] && echo "  - $(basename "$d")"
+            done
+        fi
+        echo ""
+        echo "Available Configuration Strata:"
+        if [ -d "${STRATA_DIR}" ]; then
+            for s in "${STRATA_DIR}"/*/; do
+                [ -d "$s" ] && echo "  - $(basename "$s")"
+            done
+        fi
+        ;;
+    status)
+        echo "System Status & Environment Check:"
+        echo "  OS     : $(uname -s) $(uname -r)"
+        echo "  Host   : $(hostname)"
+        echo "  User   : ${USER:-$(whoami)}"
+        echo "  Shell  : ${SHELL:-bash}"
+        ;;
+    check|sync)
+        SETUP_SCRIPT="${HOSTS_DIR}/${PROFILE}/setup.sh"
+        if [ ! -f "${SETUP_SCRIPT}" ]; then
+            echo "Notice: Profile '${PROFILE}' setup script not found at ${SETUP_SCRIPT}."
+            echo "Falling back to generic stratum linker verification."
+        else
+            if [ "$DRY_RUN" -eq 1 ] || [ "${ACTION}" = "check" ]; then
+                bash "${SETUP_SCRIPT}" --dry-run
+            else
+                bash "${SETUP_SCRIPT}"
+            fi
+        fi
+        ;;
+    *)
+        echo "Usage: stratum [list|status|check|sync] [profile] [--dry-run]"
+        exit 1
+        ;;
+esac

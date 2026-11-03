@@ -1,0 +1,37 @@
+# System Management & Maintenance Tools Manifest
+tools:
+  disk_analysis:
+    name: "WinDirStat"
+    package: "WinDirStat.WinDirStat"
+    role: "Disk usage statistics viewer and cleanup tool"
+
+  uninstaller:
+    name: "Revo Uninstaller"
+    package: "RevoUninstaller.RevoUninstaller"
+    role: "Deep uninstallation, residual registry/filesystem cleaner"
+
+  package_hub:
+    name: "UniGetUI"
+    role: "Unified graphical interface for WinGet, Scoop, and Chocolatey"
+
+  system_optimization:
+    name: "Wintoys"
+    role: "Windows 11 debloating, background task tuning, repair tools"
+
+  hardware_telemetry:
+    name: "HWiNFO64"
+    package: "REALiX.HWiNFO"
+    role: "Comprehensive sensor monitoring, temperatures, voltages, clock speeds"
+
+  stability_testing:
+    name: "OCCT"
+    role: "CPU, GPU, VRAM, and power supply stress testing"
+
+  display_maintenance:
+    name: "Display Driver Uninstaller (DDU)"
+    role: "Safe Mode driver cleaner for NVIDIA graphics updates"
+
+  lan_sync:
+    name: "LocalSend"
+    package: "LocalSend.LocalSend"
+    role: "Encrypted, open-source local network cross-device file sharing (Desktop, Laptop, Mobile)"

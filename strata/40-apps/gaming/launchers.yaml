@@ -1,0 +1,32 @@
+# Multi-Store & Alternative Game Launchers
+launchers:
+  heroic:
+    name: "Heroic Games Launcher (Epic Games / GOG Client)"
+    package: "HeroicGamesLauncher.HeroicGamesLauncher"
+    installed_games:
+      - name: "Fortnite"
+        store: "Epic Games"
+
+  hoyoverse:
+    name: "HoYoPlay Launcher"
+    installed_games:
+      - name: "Genshin Impact"
+        developer: "miHoYo"
+
+  minecraft:
+    name: "Prism Launcher"
+    package: "PrismLauncher.PrismLauncher"
+    runtimes:
+      - "Java 17 (Microsoft OpenJDK 17)"
+
+  xbox:
+    name: "Xbox App & Microsoft Gaming Services"
+    ecosystem: "PC Game Pass / Microsoft Store"
+
+  ubisoft:
+    name: "Ubisoft Connect"
+    package: "Ubisoft.Connect"
+
+  roblox:
+    name: "Roblox Player"
+    package: "Roblox.Roblox"

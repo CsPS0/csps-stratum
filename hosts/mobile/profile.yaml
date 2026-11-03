@@ -1,0 +1,61 @@
+# Mobile Host Profile for csps-stratum
+host:
+  id: mobile
+  name: "Galaxy A52s Companion"
+  description: "Samsung Galaxy A52s 5G running Android 14 (One UI 6.1) with Termux CLI environment"
+  target_os: android
+
+hardware:
+  brand: "Samsung"
+  model: "Galaxy A52s 5G (SM-A528B)"
+  codename: "a52sxq"
+  soc: "Qualcomm Snapdragon 778G 5G (SM7325)"
+  architecture: "arm64-v8a"
+  display:
+    resolution: "1080x2400 AMOLED 120Hz"
+    physical_density_dpi: 450
+    override_density_dpi: 392
+    effective_width_dp: 440
+  storage:
+    internal: "128 GB UFS"
+    termux_home: "/data/data/com.termux/files/home"
+    shared_storage: "/sdcard (/storage/emulated/0)"
+
+customization_stack:
+  one_ui:
+    version: "6.1"
+    good_lock_modules:
+      - "LockStar (com.samsung.systemui.lockstar)"
+      - "ClockFace (com.samsung.android.app.clockface)"
+      - "Theme Designer / Theme Park (com.samsung.android.themedesigner)"
+  terminals:
+    primary: "Termux"
+    shell: "bash (stock environment, no prompt or shell customizations)"
+  media_and_comms:
+    chat_client: "Aliucord (Discord mod, 19 plugins, rain Dracula Dark theme)"
+    video_player: "YouTube ReVanced (app.revanced.android.youtube)"
+    file_sharing: "LocalSend (org.localsend.localsend_app)"
+    passwords: "Bitwarden (com.x8bit.bitwarden)"
+    browser: "Brave Browser (com.brave.browser)"
+
+developer_toolchains:
+  termux_packages: ["clang", "llvm", "lld", "cmake", "make", "build-essential", "nodejs-lts", "python", "cloudflared", "openssh", "fastfetch", "topgrade"]
+  code_editor_gui: "Acode (com.foxdebug.acodefree)"
+  mobile_companion_apps:
+    - "GitHub Mobile (com.github.android)"
+    - "LocalSend (org.localsend.localsend_app)"
+
+ai_assistant_apps:
+  - name: "Claude Mobile"
+    package: "com.anthropic.claude"
+  - name: "ChatGPT Mobile"
+    package: "com.openai.chatgpt"
+  - name: "Perplexity AI"
+    package: "ai.perplexity.app.android"
+  - name: "Google Gemini"
+    package: "com.google.android.apps.bard"
+  - name: "Google NotebookLM / Tailwind"
+    package: "com.google.android.apps.labs.language.tailwind"
+
+active_strata:
+  - "strata/40-apps/aliucord"

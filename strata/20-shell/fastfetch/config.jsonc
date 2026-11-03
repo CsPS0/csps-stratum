@@ -1,0 +1,32 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
+  "logo": {
+        "source": "totoro.txt",
+        "color": {
+            "1": "white"
+        }
+  },
+  "modules": [
+    "title",
+    "separator",
+    "os",
+    "host",
+    "de",
+    "icons",
+    "cpu",
+    "gpu",
+    "memory",
+    "swap",
+    {
+        "type": "disk",
+        "folders": "/"
+    },
+    "battery",
+    "poweradapter",
+    {
+        "type": "weather"
+    },
+    "break",
+    "colors"
+  ]
+}

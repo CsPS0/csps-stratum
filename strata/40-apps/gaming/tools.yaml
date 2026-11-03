@@ -1,0 +1,28 @@
+# Gaming Utilities, Emulation & Engine Tools
+utilities:
+  godot:
+    name: "Godot Engine"
+    role: "Game Engine (GDScript / C# Development)"
+    target_version: "Godot 4.x"
+
+  scrcpy:
+    name: "scrcpy"
+    role: "Low-latency Android device mirroring & input forwarding"
+
+  hardware_tuning:
+    hwinfo:
+      name: "HWiNFO64"
+      package: "REALiX.HWiNFO"
+      role: "Hardware sensor monitoring & thermal diagnostics"
+    occt:
+      name: "OCCT"
+      role: "System stability, power supply, and GPU/VRAM stress testing"
+    ddu:
+      name: "Display Driver Uninstaller (DDU)"
+      role: "Clean graphics driver uninstallation in Safe Mode"
+    logitech:
+      name: "Logitech G HUB"
+      role: "Peripherals DPI & macro profiles"
+    mouse_sens:
+      name: "Mouse Sensitivity Utilities"
+      role: "Raw input conversion across game engines"

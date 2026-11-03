@@ -1,0 +1,103 @@
+# .gitattributes for csps-stratum
+# Auto-detect text files and normalize line endings to LF by default
+
+* text=auto eol=lf
+
+# ------------------------------------------------------------------------------
+# Shell and Unix Scripts (Always LF)
+# ------------------------------------------------------------------------------
+*.sh                    text eol=lf diff=bash
+*.bash                  text eol=lf diff=bash
+*.zsh                   text eol=lf diff=bash
+*.ksh                   text eol=lf diff=bash
+*.fish                  text eol=lf
+*.nu                    text eol=lf
+bin/*                   text eol=lf
+
+# Dotfiles and Unix Configurations
+.*                      text eol=lf
+.bashrc                 text eol=lf diff=bash
+.bash_profile           text eol=lf diff=bash
+.zshrc                  text eol=lf diff=bash
+.zshenv                 text eol=lf diff=bash
+.profile                text eol=lf diff=bash
+.inputrc                text eol=lf
+.gitconfig              text eol=lf
+.tmux.conf              text eol=lf
+.vimrc                  text eol=lf
+
+# ------------------------------------------------------------------------------
+# Windows-Specific Scripts and Files (CRLF)
+# ------------------------------------------------------------------------------
+*.ps1                   text eol=crlf
+*.psm1                  text eol=crlf
+*.psd1                  text eol=crlf
+*.bat                   text eol=crlf
+*.cmd                   text eol=crlf
+*.reg                   text eol=crlf
+
+# ------------------------------------------------------------------------------
+# Structured Data & Configuration Files
+# ------------------------------------------------------------------------------
+*.json                  text eol=lf
+*.jsonc                 text eol=lf
+*.json5                 text eol=lf
+*.yaml                  text eol=lf
+*.yml                   text eol=lf
+*.toml                  text eol=lf
+*.ini                   text eol=lf
+*.conf                  text eol=lf
+*.cfg                   text eol=lf
+*.xml                   text eol=lf
+*.editorconfig          text eol=lf
+
+# ------------------------------------------------------------------------------
+# Documentation & Text
+# ------------------------------------------------------------------------------
+*.md                    text eol=lf diff=markdown
+*.txt                   text eol=lf
+LICENSE                 text eol=lf
+AGENTS.md               text eol=lf diff=markdown
+CLAUDE.md               text eol=lf diff=markdown
+GEMINI.md               text eol=lf diff=markdown
+README.md               text eol=lf diff=markdown
+
+# ------------------------------------------------------------------------------
+# Code / Scripting Languages
+# ------------------------------------------------------------------------------
+*.py                    text eol=lf diff=python
+*.lua                   text eol=lf
+*.rs                    text eol=lf diff=rust
+*.go                    text eol=lf diff=golang
+*.js                    text eol=lf
+*.ts                    text eol=lf
+
+# ------------------------------------------------------------------------------
+# Binary Files
+# ------------------------------------------------------------------------------
+*.png                   binary
+*.jpg                   binary
+*.jpeg                  binary
+*.gif                   binary
+*.ico                   binary
+*.webp                  binary
+*.svg                   text eol=lf
+
+*.ttf                   binary
+*.otf                   binary
+*.woff                  binary
+*.woff2                 binary
+
+*.zip                   binary
+*.tar                   binary
+*.tar.gz                binary
+*.tgz                   binary
+*.7z                    binary
+*.bz2                   binary
+*.xz                    binary
+
+*.exe                   binary
+*.dll                   binary
+*.so                    binary
+*.dylib                 binary
+*.bin                   binary

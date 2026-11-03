@@ -1,0 +1,84 @@
+# Desktop Host Profile for csps-stratum
+host:
+  id: desktop
+  name: "CsPS Workstation"
+  description: "High-performance dual-monitor workstation running Windows 11 Pro"
+  target_os: windows
+
+hardware:
+  cpu: "AMD Ryzen 5 5600X (6 cores, 12 threads)"
+  gpu: "NVIDIA GeForce RTX 3070"
+  ram: "32 GB DDR4"
+  displays:
+    - id: DISPLAY2
+      role: primary
+      resolution: "1920x1080"
+      position: { x: 0, y: 0 }
+      taskbar: true
+    - id: DISPLAY1
+      role: secondary
+      resolution: "1920x1200"
+      position: { x: 1920, y: 0 }
+      taskbar: false
+
+customization_stack:
+  shell_tweaks:
+    engine: Windhawk (1.7.3)
+    theme: LiquidGlass2
+    dock_animation: true
+    start_button_hidden: true
+    icon_theme: "macOS Dark Mode (niivu)"
+  wallpapers:
+    engine: Wallpaper Engine (wallpaper64)
+    active_theme: "Mac Book Pro M1 N&B Dark (2818923055)"
+  terminals:
+    primary: WezTerm
+    secondary: Windows Terminal
+    sysinfo: Fastfetch (Totoro ASCII)
+    prompt: Oh My Posh
+    theme_config: "mytheme.omp.json"
+    shell: "PowerShell 7.x (pwsh)"
+  media_and_comms:
+    audio_player: "Sonora (v0.45.0, dark theme, ambient lyrics, Last.fm scrobbling)"
+    chat_client: "Discord + Vencord (37 active plugins: FakeNitro, MusicRichPresence, VoiceMessages)"
+
+developer_toolchains:
+  languages: ["Rust", "Flutter/Dart", "Node.js (pnpm)", "Python 3.15", ".NET 10/11", "Java 17", "R", "C/C++ MSVC"]
+  package_managers: ["WinGet", "Scoop", "Chocolatey", "Cargo", "pnpm"]
+  editors: ["Zed", "VS Code Insiders", "Visual Studio 2026 Insiders", "Rider", "Antigravity"]
+
+ai_assistant_ecosystem:
+  google_antigravity: "Antigravity 2.28.2 (Gemini 3.8, Chrome DevTools, Data Agent Kit, Flutter, GCP, Science)"
+  claude_code: "Claude Code (Sonnet/Opus, superpowers, claude-mem, ponytail, deep-project)"
+  openai_codex: "OpenAI Codex CLI (elevated Windows sandbox, computer-use, Zed integration)"
+  shared_mcp: ["Serena MCP", "Context7 MCP", "GitHub MCP", "Dart MCP", "Vercel MCP"]
+
+system_management:
+  disk_tools: ["WinDirStat"]
+  uninstaller: ["Revo Uninstaller"]
+  hardware_monitoring: ["HWiNFO64", "OCCT"]
+  system_tuning: ["Wintoys", "UniGetUI", "DDU"]
+  local_networking: ["LocalSend"]
+
+gaming_stack:
+  launchers: ["Steam", "Heroic Games Launcher", "HoYoPlay", "Prism Launcher", "Xbox App", "Ubisoft Connect", "Roblox"]
+  vr_support: "SteamVR"
+  engine_tools: ["Godot Engine", "scrcpy", "OCCT", "DDU", "HWiNFO64"]
+
+active_strata:
+  - "strata/00-base/git"
+  - "strata/10-os/windows"
+  - "strata/20-shell/pwsh"
+  - "strata/20-shell/wezterm"
+  - "strata/20-shell/windows-terminal"
+  - "strata/20-shell/fastfetch"
+  - "strata/20-shell/oh-my-posh"
+  - "strata/30-dev"
+  - "strata/30-dev/ai"
+  - "strata/40-apps/windhawk"
+  - "strata/40-apps/zed"
+  - "strata/40-apps/vscode"
+  - "strata/40-apps/sonora"
+  - "strata/40-apps/vencord"
+  - "strata/40-apps/system-tools"
+  - "strata/40-apps/gaming"

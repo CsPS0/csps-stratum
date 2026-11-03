@@ -1,0 +1,64 @@
+# Developer Toolchains & SDK Manifest
+toolchains:
+  rust:
+    compiler: "rustc"
+    cargo: "cargo"
+    manager: "rustup"
+
+  flutter_dart:
+    flutter: "flutter"
+    dart: "dart"
+    android_tools: "android-clt"
+
+  nodejs_javascript:
+    node: "node"
+    npm: "npm"
+    pnpm: "pnpm"
+
+  python:
+    runtime: "Python 3.15"
+    launcher: "py"
+
+  dotnet:
+    sdk: ".NET SDK 10 / 11 preview"
+
+  java:
+    jdk: "Microsoft OpenJDK 17"
+
+  r:
+    runtime: "RProject.R"
+
+  version_control:
+    git: "git"
+    gh_cli: "gh"
+    desktop: "GitHub Desktop"
+
+  package_managers:
+    winget: "winget"
+    scoop: "scoop"
+    chocolatey: "choco"
+
+  editors_ides:
+    zed: "Zed"
+    vscode_insiders: "VS Code Insiders"
+    visual_studio: "Visual Studio Community / Build Tools"
+    rider: "JetBrains Rider"
+    antigravity: "Google Antigravity 2.28.2"
+
+  modern_cli_utilities:
+    - name: "ripgrep (rg)"
+      source: "WinGet"
+    - name: "fastfetch"
+      source: "Scoop"
+    - name: "ffmpeg"
+      source: "Scoop"
+    - name: "lsd"
+      source: "Scoop"
+    - name: "topgrade"
+      source: "Scoop"
+    - name: "traefik"
+      source: "Scoop"
+    - name: "vhs"
+      source: "Scoop"
+    - name: "ttyd"
+      source: "Scoop"

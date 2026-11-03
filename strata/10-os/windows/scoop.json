@@ -1,0 +1,23 @@
+{
+  "buckets": [
+    {
+      "Name": "main",
+      "Source": "https://github.com/ScoopInstaller/Main.git"
+    }
+  ],
+  "apps": [
+    { "Name": "7zip", "Source": "main" },
+    { "Name": "android-clt", "Source": "main" },
+    { "Name": "fastfetch", "Source": "main" },
+    { "Name": "ffmpeg", "Source": "main" },
+    { "Name": "lsd", "Source": "main" },
+    { "Name": "poppler", "Source": "main" },
+    { "Name": "scoop-search", "Source": "main" },
+    { "Name": "topgrade", "Source": "main" },
+    { "Name": "traefik", "Source": "main" },
+    { "Name": "ttyd", "Source": "main" },
+    { "Name": "unzip", "Source": "main" },
+    { "Name": "vhs", "Source": "main" },
+    { "Name": "zip", "Source": "main" }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+    "docker.extension.dockerEngineAvailabilityPrompt": false,
+    "remote.SSH.remotePlatform": {},
+    "window.menuBarVisibility": "classic",
+    "window.newWindowProfile": "CsPS",
+    "update.showReleaseNotes": false
+}

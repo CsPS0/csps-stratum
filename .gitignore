@@ -1,0 +1,189 @@
+# ==============================================================================
+# .gitignore for csps-stratum
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Security & Secrets (NEVER COMMIT)
+# ------------------------------------------------------------------------------
+# Private and public SSH keys
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+id_ecdsa
+id_ecdsa.pub
+id_dsa
+*.pem
+*.key
+*.priv
+known_hosts
+authorized_keys
+
+# GPG & Certificates
+*.gpg
+*.pgp
+secring.*
+pubring.*
+*.crt
+*.cer
+*.p12
+*.pfx
+*.csr
+
+# Password stores & vaults
+*.kdbx
+vault.pass
+master.key
+credentials.json
+auth.json
+.netrc
+.npmrc
+.pypirc
+git-credentials
+
+# Environment variables & local secrets
+.env
+.env.*
+!.env.example
+!.env.template
+!.env.sample
+
+# ------------------------------------------------------------------------------
+# 2. Local Machine Overrides & Backups
+# ------------------------------------------------------------------------------
+# Machine-local configuration overrides
+*.local
+*.local.*
+!*.local.example
+hosts/local/
+local/
+work/
+scratch/
+tmp/
+temp/
+
+# Automated migration/symlink backups
+*.bak
+*.bak.*
+*.backup
+*.backup.*
+*.old
+*.orig
+*~
+*.swp
+*.swo
+
+# ------------------------------------------------------------------------------
+# 3. Shell History & Runtime Sessions
+# ------------------------------------------------------------------------------
+.bash_history
+.zsh_history
+.zsh_sessions/
+.node_repl_history
+.python_history
+.sqlite_history
+.lesshst
+fish_history
+powershell_history.txt
+
+# ------------------------------------------------------------------------------
+# 4. OS-Specific Metadata
+# ------------------------------------------------------------------------------
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Linux
+.directory
+.fuse_hidden*
+.nfs*
+
+# ------------------------------------------------------------------------------
+# 5. Developer Tools, Editors & IDEs
+# ------------------------------------------------------------------------------
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.vscode/*.local.json
+
+# JetBrains (IntelliJ, WebStorm, PyCharm, etc.)
+.idea/
+*.iml
+*.iws
+
+# Vim / Neovim
+.netrwhist
+*.vimundo
+
+# ------------------------------------------------------------------------------
+# 6. Runtimes, Caches & Dependencies
+# ------------------------------------------------------------------------------
+# General cache
+.cache/
+cache/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+ENV/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Rust
+target/
+**/*.rs.bk
+
+# Go
+bin/local/
+pkg/
+
+# ------------------------------------------------------------------------------
+# 7. Build Artifacts & Logs
+# ------------------------------------------------------------------------------
+build/
+dist/
+out/
+*.log
+*.out
+
+# Throwaway test scripts
+test.sh
+test.ps1
+test.py
+
+# ------------------------------------------------------------------------------
+# 8. AI Agent Instructions & Rules (Local Only)
+# ------------------------------------------------------------------------------
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+*.agent.md

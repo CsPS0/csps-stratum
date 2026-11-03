@@ -1,0 +1,21 @@
+# Stratum 00-base: Git Global Configuration
+# Multi-platform base layer for Git
+
+[user]
+	name = <YOUR_NAME>
+	email = <YOUR_EMAIL>
+
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = false
+
+[core]
+	autocrlf = false

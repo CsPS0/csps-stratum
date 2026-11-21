@@ -20,29 +20,29 @@ enabled_plugins:
       role: "Brainstorming, structured plan creation, subagent dispatch, test-driven dev"
     - name: "claude-mem"
       role: "Cross-session memory search, project timeline reports, and design audits"
-    - name: "deep-project / deep-plan / deep-implement"
-      role: "Decomposition of complex epics into verifiable milestones"
-    - name: "feature-dev"
-      role: "Guided feature discovery with code-explorer, code-architect, and code-reviewer agents"
+    - name: "frontend-design"
+      role: "Distinctive, production-grade UI and page design"
 
-  code_intelligence_and_editing:
-    - name: "serena"
-      role: "Semantic code analysis, symbol-level replacement, and definition lookups"
-    - name: "context7"
-      role: "Up-to-date, versioned library and framework documentation queries"
+  code_quality_and_editing:
     - name: "ponytail"
       role: "Concise, bloat-free code style enforcement and shortcut auditing"
-    - name: "code-simplifier"
-      role: "Tidies working tree diffs without altering program behavior"
+    - name: "claude-md-management"
+      role: "Audits and updates CLAUDE.md project memory files"
 
-  verification_and_git:
+  git_and_platforms:
     - name: "commit-commands"
       role: "Structured commits ensuring clean messages with all AI attribution trailers stripped"
-    - name: "security-guidance / claude-security"
-      role: "Vulnerability analysis and credential checks before sharing code"
+    - name: "github"
+      role: "Issues, pull requests, and repository access via the GitHub MCP server"
+    - name: "vercel"
+      role: "Deployments, logs, and project configuration via the Vercel MCP server"
 
   language_servers_lsp:
     - "typescript-lsp"
     - "pyright-lsp"
     - "csharp-lsp"
     - "php-lsp"
+
+# Installed but currently disabled in claude-settings.json:
+# serena, context7, deep-project / deep-plan / deep-implement, feature-dev,
+# code-simplifier, security-guidance, claude-security, firecrawl

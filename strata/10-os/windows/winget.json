@@ -1,6 +1,6 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2026-10-30T01:24:50.585-00:00",
+	"CreationDate" : "2026-11-20T20:06:01.360-00:00",
 	"Sources" : 
 	[
 		{
@@ -28,10 +28,10 @@
 					"PackageIdentifier" : "LocalSend.LocalSend"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.GameInput"
+					"PackageIdentifier" : "Microsoft.VCRedist.2010.x64"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VCRedist.2010.x64"
+					"PackageIdentifier" : "TheDocumentFoundation.LibreOffice"
 				},
 				{
 					"PackageIdentifier" : "WinDirStat.WinDirStat"
@@ -43,13 +43,13 @@
 					"PackageIdentifier" : "Microsoft.VCRedist.2008.x64"
 				},
 				{
+					"PackageIdentifier" : "Google.GoogleDrive"
+				},
+				{
 					"PackageIdentifier" : "Oracle.JavaRuntimeEnvironment"
 				},
 				{
-					"PackageIdentifier" : "TheDocumentFoundation.LibreOffice"
-				},
-				{
-					"PackageIdentifier" : "GitHub.cli"
+					"PackageIdentifier" : "OpenJS.NodeJS"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.OpenJDK.17"
@@ -58,16 +58,25 @@
 					"PackageIdentifier" : "RevoUninstaller.RevoUninstaller"
 				},
 				{
+					"PackageIdentifier" : "Microsoft.GameInput"
+				},
+				{
 					"PackageIdentifier" : "Nvidia.PhysX"
+				},
+				{
+					"PackageIdentifier" : "GitHub.cli"
+				},
+				{
+					"PackageIdentifier" : "Oracle.VirtualBox"
 				},
 				{
 					"PackageIdentifier" : "OlegShparber.Zeal"
 				},
 				{
-					"PackageIdentifier" : "OpenJS.NodeJS"
+					"PackageIdentifier" : "Microsoft.VisualStudio.Community.Insiders"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VisualStudio.Community.Insiders"
+					"PackageIdentifier" : "gnome.Dia"
 				},
 				{
 					"PackageIdentifier" : "CreativeTechnology.OpenAL"
@@ -94,25 +103,19 @@
 					"PackageIdentifier" : "Python.Launcher"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VCRedist.2015+.x64"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.PowerShell"
+					"PackageIdentifier" : "Microsoft.DotNet.SDK.10"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VCRedist.2012.x86"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.DotNet.SDK.10"
-				},
-				{
 					"PackageIdentifier" : "Microsoft.VCRedist.2005.x86"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VCRedist.2008.x86"
+					"PackageIdentifier" : "Devolutions.UniGetUI"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VCRedist.2015+.x86"
+					"PackageIdentifier" : "Microsoft.VCRedist.2008.x86"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VCRedist.2013.x86"
@@ -127,7 +130,10 @@
 					"PackageIdentifier" : "Nvidia.PhysXLegacy"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.WindowsSDK.10.0.26100"
+					"PackageIdentifier" : "Microsoft.VCRedist.2015+.x86"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VCRedist.2015+.x64"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VCRedist.2012.x64"
@@ -139,10 +145,16 @@
 					"PackageIdentifier" : "BurntSushi.ripgrep.MSVC"
 				},
 				{
+					"PackageIdentifier" : "DenoLand.Deno"
+				},
+				{
 					"PackageIdentifier" : "Figma.Figma"
 				},
 				{
 					"PackageIdentifier" : "GitHub.GitHubDesktop"
+				},
+				{
+					"PackageIdentifier" : "Gyan.FFmpeg"
 				},
 				{
 					"PackageIdentifier" : "Hashicorp.Packer"
@@ -157,13 +169,28 @@
 					"PackageIdentifier" : "Rustlang.Rustup"
 				},
 				{
+					"PackageIdentifier" : "Element.Element"
+				},
+				{
 					"PackageIdentifier" : "oschwartz10612.Poppler"
+				},
+				{
+					"PackageIdentifier" : "yt-dlp.FFmpeg"
+				},
+				{
+					"PackageIdentifier" : "yt-dlp.yt-dlp"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VisualStudioCode.Insiders"
 				},
 				{
 					"PackageIdentifier" : "ZedIndustries.Zed"
+				},
+				{
+					"PackageIdentifier" : "Python.Python.3.14"
+				},
+				{
+					"PackageIdentifier" : "Python.Python.3.15"
 				},
 				{
 					"PackageIdentifier" : "Anthropic.Claude"
@@ -179,6 +206,9 @@
 				},
 				{
 					"PackageIdentifier" : "Microsoft.PowerShell.Preview"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.PowerShell"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.UI.Xaml.2.8"
@@ -208,10 +238,10 @@
 					"PackageIdentifier" : "Microsoft.WindowsTerminal"
 				},
 				{
-					"PackageIdentifier" : "OpenAI.ChatGPT"
+					"PackageIdentifier" : "Python.PythonInstallManager"
 				},
 				{
-					"PackageIdentifier" : "Python.PythonInstallManager"
+					"PackageIdentifier" : "SlackTechnologies.Slack"
 				},
 				{
 					"PackageIdentifier" : "JanDeDobbeleer.OhMyPosh"

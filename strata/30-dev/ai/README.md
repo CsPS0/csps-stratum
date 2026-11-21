@@ -9,7 +9,7 @@ This layer orchestrates the workstation's multi-agent AI coding ecosystem, stand
 | Assistant | Engine / Runtime | Configuration File | Focus & Workload |
 |---|---|---|---|
 | **Google Antigravity** | Gemini 3.8 / 3.x Flash & Pro | [`antigravity.yaml`](antigravity.yaml) | Interactive pair programming, generative UI, real-time workspace analysis, and native Windows integration |
-| **Claude Code** | Claude Sonnet 4.5 / Opus 4.5 | [`claude-settings.json`](claude-settings.json), [`claude-skills.yaml`](claude-skills.yaml) | Complex multi-file refactoring, subagent-driven development, deep planning, and graph exploration |
+| **Claude Code** | Claude Sonnet (default) with Fable as advisor | [`claude-settings.json`](claude-settings.json), [`claude-skills.yaml`](claude-skills.yaml) | Complex multi-file refactoring, subagent-driven development, deep planning, and graph exploration |
 | **OpenAI Codex** | GPT-5 / Codex Runtime | [`codex-config.toml`](codex-config.toml) | Elevated Windows sandbox tasks, computer use, node REPL, and direct editor piping into **Zed** |
 
 ---
@@ -41,7 +41,7 @@ graph TD
 
 ## Universal Non-Negotiable Hard Rules
 
-Regardless of which assistant is executing a session, all tools adhere to [`AGENTS.md`](../../../AGENTS.md):
+Regardless of which assistant is executing a session, all tools adhere to the shared agent rules (kept locally in `AGENTS.md`, which is not published):
 1. **Zero AI Attribution**: No `Co-Authored-By:` or `Generated with...` lines in commits, pull requests, or code headers.
 2. **Absolute Secret Hygiene**: Never commit keys, session tokens, or personal identifiers.
 3. **Verify Before Declaring Complete**: Always run local syntax and dry-run tests before concluding work.

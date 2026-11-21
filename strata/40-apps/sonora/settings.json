@@ -1,31 +1,122 @@
 {
   "normalisation": false,
   "gapless": true,
+  "sponsorblock": false,
+  "keep_tracks": true,
+  "cache_gb": 2,
+  "offline_mode": false,
   "equalizer": false,
-  "equalizer_bands": [
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0
+  "equalizer_profiles": [
+    {
+      "name": "",
+      "preamp": "auto",
+      "filters": [
+        {
+          "kind": "peak",
+          "frequency": 31.25,
+          "gain": 0.0,
+          "q": 1.4142135623730951,
+          "enabled": true
+        },
+        {
+          "kind": "peak",
+          "frequency": 62.5,
+          "gain": 0.0,
+          "q": 1.4142135623730951,
+          "enabled": true
+        },
+        {
+          "kind": "peak",
+          "frequency": 125.0,
+          "gain": 0.0,
+          "q": 1.4142135623730951,
+          "enabled": true
+        },
+        {
+          "kind": "peak",
+          "frequency": 250.0,
+          "gain": 0.0,
+          "q": 1.4142135623730951,
+          "enabled": true
+        },
+        {
+          "kind": "peak",
+          "frequency": 500.0,
+          "gain": 0.0,
+          "q": 1.4142135623730951,
+          "enabled": true
+        },
+        {
+          "kind": "peak",
+          "frequency": 1000.0,
+          "gain": 0.0,
+          "q": 1.4142135623730951,
+          "enabled": true
+        },
+        {
+          "kind": "peak",
+          "frequency": 2000.0,
+          "gain": 0.0,
+          "q": 1.4142135623730951,
+          "enabled": true
+        },
+        {
+          "kind": "peak",
+          "frequency": 4000.0,
+          "gain": 0.0,
+          "q": 1.4142135623730951,
+          "enabled": true
+        },
+        {
+          "kind": "peak",
+          "frequency": 8000.0,
+          "gain": 0.0,
+          "q": 1.4142135623730951,
+          "enabled": true
+        },
+        {
+          "kind": "peak",
+          "frequency": 16000.0,
+          "gain": 0.0,
+          "q": 1.4142135623730951,
+          "enabled": true
+        }
+      ]
+    }
   ],
-  "sleep_timer": false,
+  "equalizer_profile": 0,
+  "equalizer_rules": [],
+  "equalizer_advanced": false,
+  "equalizer_bass": 0.0,
+  "equalizer_treble": 0.0,
+  "spotify_connect": true,
+  "spotify_connect_name": "both",
+  "spotify_connect_custom_name": "",
+  "sessions_button": true,
+  "sessions_official": true,
+  "sessions_server": "",
   "discord_presence": true,
   "discord_name": "sonora",
   "discord_show_paused": true,
   "discord_badge": true,
   "discord_without_details": false,
+  "discord_hide_on_connect": false,
   "discord_sonora_button": true,
   "discord_provider_button": true,
   "artwork_for_local_files": true,
+  "discord_upload_covers": true,
   "lyrics_for_local_files": true,
-  "prefer_local_lyrics": false,
+  "output_device": null,
+  "output_rate": null,
+  "output_buffer": null,
+  "output_match_rate": false,
+  "subsonic_format": null,
+  "subsonic_bitrate": null,
+  "stream_quality": "hi-res",
   "local_lyrics_offered": false,
+  "subsonic_lyrics_offered": true,
+  "jellyfin_lyrics_offered": true,
+  "lyrics_enabled": true,
   "lyrics_providers": [
     "Apple Music",
     "Kugou",
@@ -33,8 +124,23 @@
     "Musixmatch",
     "NetEase",
     "Spotify",
-    "YouTube Music"
+    "YouTube Music",
+    "Subsonic",
+    "Jellyfin"
   ],
+  "lyrics_provider_priority": [
+    "Local",
+    "Subsonic",
+    "Jellyfin",
+    "Spotify",
+    "YouTube Music",
+    "Apple Music",
+    "Musixmatch",
+    "LrcLib",
+    "Kugou",
+    "NetEase"
+  ],
+  "lyrics_word_synced_first": false,
   "karaoke_lyrics": true,
   "blur_lyrics": true,
   "romanized_lyrics": true,
@@ -51,9 +157,12 @@
   },
   "adaptive_menu": false,
   "check_updates": true,
+  "update_channel": "",
   "close_to_tray": true,
   "tray_icon": true,
   "stay_awake": true,
+  "now_playing_on_file_open": true,
+  "taskbar_progress": true,
   "language": "en-US",
   "font": "auto",
   "startup": "albums",
@@ -77,6 +186,14 @@
     "visualizer": false,
     "visualizer_style": "both",
     "visualizer_absolute": false,
+    "visualizer_screens": {
+      "cover": true,
+      "lyrics": false,
+      "queue": false
+    },
+    "player_bar_layout": "classic",
+    "player_bar_transparent": true,
+    "player_bar_time_left": false,
     "icons": "lucide",
     "rounding": "rounded",
     "blur": true,
@@ -125,6 +242,7 @@
       "radius": null,
       "font_size": null
     },
-    "fullscreen_controls_autohide": "automatic"
+    "fullscreen_controls_autohide": "automatic",
+    "os_fullscreen": false
   }
 }

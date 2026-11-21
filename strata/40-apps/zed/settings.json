@@ -1,86 +1,182 @@
+// Zed settings, tuned to match the VS Code Insiders "CsPS" profile.
+// Previous version: settings.backup-2026-11-20.json (same folder).
 {
-  "theme": "One Dark Pro Max",
+  // ── Look ────────────────────────────────────────────────────────────
+  // VS Code: workbench.colorTheme "One Dark Pro Night Flat" (custom theme in ./themes)
+  "theme": "One Dark Pro Night Flat",
+  // VS Code: workbench.iconTheme "material-icon-theme"
   "icon_theme": "Material Icon Theme",
-  "base_keymap": "VSCode",
-  "server_url": "https://zed.dev",
-  "proxy": "",
 
-  "ui_font_family": "JetBrainsMono NF",
-  "ui_font_size": 16,
   "buffer_font_family": "JetBrainsMono NF",
   "buffer_font_size": 15,
+  "buffer_line_height": { "custom": 1.35 },
+  // VS Code's UI font on Windows is Segoe UI.
+  "ui_font_family": "Segoe UI",
+  "ui_font_size": 14,
 
+  // VS Code: window.titleBarStyle custom + menuBarVisibility classic, no command center
+  "title_bar": {
+    "show_menus": true
+  },
+  "status_bar": {
+    "cursor_position_button": true,
+    "active_language_button": true,
+    "line_endings_button": true
+  },
+
+  // ── Feel / animations ───────────────────────────────────────────────
+  // VS Code: editor.cursorBlinking "solid"
   "cursor_blink": false,
+  "cursor_shape": "bar",
+  // VS Code: editor.cursorSmoothCaretAnimation "on"
+  "cursor_animation": { "enabled": true },
+  // VS Code default: editor.stickyScroll.enabled
+  "sticky_scroll": { "enabled": true },
+  // VS Code default: editor.scrollBeyondLastLine true
+  "scroll_beyond_last_line": "one_page",
+  // VS Code: closing the last tab keeps the window open
+  "when_closing_with_no_tabs": "keep_window_open",
+
+  // ── Keys ────────────────────────────────────────────────────────────
+  // No custom VS Code keybindings exist, so the stock VS Code keymap is an exact match.
+  "base_keymap": "VSCode",
+
+  // ── Editor ──────────────────────────────────────────────────────────
+  // VS Code: editor.minimap.enabled true (shown in every editor, slider on hover)
+  "minimap": {
+    "show": "always",
+    "display_in": "all_editors",
+    "thumb": "hover",
+    "max_width_columns": 120
+  },
   "relative_line_numbers": "disabled",
+  // VS Code: editor.wordWrap "on"
   "soft_wrap": "editor_width",
-  "scroll_beyond_last_line": "off",
+  // VS Code default: bracket pair colorization on
   "colorize_brackets": true,
   "show_whitespaces": "selection",
-
+  // VS Code: editor.linkedEditing true (also covers Auto Rename Tag)
+  "linked_edits": true,
+  // VS Code extension: indent-rainbow
   "indent_guides": {
     "enabled": true,
     "line_width": 1,
-    "active_line_width": 2,
+    "active_line_width": 1,
+    "coloring": "fixed",
+    "background_coloring": "indent_aware"
   },
-
+  // VS Code extension: Error Lens
+  "diagnostics": {
+    "inline": { "enabled": true }
+  },
   "toolbar": {
     "breadcrumbs": true,
-    "quick_actions": true,
-  },
-
-  "autosave": {
-    "after_delay": {
-      "milliseconds": 1000,
-    },
-  },
-  "format_on_save": "on",
-  "remove_trailing_whitespace_on_save": true,
-  "ensure_final_newline_on_save": true,
-  "redact_private_values": true,
-
-  "inlay_hints": {
-    "enabled": true,
-    "show_type_hints": true,
-    "show_parameter_hints": true,
+    "quick_actions": true
   },
   "code_lens": "on",
 
+  // ── Tabs ────────────────────────────────────────────────────────────
+  "tabs": {
+    "file_icons": true,
+    "git_status": false,
+    "close_position": "right",
+    "show_close_button": "hover",
+    "show_diagnostics": "all"
+  },
+  // VS Code: single-click opens a preview tab, also from Quick Open
+  "preview_tabs": {
+    "enabled": true,
+    "enable_preview_from_file_finder": true
+  },
+
+  // ── Saving / formatting ─────────────────────────────────────────────
+  // VS Code: files.autoSave "afterDelay" (1000 ms default)
+  "autosave": {
+    "after_delay": { "milliseconds": 1000 }
+  },
+  // Changed to match VS Code, where none of these are on.
+  // Your old Zed values: format_on_save "on", both trims true, inlay hints on, copy_on_select true.
+  "format_on_save": "off",
+  "remove_trailing_whitespace_on_save": false,
+  "ensure_final_newline_on_save": false,
+  "inlay_hints": {
+    "enabled": false
+  },
+
+  // ── AI ──────────────────────────────────────────────────────────────
+  // VS Code: chat.disableAIFeatures true, Copilot and next-edit suggestions off.
+  // Remove "disable_ai" to bring back the agent panel and AI commit messages.
+  "disable_ai": true,
+  "show_edit_predictions": false,
+
+  // ── Git ─────────────────────────────────────────────────────────────
+  // VS Code extension: GitLens current-line blame
   "git": {
     "inline_blame": {
       "enabled": true,
-      "delay_ms": 300,
-    },
+      "delay_ms": 300
+    }
   },
 
+  // ── Layout ──────────────────────────────────────────────────────────
+  // VS Code: workbench.sideBar.location "right", so Explorer, Source Control,
+  // Outline and Live Share all share the right dock. The secondary side bar
+  // (chat) sits opposite, on the left.
+  "project_panel": {
+    "dock": "right",
+    "hide_gitignore": false,
+    // Colour files by git state (added, modified, deleted, ignored) and show a status marker
+    "git_status": true,
+    "git_status_indicator": true,
+    "entry_spacing": "standard",
+    "auto_reveal_entries": true,
+    "auto_fold_dirs": true
+  },
+  "git_panel": { "dock": "right" },
+  "outline_panel": { "dock": "right" },
+  "collaboration_panel": { "dock": "right" },
+  "agent": {
+    "dock": "left",
+    "favorite_models": [],
+    "model_parameters": []
+  },
+
+  // ── Terminal ────────────────────────────────────────────────────────
+  // VS Code: terminal.integrated.fontFamily "JetBrainsMono NF", default size 14,
+  // block cursor that does not blink, no copy-on-select
   "terminal": {
     "dock": "bottom",
-    "copy_on_select": true,
     "font_family": "JetBrainsMono NF",
     "font_size": 14,
+    "line_height": "standard",
+    "cursor_shape": "block",
+    "blinking": "off",
+    "copy_on_select": false
   },
 
-  "project_panel": {
-    "hide_gitignore": false,
-    "dock": "right",
-  },
-  "outline_panel": {
-    "dock": "left",
-  },
-  "collaboration_panel": {
-    "dock": "left",
-  },
-  "git_panel": {
-    "dock": "left",
-  },
-  "agent": {
-    "dock": "right",
-    "favorite_models": [],
-    "model_parameters": [],
+  // ── Extensions ──────────────────────────────────────────────────────
+  // Zed equivalents of your VS Code extensions
+  "auto_install_extensions": {
+    "svelte": true,             // svelte.svelte-vscode
+    "haskell": true,            // haskell.haskell
+    "r": true,                  // reditorsupport.r
+    "docker-compose": true,     // docker / ms-azuretools.vscode-docker
+    "jinja2": true,             // wholroyd.jinja
+    "nunjucks": true,           // ronnidc.nunjucks
+    "django": true,             // batisteo.vscode-django
+    "comment": true,            // better-comments / todo-highlight
+    "mermaid": true,            // bierner.markdown-mermaid
+    "github-actions": true,     // github.vscode-github-actions
+    "discord-presence": true    // icrawl.discord-vscode
   },
 
+  // ── Unchanged from your old config ──────────────────────────────────
+  "server_url": "https://zed.dev",
+  "proxy": "",
+  "redact_private_values": true,
   "telemetry": {
     "diagnostics": false,
     "metrics": false,
-    "anthropic_retention": false,
-  },
+    "anthropic_retention": false
+  }
 }

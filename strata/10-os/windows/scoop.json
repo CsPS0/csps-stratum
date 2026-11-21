@@ -3,6 +3,10 @@
     {
       "Name": "main",
       "Source": "https://github.com/ScoopInstaller/Main.git"
+    },
+    {
+      "Name": "pala",
+      "Source": "https://github.com/CsPS0/pala"
     }
   ],
   "apps": [
@@ -11,6 +15,7 @@
     { "Name": "fastfetch", "Source": "main" },
     { "Name": "ffmpeg", "Source": "main" },
     { "Name": "lsd", "Source": "main" },
+    { "Name": "pala", "Source": "pala" },
     { "Name": "poppler", "Source": "main" },
     { "Name": "scoop-search", "Source": "main" },
     { "Name": "topgrade", "Source": "main" },

@@ -34,7 +34,9 @@ bin/*                   text eol=lf
 *.psd1                  text eol=crlf
 *.bat                   text eol=crlf
 *.cmd                   text eol=crlf
-*.reg                   text eol=crlf
+# Registry exports from regedit/reg.exe are UTF-16LE with a BOM. Store them as
+# UTF-8 in the repo (readable diffs) and write them back as UTF-16LE + CRLF.
+*.reg                   text working-tree-encoding=UTF-16LE-BOM eol=crlf
 
 # ------------------------------------------------------------------------------
 # Structured Data & Configuration Files

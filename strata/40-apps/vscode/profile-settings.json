@@ -1,0 +1,79 @@
+{
+    "vscode-edge-devtools.webhintInstallNotification": true,
+    "workbench.iconTheme": "material-icon-theme",
+    "editor.minimap.enabled": true,
+    "liveServer.settings.donotShowInfoMsg": true,
+    "workbench.startupEditor": "none",
+    "liveServer.settings.donotVerifyTags": true,
+    "explorer.confirmDragAndDrop": false,
+    "git.decorations.enabled": false,
+    "haskell.manageHLS": "GHCup",
+    "files.watcherExclude": {
+        "**/.bloop": true,
+        "**/.metals": true,
+        "**/.ammonite": true
+    },
+    "files.autoSave": "afterDelay",
+    "git.openRepositoryInParentFolders": "never",
+    "security.workspace.trust.untrustedFiles": "open",
+    "explorer.confirmDelete": false,
+    "remote.SSH.remotePlatform": {},
+    "workbench.editorAssociations": {
+        "*.docx": "default"
+    },
+    "github.copilot.nextEditSuggestions.enabled": false,
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false,
+        "csharp": false
+    },
+    "vsicons.dontShowNewVersionMessage": true,
+    "workbench.colorCustomizations": {},
+    "window.titleBarStyle": "custom",
+    "editor.cursorBlinking": "solid",
+    "editor.cursorSmoothCaretAnimation": "on",
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": null
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "git.autofetch": true,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "code-runner.executorMap": {
+        "csharp": "dotnet run --project"
+    },
+    "cursor.cpp.disabledLanguages": [
+        "plaintext",
+        "markdown",
+        "scminput"
+    ],
+    "cursor.cmdk.autoSelect": false,
+    "workbench.sideBar.location": "right",
+    "editor.linkedEditing": true,
+    "workbench.activityBar.location": "top",
+    "svelte.enable-ts-plugin": true,
+    "lldb.suppressUpdateNotifications": true,
+    "workbench.secondarySideBar.defaultVisibility": "hidden",
+    "docxreader.theme": "dark",
+    "chat.tools.terminal.outputLocation": "chat",
+    "editor.wordWrap": "on",
+    "chat.agentsControl.enabled": false,
+    "window.commandCenter": false,
+    "workbench.colorTheme": "One Dark Pro Night Flat",
+    "chat.viewSessions.orientation": "stacked",
+    "r.rpath.windows": "C:\\Program Files\\R\\R-4.5.2\\bin\\x64\\R.exe",
+    "axaml.misc.suppressXamlStylerRecommendation": true,
+    "python.createEnvironment.trigger": "off",
+    "workbench.panel.showLabels": false,
+    "terminal.integrated.fontFamily": "JetBrainsMono NF",
+    "material-icon-theme.folders.theme": "specific",
+    "chat.disableAIFeatures": true,
+    "workbench.browser.openLocalhostLinks": false,
+    "workbench.experimental.modernUI": false
+}

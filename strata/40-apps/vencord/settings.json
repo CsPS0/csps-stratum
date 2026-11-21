@@ -392,7 +392,8 @@
         "ShowHiddenChannels": {
             "enabled": true,
             "showMode": 0,
-            "hideUnreads": true
+            "hideUnreads": true,
+            "defaultAllowedUsersAndRolesDropdownState": true
         },
         "ShowMeYourName": {
             "enabled": false
@@ -723,9 +724,6 @@
         "IrcColors": {
             "enabled": false
         },
-        "ExpressionCloner": {
-            "enabled": false
-        },
         "CopyStickerLinks": {
             "enabled": false
         },
@@ -770,7 +768,7 @@
             "enabled": true
         },
         "AddAttachments": {
-            "enabled": false
+            "enabled": true
         },
         "GifProviderSwitcher": {
             "enabled": false
@@ -780,6 +778,15 @@
         },
         "FixDiscordCss": {
             "enabled": true
+        },
+        "ExpressionManager": {
+            "enabled": false
+        },
+        "JumpToTop": {
+            "enabled": false
+        },
+        "MutedServersActivityBadge": {
+            "enabled": false
         }
     },
     "uiElements": {
@@ -795,7 +802,7 @@
     "cloud": {
         "authenticated": false,
         "url": "https://api.vencord.dev/",
-        "settingsSync": false,
+        "settingsSync": true,
         "settingsSyncVersion": 0
     },
     "notifyAboutUpdates": true,

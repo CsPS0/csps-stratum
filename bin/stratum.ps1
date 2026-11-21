@@ -31,7 +31,8 @@ param(
 $ErrorActionPreference = 'Stop'
 
 if ($DryRun) {
-    $PSBoundParameters['WhatIf'] = $true
+    # Writing to $PSBoundParameters does not enable WhatIf; the preference variable does.
+    $WhatIfPreference = $true
 }
 
 $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..")

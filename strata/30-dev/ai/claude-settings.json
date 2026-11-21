@@ -2,41 +2,54 @@
   "permissions": {
     "defaultMode": "auto"
   },
+  "model": "sonnet",
   "enableWorkflows": true,
   "enabledPlugins": {
-    "claude-code-setup@claude-plugins-official": true,
+    "atlassian@claude-plugins-official": false,
+    "browser-use@claude-plugins-official": false,
+    "claude-code-setup@claude-plugins-official": false,
+    "claude-md-management@claude-plugins-official": true,
     "claude-mem@thedotmack": true,
-    "headroom@headroom-marketplace": false,
-    "ponytail@ponytail": true,
+    "claude-security@claude-plugins-official": false,
+    "code-simplifier@claude-plugins-official": false,
+    "commit-commands@claude-plugins-official": true,
+    "context7@claude-plugins-official": false,
+    "csharp-lsp@claude-plugins-official": true,
+    "deep-implement@piercelamb-plugins": false,
+    "deep-plan@piercelamb-plugins": false,
+    "deep-project@piercelamb-plugins": false,
+    "exa@claude-plugins-official": false,
+    "feature-dev@claude-plugins-official": false,
+    "firecrawl@claude-plugins-official": false,
     "frontend-design@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true,
-    "context7@claude-plugins-official": true,
-    "code-simplifier@claude-plugins-official": true,
-    "playwright@claude-plugins-official": false,
-    "security-guidance@claude-plugins-official": true,
     "github@claude-plugins-official": true,
     "gitlab@claude-plugins-official": false,
-    "skill-creator@claude-plugins-official": false,
-    "serena@claude-plugins-official": true,
+    "headroom@headroom-marketplace": false,
     "linear@claude-plugins-official": false,
-    "atlassian@claude-plugins-official": false,
-    "typescript-lsp@claude-plugins-official": true,
-    "pyright-lsp@claude-plugins-official": true,
-    "vercel@claude-plugins-official": true,
-    "deep-project@piercelamb-plugins": true,
-    "deep-plan@piercelamb-plugins": true,
-    "deep-implement@piercelamb-plugins": true,
-    "feature-dev@claude-plugins-official": true,
-    "claude-md-management@claude-plugins-official": true,
-    "commit-commands@claude-plugins-official": true,
-    "claude-security@claude-plugins-official": true,
     "php-lsp@claude-plugins-official": true,
-    "csharp-lsp@claude-plugins-official": true,
-    "exa@claude-plugins-official": false,
-    "firecrawl@claude-plugins-official": true,
-    "browser-use@claude-plugins-official": false
+    "playwright@claude-plugins-official": false,
+    "ponytail@ponytail": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": false,
+    "serena@claude-plugins-official": false,
+    "skill-creator@claude-plugins-official": false,
+    "superpowers@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "vercel@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
+    "piercelamb-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "piercelamb/deep-project"
+      }
+    },
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    },
     "thedotmack": {
       "source": {
         "source": "github",
@@ -48,29 +61,14 @@
         "source": "github",
         "repo": "headroomlabs-ai/headroom"
       }
-    },
-    "ponytail": {
-      "source": {
-        "source": "github",
-        "repo": "DietrichGebert/ponytail"
-      }
-    },
-    "piercelamb-plugins": {
-      "source": {
-        "source": "github",
-        "repo": "piercelamb/deep-project"
-      }
     }
   },
   "modelSettings": {
     "claude-sonnet-5": {
       "effortLevel": "high"
-    },
-    "claude-opus-5-5": {
-      "autoCompactWindow": 400000
     }
   },
-  "advisorModel": "opus",
+  "advisorModel": "fable",
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",

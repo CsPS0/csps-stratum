@@ -18,7 +18,8 @@ param(
 $ErrorActionPreference = 'Stop'
 
 if ($DryRun) {
-    $PSBoundParameters['WhatIf'] = $true
+    # Writing to $PSBoundParameters does not enable WhatIf; the preference variable does.
+    $WhatIfPreference = $true
 }
 
 $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..\..")
@@ -51,19 +52,31 @@ function Ensure-SymlinkOrCopy {
         }
     }
 
+    $isDirectory = Test-Path -Path $SourcePath -PathType Container
+
     if (Test-Path $TargetPath) {
         $backupTarget = Join-Path $backupDir (Split-Path -Leaf $TargetPath)
         if (-not (Test-Path $backupDir)) {
             New-Item -ItemType Directory -Path $backupDir -Force | Out-Null
         }
-        if ($PSCmdlet.ShouldProcess($TargetPath, "Backup existing file to $backupTarget")) {
-            Copy-Item -Path $TargetPath -Destination $backupTarget -Force
+        if ($PSCmdlet.ShouldProcess($TargetPath, "Backup existing item to $backupTarget")) {
+            # -Recurse so directory backups include their contents
+            Copy-Item -Path $TargetPath -Destination $backupTarget -Recurse -Force
             Write-Host "  [BACKUP] $TargetPath -> $backupTarget" -ForegroundColor Yellow
         }
     }
 
     if ($PSCmdlet.ShouldProcess($TargetPath, "Deploy from $SourcePath")) {
-        Copy-Item -Path $SourcePath -Destination $TargetPath -Recurse -Force
+        if ($isDirectory) {
+            # Copy the directory's contents; copying the directory itself into an
+            # existing target would nest it (e.g. wezterm\wezterm\...).
+            if (-not (Test-Path $TargetPath)) {
+                New-Item -ItemType Directory -Path $TargetPath -Force | Out-Null
+            }
+            Copy-Item -Path (Join-Path $SourcePath '*') -Destination $TargetPath -Recurse -Force
+        } else {
+            Copy-Item -Path $SourcePath -Destination $TargetPath -Force
+        }
         Write-Host "  [DEPLOY] $SourcePath -> $TargetPath" -ForegroundColor Green
     }
 }
@@ -98,6 +111,8 @@ if (Test-Path $wtLocalState) {
 # 3. Deploy Editor & Client Strata (Zed, VS Code, Sonora, Vencord)
 Write-Host "`n[3/8] Configuring Code Editors & App Clients..." -ForegroundColor White
 Ensure-SymlinkOrCopy -SourcePath (Join-Path $repoRoot "strata\40-apps\zed\settings.json") -TargetPath (Join-Path $env:APPDATA "Zed\settings.json")
+# settings.json selects this theme, so it has to be deployed alongside it
+Ensure-SymlinkOrCopy -SourcePath (Join-Path $repoRoot "strata\40-apps\zed\themes\one-dark-pro-night-flat.json") -TargetPath (Join-Path $env:APPDATA "Zed\themes\one-dark-pro-night-flat.json")
 Ensure-SymlinkOrCopy -SourcePath (Join-Path $repoRoot "strata\40-apps\vscode\settings.json") -TargetPath (Join-Path $env:APPDATA "Code - Insiders\User\settings.json")
 Ensure-SymlinkOrCopy -SourcePath (Join-Path $repoRoot "strata\40-apps\sonora\settings.json") -TargetPath (Join-Path $env:APPDATA "sonora\settings.json")
 Ensure-SymlinkOrCopy -SourcePath (Join-Path $repoRoot "strata\40-apps\vencord\settings.json") -TargetPath (Join-Path $env:APPDATA "Vencord\settings\settings.json")

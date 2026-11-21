@@ -15,7 +15,7 @@
   - Dark ambient theme and Last.fm scrobbling.
   - Profile preserved at [`strata/40-apps/sonora/`](../../strata/40-apps/sonora/).
 - **Discord with Vencord**:
-  - Lightweight client modification with **37 active plugins**.
+  - Lightweight client modification with **41 active plugins**.
   - Highlights: `FakeNitro`, `MusicRichPresence`, `VoiceMessages`, `BetterNotesBox`, `BlurNSFW`, `ColorSighted`, `Decor`, `DisableCallIdle`, `NoTrack`, `OnePingPerDM`, `OpenInApp`, `petpet`, `PictureInPicture`, `ReadAllNotificationsButton`, `RelationshipNotifier`, `RevealAllSpoilers`, `ReverseImageSearch`, `SecretRingToneEnabler`, `ServerInfo`, `ShowHiddenChannels`, `SilentTyping`, `USRBG`, `ValidUser`, `WhoReacted`.
   - Profile preserved at [`strata/40-apps/vencord/`](../../strata/40-apps/vencord/).
 
@@ -48,7 +48,7 @@ Preserved at [`strata/30-dev/ai/`](../../strata/30-dev/ai/):
 ### Claude Code CLI
 - Terminal assistant with high-effort planning and subagent dispatch.
 - **Skills**: `one-skill-to-rule-them-all`, `graphify`, `humanizer`.
-- **Enabled Plugins**: `superpowers`, `claude-mem`, `ponytail`, `serena`, `context7`, `code-simplifier`, `commit-commands`, `security-guidance`, `deep-project`, `deep-plan`, `deep-implement`, `feature-dev`, `typescript-lsp`, `pyright-lsp`, `csharp-lsp`, `firecrawl`.
+- **Enabled Plugins**: `superpowers`, `claude-mem`, `ponytail`, `frontend-design`, `commit-commands`, `claude-md-management`, `github`, `vercel`, `typescript-lsp`, `pyright-lsp`, `csharp-lsp`, `php-lsp`.
 
 ### OpenAI Codex CLI
 - Sandboxed execution runtime with direct `zed` editor integration.

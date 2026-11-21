@@ -2,8 +2,8 @@
 
 > Unified configuration layers, automation scripts, and application profiles orchestrated across desktop, laptop, and mobile devices.
 
-[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS%20%7C%20Android-blue)](#device-profiles-matrix)
-[![Shells](https://img.shields.io/badge/Shells-PowerShell%20%7C%20Zsh%20%7C%20Bash%20%7C%20Nushell-orange)](#strata-layered-architecture)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Android-blue)](#device-profiles-matrix)
+[![Shells](https://img.shields.io/badge/Shells-PowerShell%20%7C%20Bash-orange)](#the-stratum-model)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](#license)
 
 `csps-stratum` solves configuration drift across heterogeneous machines. Instead of maintaining monolithic dotfiles or disparate setups per machine, **Stratum** organizes system configurations into modular, composable layers stacked cleanly according to the host platform, form factor, and development workflow.
@@ -17,36 +17,36 @@ Like geological strata, your working environment is composed of hierarchical lay
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    HOST PROFILES (hosts/)                   │
-│         [desktop]        │      [laptop]     │   [mobile]   │
+│         [desktop]        │ [laptop, planned] │   [mobile]   │
 ├──────────────────────────┴───────────────────┴──────────────┤
-│ 40-apps   │ Editor & Terminal configs (VS Code, Neovim, etc)│
-│ 30-dev    │ Language SDKs & Toolchains (Rust, Py, Node, Go) │
-│ 20-shell  │ Prompts, Aliases, Completions (Starship, Zsh)   │
-│ 10-os     │ OS Integration (Windows Registry, Linux XDG)    │
-│ 00-base   │ Universal Core (Git defaults, base editorconfig)│
+│ 40-apps   │ Editors & app clients (Zed, VS Code, Vencord…)  │
+│ 30-dev    │ Toolchains & AI assistants (Rust, .NET, Claude) │
+│ 20-shell  │ Shell, prompt & terminals (pwsh, WezTerm, OMP)  │
+│ 10-os     │ OS integration (WinGet, Scoop, Topgrade)        │
+│ 00-base   │ Universal core (Git defaults)                   │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-- **`00-base`**: Foundational conventions shared by every single device (Git configs, core editor standards, universal aliases).
-- **`10-os`**: Operating system plumbing (Windows terminal/registry, Linux desktop entries, macOS defaults, Android/Termux environment).
-- **`20-shell`**: Interactive shell experiences (PowerShell 7+, Zsh, Bash, Starship cross-shell prompt, auto-suggestions, syntax highlighting).
-- **`30-dev`**: Language toolchains, runtime versions, global linters, and package managers.
-- **`40-apps`**: Application-level preferences (VS Code settings/keybindings, Alacritty, WezTerm, Neovim).
-- **`hosts/`**: Final overlay matching the exact machine role (workstation desktop, mobile laptop, or handheld device).
+- **`00-base`**: Foundational conventions shared by every device (Git configuration and LFS filters).
+- **`10-os`**: Operating system plumbing (WinGet and Scoop package manifests, Topgrade updater config).
+- **`20-shell`**: Interactive shell experience (PowerShell 7 profile, Oh My Posh theme, WezTerm, Windows Terminal, Fastfetch).
+- **`30-dev`**: Language toolchains, package managers, and the AI coding assistant configs (Antigravity, Claude Code, Codex).
+- **`40-apps`**: Application-level preferences (Zed, VS Code Insiders, Windhawk, Sonora, Vencord, Aliucord, gaming and system tools).
+- **`hosts/`**: Final overlay matching the exact machine role (workstation desktop or handheld device).
 
 ---
 
 ## Device Profiles Matrix
 
-| Attribute | Desktop (`hosts/desktop`) | Laptop (`hosts/laptop`) | Mobile (`hosts/mobile`) |
+| Attribute | Desktop (`hosts/desktop`) | Laptop (planned) | Mobile (`hosts/mobile`) |
 |---|---|---|---|
-| **Primary OS** | Windows 11 / Linux Desktop | Windows 11 / Linux / macOS | Android (Termux) |
-| **Form Factor** | Multi-monitor, high-performance workstation | Single/dual screen, battery-constrained | Touchscreen, compact CLI companion |
-| **Power Strategy** | Uncapped performance, GPU acceleration | Battery-aware, aggressive sleep/hibernate | Minimal background wakeups, low memory |
-| **Primary Shell** | PowerShell 7+ / Zsh | PowerShell 7+ / Zsh | Zsh / Bash (Termux) |
-| **Terminal** | Windows Terminal / WezTerm | Windows Terminal / Alacritty | Termux |
-| **Toolchains** | Full development suites (Docker, CUDA, Rust) | Lightweight dev toolchains, remote SSH | Remote SSH client, quick Git triage, CLI notes |
-| **Sync Strategy** | Git pull + automated stratum linking | Git pull + automated stratum linking | Git pull / sparse-checkout |
+| **Primary OS** | Windows 11 Pro | Windows 11 | Android 14 (One UI 6.1) |
+| **Form Factor** | Dual-monitor, high-performance workstation | Single screen, battery-constrained | Touchscreen, compact CLI companion |
+| **Power Strategy** | Uncapped performance, GPU acceleration | Battery-aware, aggressive sleep | Minimal background wakeups |
+| **Primary Shell** | PowerShell 7 + Oh My Posh | PowerShell 7 | Bash (stock Termux) |
+| **Terminal** | WezTerm / Windows Terminal | Windows Terminal | Termux |
+| **Toolchains** | Full development suites (Rust, Flutter, .NET, Node, Python) | Lightweight dev toolchains, remote SSH | Clang, Node, Python, OpenSSH in Termux |
+| **Sync Strategy** | `bin/stratum.ps1 sync` (backup + copy) | — | Inventory only (no automated deploy) |
 
 ---
 
@@ -54,29 +54,25 @@ Like geological strata, your working environment is composed of hierarchical lay
 
 ```
 csps-stratum/
-├── .github/                 # GitHub workflows, issue templates, PR checklists
-├── bin/                     # Bootstrap entrypoints & profile linkers
-│   ├── stratum              # Master POSIX shell dispatcher (Linux/macOS/Termux)
-│   └── stratum.ps1          # Master PowerShell dispatcher (Windows)
+├── bin/                     # Entrypoints
+│   ├── stratum              # POSIX shell dispatcher (Linux/macOS/Termux)
+│   └── stratum.ps1          # PowerShell dispatcher (Windows)
 ├── strata/                  # Composable configuration layers
-│   ├── 00-base/git/         # Universal Git configuration (LFS, line endings, identities)
-│   ├── 10-os/windows/       # Windows OS manifests (winget.json, scoop.json, topgrade.toml)
-│   ├── 20-shell/            # Shell configs (wezterm, fastfetch, windows-terminal, oh-my-posh, pwsh)
-│   ├── 30-dev/              # Dev toolchains & AI assistants (antigravity, claude, codex)
-│   └── 40-apps/             # Apps (windhawk, zed, vscode, sonora, vencord, aliucord, system-tools, gaming)
+│   ├── 00-base/git/         # Universal Git configuration (LFS, line endings, identity template)
+│   ├── 10-os/windows/       # Windows manifests (winget.json, scoop.json, topgrade.toml)
+│   ├── 20-shell/            # pwsh, oh-my-posh, wezterm, windows-terminal, fastfetch
+│   ├── 30-dev/              # Toolchain manifest & AI assistants (antigravity, claude, codex)
+│   └── 40-apps/             # zed, vscode, windhawk, sonora, vencord, aliucord, system-tools, gaming
 ├── hosts/                   # Machine-specific profiles
 │   ├── desktop/             # Workstation profile, setup.ps1, software-inventory.md, screenshots
-│   ├── laptop/              # Portable profile & battery-saving tweaks (template)
 │   └── mobile/              # Samsung Galaxy A52s 5G companion profile & package inventory
-├── modules/                 # Reusable utility scripts (symlink engines, package installers)
-├── docs/                    # Architectural notes, onboarding guides, cheatsheets
-├── .gitattributes           # Strict line ending rules (LF on Unix, CRLF on PS1)
-├── .gitignore               # Strict exclusion of secrets, keys, and machine caches
-├── AGENTS.md                # Shared AI coding agent instructions & conventions
-├── CLAUDE.md                # Claude Code specific rules & plugin catalog
-├── GEMINI.md                # Gemini CLI & Google Antigravity specific guidance
-└── README.md                # Project documentation (this file)
+├── .gitattributes           # Line ending & encoding rules (LF on Unix, CRLF on PS1, UTF-16 .reg)
+├── .gitignore               # Exclusion of secrets, keys, machine caches, and local agent files
+├── LICENSE
+└── README.md
 ```
+
+A `laptop` host profile is planned but not in the repository yet.
 
 ---
 
@@ -97,52 +93,52 @@ cd "$HOME\Projects\csps-stratum"
 # 3. Check for configuration drift against repository
 .\bin\stratum.ps1 diff
 
-# 4. Preview changes safely in dry-run mode
+# 4. Preview changes safely (-DryRun and -WhatIf are equivalent)
 .\bin\stratum.ps1 sync -Profile desktop -WhatIf
 
 # 5. Apply the configuration
 .\bin\stratum.ps1 sync -Profile desktop
 ```
 
+> **Before step 5:** files in the repository are published copies with personal values removed. `strata/00-base/git/.gitconfig` contains `<YOUR_NAME>` / `<YOUR_EMAIL>` placeholders, and the Sonora and Vencord settings have their account fields blanked. Fill those in locally (without committing them) or restore them from the backup afterwards.
+
 ---
 
 ## Key Features
 
-### 1. Non-Destructive Symlinking
-Stratum safely creates symlinks from the active strata into your user profile (`$HOME`, `$XDG_CONFIG_HOME`, or `$PROFILE`). If an existing configuration file is encountered:
+### 1. Non-Destructive Deployment
+`setup.ps1` copies files from the active strata into your user profile (`$HOME`, `%APPDATA%`, `$PROFILE`). If a configuration file or folder already exists:
 - It is never silently overwritten.
-- An automatic timestamped backup is preserved (e.g. `~/.zshrc.bak.20261030_004500`).
-- Rollback commands allow instant reversion.
+- A timestamped backup is kept first, in `~/.stratum_backups/<yyyyMMdd_HHmmss>/`.
+- `-WhatIf` / `-DryRun` previews every step without touching the system.
 
-### 2. Multi-Shell Harmonization
-Whether you are on Windows in `pwsh`, in Linux/macOS on `zsh`, or in Termux on `bash`, your aliases, prompt layout, and Git shortcuts behave identically thanks to unified Starship prompt rules and shared alias declarations.
+### 2. Matched Editors
+Zed and VS Code Insiders share the same theme, keymap, fonts, layout and equivalent extensions; see [`strata/40-apps/zed/`](strata/40-apps/zed/) and [`strata/40-apps/vscode/`](strata/40-apps/vscode/).
 
 ### 3. Strict Secret & Credential Hygiene
 No private keys, auth tokens, or passwords are ever stored in this repository:
-- All secrets are managed via external password managers (Bitwarden, 1Password, KeePassXC) or system credential stores.
-- Environment variables utilize `.env.example` templates.
-- Machine-local overrides are loaded from untracked `*.local.yaml` or `*.local.ps1` files (ignored by `.gitignore`).
+- All secrets are managed via external password managers or system credential stores.
+- Account fields in app configs are left empty or use `<YOUR_…>` placeholders.
+- Machine-local overrides are loaded from untracked `*.local.*` files (ignored by `.gitignore`).
 
 ---
 
 ## AI Agent & Automation Integration
 
-This repository is built for seamless pairing with AI assistants (Claude Code, Gemini CLI, Google Antigravity, Cursor, etc.). Detailed rules are structured across dedicated instruction files:
+This repository is set up for pairing with AI assistants (Claude Code, Gemini CLI, Google Antigravity, Codex). The agent instruction files (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`) are kept locally and are not published. They define:
 
-- **[`AGENTS.md`](AGENTS.md)**: Universal rules applicable to all AI agents. Defines zero-attribution policies, secret safety, test verification gates, and fallback behavior.
-- **[`CLAUDE.md`](CLAUDE.md)**: Claude Code specific directives, including the plugin catalog (`superpowers`, `serena`, `context7`, `claude-mem`).
-- **[`GEMINI.md`](GEMINI.md)**: Gemini CLI & Antigravity specific directives, covering PowerShell execution on Windows, subagents, and MCP tool handling.
+- Zero AI attribution in commits and pull requests.
+- Secret safety and placeholder conventions.
+- Verification gates (syntax checks and dry runs before anything is declared done).
 
-### MCP Tooling Highlights
-- **Serena MCP**: Used for semantic code intelligence, symbol search, and precise file refactoring.
-- **Context7 MCP**: Used for querying up-to-date CLI documentation, package schemas, and API references without hallucinations.
+The assistants' own configs live in [`strata/30-dev/ai/`](strata/30-dev/ai/).
 
 ---
 
 ## Contributing & Maintenance
 
 1. **Verify Before Committing**: Run syntax and dry-run tests on any modified shell or PowerShell scripts.
-2. **Follow Line Ending Standards**: Keep Unix scripts on `LF` and Windows PowerShell scripts on `CRLF`/`LF` as governed by [`.gitattributes`](.gitattributes).
+2. **Follow Line Ending Standards**: Keep Unix scripts on `LF` and Windows PowerShell scripts on `CRLF`, as governed by [`.gitattributes`](.gitattributes).
 3. **No AI Attribution**: Maintain clean git logs without `Co-authored-by` or AI generator trailers.
 
 ---

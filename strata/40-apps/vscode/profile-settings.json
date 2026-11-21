@@ -67,7 +67,6 @@
     "window.commandCenter": false,
     "workbench.colorTheme": "OLED Monochrome",
     "chat.viewSessions.orientation": "stacked",
-    "r.rpath.windows": "C:\\Program Files\\R\\R-4.5.2\\bin\\x64\\R.exe",
     "axaml.misc.suppressXamlStylerRecommendation": true,
     "python.createEnvironment.trigger": "off",
     "workbench.panel.showLabels": false,

@@ -17,7 +17,7 @@ The desktop profile uses Windhawk to achieve a cohesive, translucent macOS-inspi
 | `windows-11-settings-styler`| 1.2.1 | Glass/translucent treatment for Windows 11 Settings app. |
 | `taskbar-icon-size` | 1.3.11 | Custom height (60px), icon dimensions (35px), and button widths (44px) for dock proportions. |
 | `hide-start-button` | 1.0 | Hides the default Windows 11 Start button for a streamlined dock look. |
-| `taskbar-dock-animation` | 1.9.2 | macOS-style dock icon magnification and hover physics on taskbar items. |
+| `taskbar-dock-animation` | 1.9.2 | macOS-style dock icon magnification and hover physics on taskbar items. Set to animate apps only (`ExcludeSystemButtonsMode=3`) with default spacing (`50`): on this Windows build the tray sits inside the taskbar frame (LiquidGlass2's `TrayInFrame` mode), so animating "system" elements made the tray pill grow on hover and shove the dock left. |
 | `translucent-windows` | 1.8.2 | Acrylic blur behind active application surfaces (`3A232323`). |
 | `icon-resource-redirect` | 1.3 | Redirects system shell DLLs to **macOS Dark Mode** icon sets (`niivu`). |
 | `taskbar-tray-system-icon-tweaks` | 1.3.1 | Cleans up and spaces system tray icons. |

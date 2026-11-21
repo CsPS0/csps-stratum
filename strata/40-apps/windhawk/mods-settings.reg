@@ -79,19 +79,19 @@ Windows Registry Editor Version 5.00
 "Exclude"=""
 "Architecture"="x86-64"
 "Version"="1.9.2"
-"SettingsChangeTime"=dword:6adbad7c
+"SettingsChangeTime"=dword:6b017535
 
 [HKEY_LOCAL_MACHINE\SOFTWARE\Windhawk\Engine\Mods\taskbar-dock-animation\Settings]
 "AnimationType"=dword:00000000
 "MaxScale"=dword:00000080
 "EffectRadius"=dword:00000000
-"SpacingFactor"=dword:00000064
+"SpacingFactor"=dword:00000032
 "BounceDelay"=dword:000001f4
 "FocusDuration"=dword:00000096
 "MirrorForTopTaskbar"=dword:00000000
 "DisableVerticalBounce"=dword:00000000
 "TaskbarLabelsMode"=dword:00000000
-"ExcludeSystemButtonsMode"=dword:00000000
+"ExcludeSystemButtonsMode"=dword:00000003
 "LerpSpeed"=dword:00000064
 "DisableBounce"=dword:00000001
 

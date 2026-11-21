@@ -67,7 +67,7 @@ mods:
     - { name: "No Telemetry", id: "hg77g4Pw", version: "1.10.0" }
 
   utility_client:
-    - { name: "Wurst Client", source: "manual", file: "Wurst-Client-v7.53-MC1.21.10.jar", note: "v7.57-MC26.3 exists, only on wurstclient.net; single-player only, gets you banned on most servers", disabled: true }
+    - { name: "Wurst Client", source: "github:Wurst-Imperium/Wurst-MCX2", version: "7.57", file: "Wurst-Client-v7.57-MC26.3.jar", sha256: "b420f33e8402dfee3383654d645bd043985ac71340c58627eab66e1de287bdc4", note: "not on Modrinth, so Prism can't update it; get new builds from wurstclient.net/download. Single-player only, gets you banned on most servers" }
 
   libraries:
     - { name: "Fabric API", id: "P7dR8mSH", version: "0.166.2" }

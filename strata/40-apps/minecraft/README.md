@@ -27,7 +27,7 @@ The migration steps below are kept for reference. Before deleting a launcher fol
 |---|---|
 | [`mods.yaml`](mods.yaml) | Every mod, resource pack and shader in the Prism instance, with Modrinth IDs and the Horizon built-ins that replace some of them |
 
-> **Prism launches (fixed 2026-11-21).** Wurst Client, Model Gap Fix and Dynamic Lights are disabled (no 26.3 build on Modrinth), and Sodium/Sodium Extra are pinned to 0.9.2/0.9.5 because the 0.9.3 betas refuse Iris 1.11.7. Don't accept Prism's offer to update those two until a newer Iris is out (see `pinned` in `mods.yaml`).
+> **Prism launches (fixed 2026-11-21).** Model Gap Fix and Dynamic Lights are disabled (no 26.3 build on Modrinth); Wurst Client 7.57 for 26.3 is installed by hand from its GitHub release, and Sodium/Sodium Extra are pinned to 0.9.2/0.9.5 because the 0.9.3 betas refuse Iris 1.11.7. Don't accept Prism's offer to update those two until a newer Iris is out (see `pinned` in `mods.yaml`).
 
 The Horizon CLI isn't on `PATH`. The commands below call it through a variable:
 

@@ -1,0 +1,284 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/amnweb/yasb/main/schema.json
+
+# Monochrome top bar, laid out like the KDE laptop's top panel and the macOS menu bar:
+# app menu on the left, date/time and next event in the exact centre (centre-bar), the rest on the right.
+# The other screen gets the app menu (menubar.exe) and the clock.
+watch_stylesheet: true
+watch_config: true
+debug: false
+update_check: false
+bars:
+  primary-bar:
+    enabled: true
+    screens: ['primary']
+    class_name: yasb-bar
+    alignment:
+      position: top
+      align: center
+    animation:
+      enabled: false
+    blur_effect:
+      enabled: false
+    window_flags:
+      always_on_top: false
+      windows_app_bar: true
+      hide_on_fullscreen: false   # the bar isn't on top, so full-screen apps cover it anyway
+    dimensions:
+      width: 100%
+      height: 30
+    padding:
+      top: 0
+      left: 0
+      bottom: 0
+      right: 0
+    widgets:
+      # left end is drawn by menubar.exe (Windows logo, app name, File/Edit/View...), see menubar\
+      left: []
+      center: []   # the date/time and next event live in centre-bar, pinned to the exact middle
+      right:
+      - claude_usage
+      - memory
+      - systray
+      - language
+      - microphone
+      - volume
+      - notifications
+  centre-bar:
+    # YASB centres the middle section only within its share of the bar, and the right side is much
+    # wider than the left, so the clock sat left of centre. This fixed-width bar is centred on the
+    # screen itself. Not an app bar (the main bar already reserves the space), kept above it.
+    enabled: true
+    screens: ['primary']
+    class_name: yasb-bar
+    alignment:
+      position: top
+      align: center
+    animation:
+      enabled: false
+    blur_effect:
+      enabled: false
+    window_flags:
+      always_on_top: true
+      windows_app_bar: false
+      hide_on_fullscreen: true
+    dimensions:
+      width: 560
+      height: 30
+    padding:
+      top: 0
+      left: 0
+      bottom: 0
+      right: 0
+    widgets:
+      left: []
+      center:
+      - clock
+      - calendar_event
+      right: []
+  secondary-bar:
+    enabled: true
+    screens: ['*']
+    class_name: yasb-bar
+    alignment:
+      position: top
+      align: center
+    animation:
+      enabled: false
+    blur_effect:
+      enabled: false
+    window_flags:
+      always_on_top: false
+      windows_app_bar: true
+      hide_on_fullscreen: false   # the bar isn't on top, so full-screen apps cover it anyway
+    dimensions:
+      width: 100%
+      height: 30
+    padding:
+      top: 0
+      left: 0
+      bottom: 0
+      right: 0
+    widgets:
+      # left end is drawn by menubar.exe here too (Windows logo, app name, menus; dimmed when the focused app is on the other screen)
+      left: []
+      center:
+      - clock
+      right: []
+widgets:
+  calendar_event:
+    # Next Google Calendar event (calendar\next-event.py). Reads the private iCal link(s) from
+    # calendar-url.txt in this folder; hidden while that file is missing or nothing is coming up.
+    type: yasb.custom.CustomWidget
+    options:
+      label: '{data[text]}'
+      label_alt: '{data[text]}'
+      label_placeholder: ''
+      class_name: calendar-event-widget
+      tooltip: true
+      tooltip_label: '{data[tooltip]}'
+      exec_options:
+        run_cmd: 'pythonw -I "%USERPROFILE%\.config\yasb\calendar\next-event.py"'
+        run_interval: 300000
+        return_format: json
+        hide_empty: true
+        use_shell: true
+      callbacks:
+        on_left: 'exec cmd /c start https://calendar.google.com'
+        on_middle: exec_custom
+        on_right: do_nothing
+  claude_usage:
+    # Claude Code plan usage: 5-hour window (7-day on right-click); click for the popup with reset times
+    type: yasb.claude_usage.ClaudeUsageWidget
+    options:
+      label: 'Claude {five_hour}%'
+      label_alt: 'Claude 7d {seven_day}%'
+      update_interval: 120
+      cache_ttl: 300
+      tooltip: true
+      menu:
+        blur: false
+        round_corners: true
+        round_corners_type: normal
+        border_color: None
+        alignment: right
+        direction: down
+        offset_top: 6
+        offset_left: 0
+      callbacks:
+        on_left: toggle_menu
+        on_middle: do_nothing
+        on_right: toggle_label
+  language:
+    # keyboard layout; click to switch
+    type: yasb.language.LanguageWidget
+    options:
+      label: '{lang[language_code]}'
+      label_alt: '{lang[full_name]}'
+      update_interval: 5
+      callbacks:
+        on_left: toggle_menu
+        on_middle: do_nothing
+        on_right: toggle_label
+      language_menu:
+        blur: false
+        round_corners: true
+        round_corners_type: normal
+        border_color: None
+        alignment: right
+        direction: down
+        offset_top: 6
+        offset_left: 0
+        show_layout_icon: true
+  microphone:
+    # click: mute; scroll: level; middle-click: device menu
+    type: yasb.microphone.MicrophoneWidget
+    options:
+      label: "<span>{icon}</span>"
+      label_alt: "<span>{icon}</span> {level}"
+      mute_text: mute
+      tooltip: true
+      icons:
+        normal: ""
+        muted: ""
+      mic_menu:
+        blur: false
+        round_corners: true
+        round_corners_type: normal
+        border_color: None
+        alignment: right
+        direction: down
+      callbacks:
+        on_left: toggle_mute
+        on_middle: toggle_mic_menu
+        on_right: toggle_label
+  memory:
+    type: yasb.memory.MemoryWidget
+    options:
+      label: "<span></span> {virtual_mem_percent}%"
+      label_alt: "<span></span> {virtual_mem_used}/{virtual_mem_total}"
+      update_interval: 5000
+      hide_decimal: true
+  systray:
+    type: yasb.systray.SystrayWidget
+    options:
+      class_name: systray
+      label_collapsed: "\uE70D"
+      label_expanded: "\uE70E"
+      label_position: left
+      icon_size: 16
+      show_unpinned: true          # every tray icon always visible in the bar
+      show_unpinned_button: false  # no arrow
+      show_in_popup: false
+      icons_per_row: 6
+      popup:
+        blur: false
+        round_corners: true
+        round_corners_type: normal
+        border_color: None
+        alignment: right
+        direction: down
+        offset_top: 6
+        offset_left: 0
+      show_battery: false
+      show_volume: false
+      show_network: true
+      tooltip: true
+  clock:
+    type: yasb.clock.ClockWidget
+    options:
+      label: '{%a %d %b  %H:%M}<span>{alarm}</span>'
+      label_alt: '{%A, %d %B %Y  %H:%M:%S}'
+      timezones: []
+      calendar:
+        blur: false
+        round_corners: true
+        alignment: center
+        direction: down
+        extended: false
+        show_years: true
+        show_holidays: false
+        show_week_numbers: true
+      callbacks:
+        on_left: toggle_calendar
+        on_middle: toggle_label
+        on_right: context_menu
+  volume:
+    type: yasb.volume.VolumeWidget
+    options:
+      label: <span>{icon}</span>
+      label_alt: <span>{icon}</span>{level}
+      tooltip: true
+      icons:
+        muted: ""
+        '10': ""
+        '30': ""
+        '60': ""
+        '100': ""
+      callbacks:
+        on_left: toggle_volume_menu
+        on_right: toggle_mute
+      audio_menu:
+        blur: false
+        round_corners: true
+        round_corners_type: normal
+        border_color: None
+        alignment: right
+        direction: down
+        show_apps: true
+        show_app_labels: false
+        show_app_icons: true
+        show_apps_expanded: false
+        app_icons:
+          toggle_down: ""
+          toggle_up: ""
+  notifications:
+    type: yasb.notifications.NotificationsWidget
+    options:
+      label: "<span></span>"
+      label_alt: '{count} notifications'
+      hide_empty: true
+      tooltip: false
+      callbacks:
+        on_left: toggle_notification
+        on_right: do_nothing
+        on_middle: do_nothing

@@ -187,3 +187,10 @@ AGENTS.md
 CLAUDE.md
 GEMINI.md
 *.agent.md
+
+# Locally packed VS Code extensions
+*.vsix
+
+# Private calendar links and their cached download (YASB next-event widget)
+calendar-url.txt
+.calendar-cache.ics

@@ -24,10 +24,11 @@ hardware:
 customization_stack:
   shell_tweaks:
     engine: Windhawk (1.7.3)
-    theme: LiquidGlass2
+    theme: LiquidGlass2 layout + OLED monochrome colour overrides
+    palette: "OLED_Monochrome (black #000000, text #E6E6E6, accent grey #686B6F)"
     dock_animation: true
     start_button_hidden: true
-    icon_theme: "macOS Dark Mode (niivu)"
+    icon_theme: "All White Icons (niivu)"
   wallpapers:
     engine: Wallpaper Engine (wallpaper64)
     active_theme: "Mac Book Pro M1 N&B Dark (2818923055)"

@@ -1,0 +1,28 @@
+# Program file (env vars and * allowed) | icon file name without .ico
+# Build-ExeIconTheme.ps1 turns each line into a resource-only DLL holding that icon under the
+# program's own main icon ID, plus a theme.ini for Windhawk's icon-resource-redirect mod.
+# A .ico line redirects a loose icon file some apps (Electron, WinUI) set as their window icon.
+# %ProgramW6432% instead of %ProgramFiles%: it means "C:\Program Files" in 32-bit processes too.
+%LOCALAPPDATA%\Programs\antigravity\Antigravity.exe|antigravity
+%ProgramW6432%\BraveSoftware\Brave-Browser\Application\brave.exe|brave
+%LOCALAPPDATA%\Discord\app-*\Discord.exe|discord
+%LOCALAPPDATA%\element-desktop\Element.exe|logo-element
+%LOCALAPPDATA%\element-desktop\app-*\Element.exe|logo-element
+%LOCALAPPDATA%\GitHubDesktop\app-*\GitHubDesktop.exe|github-desktop
+%ProgramW6432%\Heroic\Heroic.exe|heroic
+%LOCALAPPDATA%\Programs\Horizon Launcher\horizon-launcher.exe|logo-horizon
+%ProgramW6432%\LocalSend\localsend_app.exe|localsend
+%ProgramW6432%\Oracle\VirtualBox\VirtualBox.exe|logo-virtualbox
+%LOCALAPPDATA%\Programs\PrismLauncher\prismlauncher.exe|org.prismlauncher.PrismLauncher
+%ProgramW6432%\VS Revo Group\Revo Uninstaller\RevoUnin.exe|logo-revo
+%ProgramW6432%\Sonora\sonora.exe|logo-sonora
+%ProgramFiles(x86)%\Steam\steam.exe|steam
+%ProgramW6432%\UniGetUI\UniGetUI.exe|logo-unigetui
+%LOCALAPPDATA%\Programs\Microsoft VS Code Insiders\Code - Insiders.exe|visual-studio-code
+%ProgramW6432%\WezTerm\wezterm-gui.exe|wezterm
+%ProgramW6432%\WinDirStat\WinDirStat.exe|logo-windirstat
+%LOCALAPPDATA%\Programs\Zed\Zed.exe|Zed
+%LOCALAPPDATA%\Discord\app-*\app.ico|discord
+%LOCALAPPDATA%\element-desktop\app-*\resources\build\icon.ico|logo-element
+%ProgramW6432%\Heroic\resources\app.asar.unpacked\build\win_icon.ico|heroic
+%ProgramW6432%\LocalSend\data\flutter_assets\assets\img\logo.ico|localsend

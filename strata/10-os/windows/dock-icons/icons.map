@@ -1,0 +1,23 @@
+# Pinned taskbar shortcut name | icon file name without .ico
+# Plain names come from yet-another-monochrome-icon-set (apps/scalable/<name>.svg, built by build-icons.sh).
+# logo-* icons are monochrome versions of the app's own icon (see README); the set has no match for these.
+# File Explorer and Claude aren't pinned shortcuts; they get their icons from the taskbar styler (see README).
+Antigravity|antigravity
+Brave|brave
+Discord|discord
+Element|logo-element
+GitHub Desktop|github-desktop
+Heroic|heroic
+Horizon Launcher|logo-horizon
+LocalSend|localsend
+Oracle VirtualBox|logo-virtualbox
+Prism Launcher|org.prismlauncher.PrismLauncher
+Revo Uninstaller|logo-revo
+Roblox Studio|org.vinegarhq.Vinegar
+Sonora|logo-sonora
+Steam|steam
+UniGetUI (2)|logo-unigetui
+Visual Studio Code - Insiders|visual-studio-code
+WezTerm|wezterm
+WinDirStat|logo-windirstat
+Zed|Zed

@@ -103,6 +103,7 @@ bars:
       left: []
       center:
       - clock
+      - calendar_event
       right: []
 widgets:
   calendar_event:

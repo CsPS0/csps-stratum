@@ -56,8 +56,10 @@ def fetch():
                 with open(u, encoding="utf-8-sig") as f:
                     texts.append(f.read())
         data = "\n".join(texts)
-        with open(CACHE, "w", encoding="utf-8") as f:
+        tmp = f"{CACHE}.{os.getpid()}.tmp"  # both bars run this; never leave a half-written cache
+        with open(tmp, "w", encoding="utf-8") as f:
             f.write(data)
+        os.replace(tmp, CACHE)
         return data
     except Exception:
         if os.path.exists(CACHE):

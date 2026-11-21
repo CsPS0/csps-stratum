@@ -33,7 +33,7 @@ a small native program in this folder.
   - **Microphone:** click to mute, scroll for level, middle-click for devices.
   - Tried and removed: weather (needs your location), the Quick Launch search (unreliable) and
     now playing (wrong titles, couldn't reliably pause).
-- **Other screen (YASB):** date and time in the centre (the left end is the menu bar, as above).
+- **Other screen (YASB):** date, time and next calendar event in the centre (the left end is the menu bar, as above).
 - No power button: shutdown, restart and sleep are in the Windows logo menu.
 - Solid black, no blur or animation, 30 px tall. YASB reserves the space, so maximised windows stay
   below it. Full-screen apps cover the bar (it isn't always on top), and the menu bar hides itself.

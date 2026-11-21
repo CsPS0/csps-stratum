@@ -57,13 +57,15 @@ function module.apply_to_config(config)
     { key = 'v', mods = 'CTRL', action = wezterm.action.PasteFrom 'Clipboard' },
 
     -- Dynamic Workspace Manager (Projects / Repos)
+    -- Leader+w (Ctrl+Shift+W stays "close pane"). Base dir: $env:WEZTERM_PROJECTS_DIR,
+    -- else the first non-empty of ~/Projects, D:/Projects, ~/source/repos.
     {
       key = 'w',
-      mods = 'CTRL|SHIFT',
+      mods = 'LEADER',
       action = wezterm.action_callback(function(window, pane)
         local success, stdout, stderr = wezterm.run_child_process {
-          'pwsh', '-NoProfile', '-Command', 
-          '$baseDir = if (Test-Path "$HOME/Projects") { "$HOME/Projects" } elseif (Test-Path "$HOME/source/repos") { "$HOME/source/repos" } else { "$HOME" }; (Get-ChildItem -Path $baseDir -Directory -Depth 1 -ErrorAction SilentlyContinue).FullName'
+          'pwsh', '-NoProfile', '-Command',
+          '$baseDir = @($env:WEZTERM_PROJECTS_DIR, "$HOME/Projects", "D:/Projects", "$HOME/source/repos") | Where-Object { $_ -and (Get-ChildItem -Path $_ -Directory -ErrorAction SilentlyContinue) } | Select-Object -First 1; if ($baseDir) { (Get-ChildItem -Path $baseDir -Directory -Depth 1 -ErrorAction SilentlyContinue).FullName }'
         }
         
         local choices = {}

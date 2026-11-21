@@ -24,7 +24,9 @@ function module.apply_to_config(config)
     local title = " " .. icon .. " "
     local cwd = pane.current_working_dir
     if cwd then
-      local path = tostring(cwd.url):gsub("file:///", ""):gsub("/", "\\")
+      -- current_working_dir is a Url object (file_path) on newer builds, a string on older ones
+      local path = type(cwd) == 'string' and cwd:gsub("^file://[^/]*", "") or cwd.file_path
+      path = path:gsub("^/([A-Za-z]:)", "%1"):gsub("/", "\\")
       local home = wezterm.home_dir:gsub("/", "\\")
       if path:lower():gsub("\\$", "") == home:lower():gsub("\\$", "") then title = title .. "~"
       else title = title .. (path:gsub("\\$", ""):match("([^\\]+)$") or path) end

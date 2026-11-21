@@ -1,0 +1,21 @@
+/* Quick CSS file created by Millennium */
+
+/* OLED Monochrome: greys for the colours SpaceTheme and Steam hard-code
+   (the rest comes from theme-colors.json). Brightness keeps the meaning. */
+
+/* "SpaceTheme" title text (titlebar.css) */
+.bSKGlAJG2UVWTsntEJY2v::after { color: #8a8d91 !important; }
+._2UyOBeiSdBayaFdRa39N2O:nth-of-type(1)::after { color: #e6e6e6 !important; }
+
+/* Metacritic score bars on library cards: good / mixed / bad (libHome.css) */
+._1LJqx_qFOC8199RBQO5kU8._1KR40mXc7Z4Dss99aBDbyN { background-color: #686b6f !important; }
+._1LJqx_qFOC8199RBQO5kU8._1H3NRDhuiZh5xH5jZsiI38 { background-color: #55575a !important; }
+._1LJqx_qFOC8199RBQO5kU8._3lWVD8RYypVvbk60T5Vqcs { background-color: #3e3f41 !important; }
+
+/* Achievements bar and event date badge (libHome.css) */
+._1LJqx_qFOC8199RBQO5kU8._31wTtQjCH2ZSKgMiMZLhAM,
+.B-vCdL38RiJlhfSRgZv78 ._3OSZu24hLN7YKjqGi7I2Xp { background-color: #686b6f !important; }
+
+/* "Ready to play" filter icon next to shelf names (Steam's own #09b9ff) */
+.SVGIcon_ReadyToPlay circle { stroke: #8a8d91 !important; }
+.SVGIcon_ReadyToPlay path { fill: #8a8d91 !important; }

@@ -31,7 +31,7 @@ Like geological strata, your working environment is composed of hierarchical lay
 - **`10-os`**: Operating system plumbing (WinGet and Scoop package manifests, Topgrade updater config, the monochrome system colours and the monochrome dock and in-app icons).
 - **`20-shell`**: Interactive shell experience (PowerShell 7 profile, Oh My Posh theme, WezTerm, Windows Terminal, Fastfetch).
 - **`30-dev`**: Language toolchains, package managers, and the AI coding assistant configs (Antigravity, Claude Code, Codex).
-- **`40-apps`**: Application-level preferences (Zed, VS Code Insiders, Rider, Visual Studio, Windhawk, the YASB top bar, Sonora, Vencord, Aliucord, Minecraft, gaming and system tools).
+- **`40-apps`**: Application-level preferences (Zed, VS Code Insiders, Rider, Visual Studio, Windhawk, the YASB top bar, Steam, Sonora, Vencord, Aliucord, Minecraft, gaming and system tools).
 - **`hosts/`**: Final overlay matching the exact machine role (workstation desktop or handheld device). The laptop has no host profile yet; it pulls the repo and installs the shared editor themes by hand (see [Laptop](#laptop-arch-linux)).
 
 ---
@@ -64,7 +64,7 @@ csps-stratum/
 │   ├── 10-os/windows/       # winget.json, scoop.json, topgrade.toml, monochrome-colors/, dock-icons/
 │   ├── 20-shell/            # pwsh, oh-my-posh, wezterm, windows-terminal, fastfetch
 │   ├── 30-dev/              # Toolchain manifest & AI assistants (antigravity, claude, codex)
-│   └── 40-apps/             # zed, vscode, rider, visual-studio, windhawk, yasb, sonora, vencord,
+│   └── 40-apps/             # zed, vscode, rider, visual-studio, windhawk, yasb, steam, sonora, vencord,
 │                            # aliucord, minecraft, system-tools, gaming
 ├── hosts/                   # Machine-specific profiles
 │   ├── desktop/             # Workstation profile, setup.ps1, software-inventory.md, screenshots

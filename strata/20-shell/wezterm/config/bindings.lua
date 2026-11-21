@@ -21,10 +21,10 @@ function module.apply_to_config(config)
     { key = 's', mods = 'ALT', action = wezterm.action.ShowLauncherArgs { flags = 'WORKSPACES' } },
     { key = 'p', mods = 'CTRL', action = wezterm.action.QuickSelectArgs { label = 'Select file', patterns = { '[a-zA-Z]:\\\\(?:[^\\\\\\/:*?"<>|\\r\\n]+\\\\)*[^\\\\\\/:*?"<>|\\r\\n]*' } } },
     
-    -- F1 Fix: Open current directory in explorer
+    -- Leader+e: open current directory in Explorer (F1 stays PSReadLine's ShowCommandHelp)
     {
-      key = 'F1',
-      mods = 'NONE',
+      key = 'e',
+      mods = 'LEADER',
       action = wezterm.action_callback(function(window, pane)
         local cwd = pane:get_current_working_dir()
         if cwd then

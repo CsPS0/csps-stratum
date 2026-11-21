@@ -8,7 +8,6 @@ end
 require('config.appearance').apply_to_config(config)
 require('config.tab_bar').apply_to_config(config)
 require('config.links').apply_to_config(config)
-require('config.smart_splits').apply_to_config(config)
 require('config.bindings').apply_to_config(config)
 
 return config

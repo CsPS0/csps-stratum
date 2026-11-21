@@ -37,14 +37,14 @@ function module.apply_to_config(config)
 
     if tab.is_active then
       return {
-        { Background = { Color = '#282828' } },
-        { Foreground = { Color = '#ffdd33' } },
+        { Background = { Color = '#686B6F' } },
+        { Foreground = { Color = '#FFFFFF' } },
         { Text = ' ' .. title .. ' ' },
       }
     end
     return {
-      { Background = { Color = '#181818' } },
-      { Foreground = { Color = '#bbbbbb' } },
+      { Background = { Color = hover and '#3A3C3E' or '#111111' } },
+      { Foreground = { Color = hover and '#FFFFFF' or '#888888' } },
       { Text = ' ' .. title .. ' ' },
     }
   end)
@@ -57,7 +57,7 @@ function module.apply_to_config(config)
       table.insert(cells, string.format('󰁹 %.0f%%', b.state_of_charge * 100))
     end
     window:set_right_status(wezterm.format {
-      { Foreground = { Color = '#ffdd33' } },
+      { Foreground = { Color = '#CCCCCC' } },
       { Text = table.concat(cells, '  ') .. ' ' },
     })
   end)

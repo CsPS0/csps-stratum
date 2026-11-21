@@ -2,21 +2,6 @@ local wezterm = require 'wezterm'
 local module = {}
 
 function module.apply_to_config(config)
-  -- Auto Dark/Light Mode
-  local function get_color_scheme()
-    if wezterm.gui then
-      local appearance = wezterm.gui.get_appearance()
-      if appearance:find 'Dark' then
-        return 'Gruber (base16)'
-      else
-        return 'Catppuccin Latte'
-      end
-    end
-    return 'Gruber (base16)'
-  end
-
-  config.color_scheme = get_color_scheme()
-  
   config.font = wezterm.font_with_fallback({
     { family = 'JetBrainsMono NF', harfbuzz_features = { 'calt', 'liga', 'clig' } },
     'JetBrains Mono NF',
@@ -35,22 +20,37 @@ function module.apply_to_config(config)
   }
   config.enable_scroll_bar = true
 
-  -- Colors
+  -- OLED Monochrome palette (matches the laptop's KDE "OLED_Monochrome" scheme)
   config.colors = {
+    background = '#000000',
+    foreground = '#E6E6E6',
     cursor_bg = '#FFFFFF',
     cursor_fg = '#000000',
     cursor_border = '#FFFFFF',
-    selection_fg = 'none',
-    selection_bg = 'rgba(255, 221, 51, 0.3)',
-    background = '#000000',
+    selection_bg = '#686B6F', -- KDE accent grey
+    selection_fg = '#FFFFFF',
     visual_bell = '#333333',
     scrollbar_thumb = '#222222',
+    split = '#282828',
+    ansi = {
+      '#1A1A1A', '#C8C8C8', '#E0E0E0', '#B0B0B0',
+      '#F0F0F0', '#D6D6D6', '#B8B8B8', '#FFFFFF',
+    },
+    brights = {
+      '#4D4D4D', '#DCDCDC', '#F5F5F5', '#C0C0C0',
+      '#FFFFFF', '#EAEAEA', '#CCCCCC', '#FFFFFF',
+    },
+    tab_bar = {
+      background = '#000000',
+      new_tab = { bg_color = '#000000', fg_color = '#888888' },
+      new_tab_hover = { bg_color = '#686B6F', fg_color = '#FFFFFF' },
+    },
   }
 
-  -- Background & Opacity
-  config.window_background_opacity = 0.8
+  -- Solid true black, inactive panes desaturated and dimmed
+  config.window_background_opacity = 1.0
   config.text_background_opacity = 1.0
-  config.inactive_pane_hsb = { saturation = 0.8, brightness = 0.5 }
+  config.inactive_pane_hsb = { saturation = 0.0, brightness = 0.6 }
 
   -- Window & UI
   config.window_decorations = "RESIZE"

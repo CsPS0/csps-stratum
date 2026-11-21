@@ -16,7 +16,7 @@
           "leading_diamond": "\u256d\u2500\ue0b2",
           "template": " {{ if .WSL }}WSL at {{ end }}{{.Icon}} ",
           "foreground": "#000000",
-          "background": "#d3d7cf",
+          "background": "#d6d6d6",
           "type": "os",
           "style": "diamond"
         },
@@ -26,9 +26,9 @@
             "style": "full"
           },
           "template": " \uf07c {{ .Path }} ",
-          "foreground": "#e4e4e4",
+          "foreground": "#ffffff",
           "powerline_symbol": "\ue0b0",
-          "background": "#3465a4",
+          "background": "#686b6f",
           "type": "path",
           "style": "powerline"
         },
@@ -41,14 +41,14 @@
           "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \ueb4b {{ .StashCount }}{{ end }} ",
           "foreground": "#000000",
           "powerline_symbol": "\ue0b0",
-          "background": "#4e9a06",
+          "background": "#7f7f7f",
           "type": "git",
           "style": "powerline",
           "background_templates": [
-            "{{ if or (.Working.Changed) (.Staging.Changed) }}#c4a000{{ end }}",
-            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}#f26d50{{ end }}",
-            "{{ if gt .Ahead 0 }}#89d1dc{{ end }}",
-            "{{ if gt .Behind 0 }}#4e9a06{{ end }}"
+            "{{ if or (.Working.Changed) (.Staging.Changed) }}#9c9c9c{{ end }}",
+            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}#878787{{ end }}",
+            "{{ if gt .Ahead 0 }}#c2c2c2{{ end }}",
+            "{{ if gt .Behind 0 }}#7f7f7f{{ end }}"
           ]
         }
       ]
@@ -64,7 +64,7 @@
           "template": " {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} \ue718 ",
           "foreground": "#ffffff",
           "powerline_symbol": "\ue0b2",
-          "background": "#689f63",
+          "background": "#8f8f8f",
           "type": "node",
           "style": "powerline",
           "invert_powerline": true
@@ -76,7 +76,7 @@
           "template": " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} \ue627 ",
           "foreground": "#111111",
           "powerline_symbol": "\ue0b2",
-          "background": "#00acd7",
+          "background": "#8b8b8b",
           "type": "go",
           "style": "powerline",
           "invert_powerline": true
@@ -88,7 +88,7 @@
           "template": " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} \ue624 ",
           "foreground": "#111111",
           "powerline_symbol": "\ue0b2",
-          "background": "#4063D8",
+          "background": "#646464",
           "type": "julia",
           "style": "powerline",
           "invert_powerline": true
@@ -101,7 +101,7 @@
           "template": " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} \ue235 ",
           "foreground": "#111111",
           "powerline_symbol": "\ue0b2",
-          "background": "#FFDE57",
+          "background": "#dbdbdb",
           "type": "python",
           "style": "powerline",
           "invert_powerline": true
@@ -114,7 +114,7 @@
           "template": " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} \ue791 ",
           "foreground": "#ffffff",
           "powerline_symbol": "\ue0b2",
-          "background": "#AE1401",
+          "background": "#333333",
           "type": "ruby",
           "style": "powerline",
           "invert_powerline": true
@@ -127,7 +127,7 @@
           "template": " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} \uf0e7",
           "foreground": "#ffffff",
           "powerline_symbol": "\ue0b2",
-          "background": "#FEAC19",
+          "background": "#b3b3b3",
           "type": "azfunc",
           "style": "powerline",
           "invert_powerline": true
@@ -142,8 +142,8 @@
           "type": "aws",
           "style": "powerline",
           "background_templates": [
-            "{{if contains \"default\" .Profile}}#FFA400{{end}}",
-            "{{if contains \"jan\" .Profile}}#f1184c{{end}}"
+            "{{if contains \"default\" .Profile}}#acacac{{end}}",
+            "{{if contains \"jan\" .Profile}}#4a4a4a{{end}}"
           ],
           "invert_powerline": true
         },
@@ -151,7 +151,7 @@
           "template": " \uf0ad ",
           "foreground": "#111111",
           "powerline_symbol": "\ue0b2",
-          "background": "#ffff66",
+          "background": "#f4f4f4",
           "type": "root",
           "style": "powerline",
           "invert_powerline": true
@@ -160,7 +160,7 @@
           "template": " {{ .FormattedMs }} \uf252 ",
           "foreground": "#000000",
           "powerline_symbol": "\ue0b2",
-          "background": "#c4a000",
+          "background": "#9c9c9c",
           "type": "executiontime",
           "style": "powerline",
           "invert_powerline": true
@@ -170,13 +170,13 @@
             "always_enabled": true
           },
           "template": " {{ if gt .Code 0 }}{{ reason .Code }}{{ else }}\uf42e{{ end }} ",
-          "foreground": "#d3d7cf",
+          "foreground": "#d6d6d6",
           "powerline_symbol": "\ue0b2",
           "background": "#000000",
           "type": "status",
           "style": "powerline",
           "background_templates": [
-            "{{ if gt .Code 0 }}#cc2222{{ end }}"
+            "{{ if gt .Code 0 }}#464646{{ end }}"
           ],
           "invert_powerline": true
         },
@@ -184,7 +184,7 @@
           "trailing_diamond": "\ue0b0\u2500\u256e",
           "template": " {{ .CurrentDate | date .Format }} \uf017 ",
           "foreground": "#000000",
-          "background": "#d3d7cf",
+          "background": "#d6d6d6",
           "type": "time",
           "style": "diamond",
           "invert_powerline": true
@@ -197,7 +197,7 @@
       "segments": [
         {
           "template": "\u2570\u2500",
-          "foreground": "#d3d7cf",
+          "foreground": "#d6d6d6",
           "type": "text",
           "style": "plain"
         }
@@ -209,7 +209,7 @@
       "segments": [
         {
           "template": "\u2500\u256f",
-          "foreground": "#d3d7cf",
+          "foreground": "#d6d6d6",
           "type": "text",
           "style": "plain"
         }

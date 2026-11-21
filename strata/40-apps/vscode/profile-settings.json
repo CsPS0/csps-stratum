@@ -65,7 +65,7 @@
     "editor.wordWrap": "on",
     "chat.agentsControl.enabled": false,
     "window.commandCenter": false,
-    "workbench.colorTheme": "One Dark Pro Night Flat",
+    "workbench.colorTheme": "OLED Monochrome",
     "chat.viewSessions.orientation": "stacked",
     "r.rpath.windows": "C:\\Program Files\\R\\R-4.5.2\\bin\\x64\\R.exe",
     "axaml.misc.suppressXamlStylerRecommendation": true,
@@ -73,6 +73,7 @@
     "workbench.panel.showLabels": false,
     "terminal.integrated.fontFamily": "JetBrainsMono NF",
     "material-icon-theme.folders.theme": "specific",
+    "material-icon-theme.saturation": 0,
     "chat.disableAIFeatures": true,
     "workbench.browser.openLocalhostLinks": false,
     "workbench.experimental.modernUI": false

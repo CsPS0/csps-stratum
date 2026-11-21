@@ -2,10 +2,11 @@
 // Previous version: settings.backup-2026-11-20.json (same folder).
 {
   // ── Look ────────────────────────────────────────────────────────────
-  // VS Code: workbench.colorTheme "One Dark Pro Night Flat" (custom theme in ./themes)
-  "theme": "One Dark Pro Night Flat",
-  // VS Code: workbench.iconTheme "material-icon-theme"
-  "icon_theme": "Material Icon Theme",
+  // VS Code: workbench.colorTheme "OLED Monochrome" (greyscale One Dark Pro Night Flat, ./themes)
+  "theme": "OLED Monochrome",
+  // Built-in grey file icons. VS Code keeps Material Icon Theme at saturation 0.
+  // Was "Material Icon Theme" (colour) and theme "One Dark Pro Night Flat".
+  "icon_theme": "Zed (Default)",
 
   "buffer_font_family": "JetBrainsMono NF",
   "buffer_font_size": 15,

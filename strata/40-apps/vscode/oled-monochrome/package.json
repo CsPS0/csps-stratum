@@ -1,0 +1,23 @@
+{
+  "name": "oled-monochrome",
+  "displayName": "OLED Monochrome",
+  "description": "One Dark Pro Night Flat with a greyscale interface on a pure black background, keeping its syntax and git colours, matching the KDE OLED Monochrome desktop.",
+  "version": "1.1.0",
+  "publisher": "csps",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "contributes": {
+    "themes": [
+      {
+        "label": "OLED Monochrome",
+        "uiTheme": "vs-dark",
+        "path": "./themes/oled-monochrome-color-theme.json"
+      }
+    ]
+  }
+}

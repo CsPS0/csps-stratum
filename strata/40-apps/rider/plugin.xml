@@ -1,0 +1,16 @@
+<idea-plugin>
+  <id>csps.oled-monochrome</id>
+  <name>OLED Monochrome</name>
+  <version>1.0.0</version>
+  <vendor>csps</vendor>
+  <description><![CDATA[
+    Islands Dark with a greyscale interface on a pure black background, plus the
+    Rider Islands Dark editor colours on black. Syntax and VCS colours stay.
+  ]]></description>
+  <depends>com.intellij.modules.platform</depends>
+  <idea-version since-build="262"/>
+  <extensions defaultExtensionNs="com.intellij">
+    <themeProvider id="csps.OLEDMonochrome" path="/oled-monochrome.theme.json" targetUi="islands"/>
+    <bundledColorScheme id="OLED Monochrome" path="/colorSchemes/OLEDMonochrome"/>
+  </extensions>
+</idea-plugin>

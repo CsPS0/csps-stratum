@@ -1,0 +1,13 @@
+{
+  "KPackageStructure": "Plasma/Applet",
+  "KPlugin": {
+    "Id": "org.csps.aiusage",
+    "Name": "AI Usage",
+    "Description": "Claude and Antigravity quota left, hidden while neither app runs",
+    "Icon": "utilities-system-monitor",
+    "Category": "System Information",
+    "License": "MIT",
+    "Version": "1.0"
+  },
+  "X-Plasma-API-Minimum-Version": "6.0"
+}

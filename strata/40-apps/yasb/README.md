@@ -13,6 +13,7 @@ a small native program in this folder.
 | `menubar/menubar.ini` | `%USERPROFILE%\.config\yasb\menubar\` | Which menus each app gets |
 | `menubar/Build-MenuBar.ps1` | — | Builds and installs the two above (`-WhatIf`, `-Autostart`) |
 | `calendar/next-event.py` | `%USERPROFILE%\.config\yasb\calendar\` | Next Google Calendar event for the bar |
+| `../ai-usage/ai_usage.py`, `popup.py` | `%USERPROFILE%\.config\yasb\ai-usage\` | Claude and Antigravity quota used, and the click-open details |
 
 ## Layout
 
@@ -24,11 +25,13 @@ a small native program in this folder.
   See *Next calendar event* below. These two sit in `centre-bar`, a 560 px bar of their own pinned
   to the exact middle of the screen and drawn over the main bar. YASB centres the main bar's middle
   section only within its share of the bar, and the right side is much wider than the left.
-- **Main screen, right (YASB):** Claude usage, memory, system tray (with network),
+- **Main screen, right (YASB):** Claude and Antigravity usage, system tray (with network),
   keyboard layout, microphone, volume, notifications. Every tray icon is always shown in the bar
   (no arrow or popup).
-  - **Claude usage:** Claude Code's 5-hour limit (right-click: 7-day); click for reset times. Reads
-    Claude Code's own sign-in (`~/.claude/.credentials.json`), no setup.
+  - **Claude / Antigravity usage:** e.g. `Claude 37% used` (5-hour window) and `Antigravity 12% used`
+    (most-used model). Click for a dropdown with every limit, its bar and reset time. Each one is
+    hidden while its app is closed. Comes from [`../ai-usage/`](../ai-usage/), which the laptop's
+    KDE panel uses too.
   - **Keyboard layout:** click to switch layouts.
   - **Microphone:** click to mute, scroll for level, middle-click for devices.
   - Tried and removed: weather (needs your location), the Quick Launch search (unreliable) and

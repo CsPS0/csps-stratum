@@ -121,6 +121,10 @@ python3 strata/40-apps/vscode/oled-monochrome/pack-vsix.py /tmp/oled-monochrome.
 code-insiders --profile CsPS --install-extension /tmp/oled-monochrome.vsix --force
 ```
 
+The top panel is laid out like the desktop's bar: application launcher and global menu on the left, then a flexible spacer, the date and time (`Sat 21 Nov 23:40`, custom date format `ddd d MMM`, date beside the time), a second flexible spacer, and on the right the Claude / Antigravity usage and the system tray. Plasma centres a widget that sits between two flexible spacers on the panel itself, so the clock stays in the exact middle.
+
+The usage widget shows the Claude and Antigravity quota used (click for details), each only while its app runs: run `strata/40-apps/ai-usage/install-kde.sh --add-to-panel` once (see [`ai-usage/`](strata/40-apps/ai-usage/)).
+
 Then set `"workbench.colorTheme": "OLED Monochrome"` and `"material-icon-theme.saturation": 0` in the profile settings. Rider's theme is built by a PowerShell script on Windows. Copy the built jar to `~/.local/share/JetBrains/Rider<version>/` while Rider is closed, then pick **OLED Monochrome** under **Settings → Appearance**. The Windows-only strata (Windhawk, YASB, the menu bar, dock icons, system colours) don't apply.
 
 ---
@@ -140,7 +144,7 @@ Zed and VS Code Insiders share the same theme, keymap, fonts, layout and equival
 The desktop copies the style of the laptop's KDE `OLED_Monochrome` colour scheme without changing its own layout:
 - **Shell**: Windhawk overrides make the dock, Start menu, Settings and File Explorer black and grey ([`windhawk/`](strata/40-apps/windhawk/)). The Windows accent, selection and cursor colours are set to match ([`monochrome-colors/`](strata/10-os/windows/monochrome-colors/)).
 - **Icons**: monochrome dock, title-bar and Alt+Tab icons ([`dock-icons/`](strata/10-os/windows/dock-icons/)).
-- **Top bar**: a macOS-style [YASB](strata/40-apps/yasb/) bar on both monitors, with tray, memory, clock and the next Google Calendar event. A small native menu bar shows the focused app's menus in one line.
+- **Top bar**: a macOS-style [YASB](strata/40-apps/yasb/) bar on both monitors, with tray, memory, clock, the next Google Calendar event and the Claude / Antigravity quota used ([`ai-usage/`](strata/40-apps/ai-usage/), on the laptop's panel too). A small native menu bar shows the focused app's menus in one line.
 - **Terminals and prompt**: WezTerm, Windows Terminal and Oh My Posh use the same palette.
 
 ### 4. Strict Secret & Credential Hygiene

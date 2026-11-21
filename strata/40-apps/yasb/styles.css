@@ -526,10 +526,8 @@
 .media-widget .label { color: var(--yasb-fg-muted); font-weight: 500; }
 .systray .unpinned-visibility-btn { font-family: var(--icons-font); color: var(--yasb-fg-muted); border: none; background: transparent; }
 .notifications-widget:hover, .clock-widget:hover, .systray:hover, .active-window-widget:hover { background-color: var(--yasb-white-alpha-08); }
-/* Windows logo (Nerd Font glyph) and memory */
+/* Windows logo (Nerd Font glyph) */
 .home-widget .win-logo { font-family: "JetBrainsMono NF", "JetBrainsMono Nerd Font"; font-size: 15px; color: #FFFFFF; }
-.memory-widget .label { color: var(--yasb-fg-muted); }
-.memory-widget .icon { color: var(--yasb-fg-muted); font-family: "JetBrainsMono NF", "JetBrainsMono Nerd Font"; }
 
 
 /* Claude usage, keyboard layout, microphone */

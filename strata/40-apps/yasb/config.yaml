@@ -37,7 +37,7 @@ bars:
       center: []   # the date/time and next event live in centre-bar, pinned to the exact middle
       right:
       - claude_usage
-      - memory
+      - antigravity_usage
       - systray
       - language
       - microphone
@@ -128,27 +128,46 @@ widgets:
         on_middle: exec_custom
         on_right: do_nothing
   claude_usage:
-    # Claude Code plan usage: 5-hour window (7-day on right-click); click for the popup with reset times
-    type: yasb.claude_usage.ClaudeUsageWidget
+    # Claude plan used in the 5-hour window, from ai-usage\ai_usage.py; click for every limit (ai-usage\popup.py).
+    # Hidden while neither Claude Code nor the Claude app runs. YASB's own ClaudeUsageWidget can't hide.
+    type: yasb.custom.CustomWidget
     options:
-      label: 'Claude {five_hour}%'
-      label_alt: 'Claude 7d {seven_day}%'
-      update_interval: 120
-      cache_ttl: 300
-      tooltip: true
-      menu:
-        blur: false
-        round_corners: true
-        round_corners_type: normal
-        border_color: None
-        alignment: right
-        direction: down
-        offset_top: 6
-        offset_left: 0
+      label: '{data}'
+      label_alt: '{data}'
+      label_placeholder: ''
+      class_name: claude-usage-widget
+      tooltip: false
+      exec_options:
+        # Plain text, not json: with json, an empty result breaks YASB's '{data[...]}' formatting
+        # before hide_empty is checked, so the raw template showed instead of the widget hiding.
+        run_cmd: 'pythonw -I "%USERPROFILE%\.config\yasb\ai-usage\ai_usage.py" claude --text'
+        run_interval: 60000
+        return_format: string
+        hide_empty: true
+        use_shell: true
       callbacks:
-        on_left: toggle_menu
+        on_left: "exec pythonw -I -c __import__('runpy').run_path(__import__('os').path.expanduser('~/.config/yasb/ai-usage/popup.py'),run_name='__main__') claude"
         on_middle: do_nothing
-        on_right: toggle_label
+        on_right: do_nothing
+  antigravity_usage:
+    # Most-used Antigravity model quota; click for every model and reset time. Hidden while Antigravity is closed
+    type: yasb.custom.CustomWidget
+    options:
+      label: '{data}'
+      label_alt: '{data}'
+      label_placeholder: ''
+      class_name: claude-usage-widget
+      tooltip: false
+      exec_options:
+        run_cmd: 'pythonw -I "%USERPROFILE%\.config\yasb\ai-usage\ai_usage.py" antigravity --text'
+        run_interval: 60000
+        return_format: string
+        hide_empty: true
+        use_shell: true
+      callbacks:
+        on_left: "exec pythonw -I -c __import__('runpy').run_path(__import__('os').path.expanduser('~/.config/yasb/ai-usage/popup.py'),run_name='__main__') antigravity"
+        on_middle: do_nothing
+        on_right: do_nothing
   language:
     # keyboard layout; click to switch
     type: yasb.language.LanguageWidget
@@ -192,13 +211,6 @@ widgets:
         on_left: toggle_mute
         on_middle: toggle_mic_menu
         on_right: toggle_label
-  memory:
-    type: yasb.memory.MemoryWidget
-    options:
-      label: "<span></span> {virtual_mem_percent}%"
-      label_alt: "<span></span> {virtual_mem_used}/{virtual_mem_total}"
-      update_interval: 5000
-      hide_decimal: true
   systray:
     type: yasb.systray.SystrayWidget
     options:

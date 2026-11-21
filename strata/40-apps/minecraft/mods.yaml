@@ -1,0 +1,142 @@
+# Minecraft Mods, Resource Packs & Shaders
+# Source of truth: Prism Launcher instance "Fabric - Heavily Modded"
+#   %APPDATA%\PrismLauncher\instances\Fabric - Heavily Modded\minecraft
+# IDs are Modrinth project IDs unless `source` says otherwise
+# (https://modrinth.com/project/<id>).
+#
+# horizon_builtin: Horizon (Rust client) has its own version of this feature,
+#                  so the mod isn't needed in the Horizon instance.
+# horizon:         result of `horizon-launcher.exe mods check <id>` (fill in once checked).
+# disabled:        jar renamed to .jar.disabled in Prism because it has no 26.3 build (2026-11-21).
+# pinned:          held back on purpose; don't let Prism update it until the reason is gone.
+
+instance:
+  name: "Fabric - Heavily Modded"
+  launcher: "Prism Launcher"
+  minecraft: "26.3"
+  loader: "fabric"
+  loader_version: "0.20.1"
+  java: "25 (Microsoft OpenJDK)"
+
+mods:
+  performance:
+    - { name: "Sodium", id: "AANobbMI", version: "0.9.2", pinned: "0.9.3 betas break Iris <= 1.12.0; update once Iris > 1.12.0 is out" }
+    - { name: "Sodium Extra", id: "PtjYWJkn", version: "0.9.5", pinned: "0.9.6 betas require the Sodium 0.9.3 beta" }
+    - { name: "Lithium", id: "gvQqBUqZ", version: "0.26.3" }
+    - { name: "ImmediatelyFast", id: "5ZwdcRci", version: "1.17.1" }
+    - { name: "EntityCulling", id: "NNAgCjsB", version: "1.12.1", horizon_builtin: "entity culling" }
+    - { name: "Dynamic FPS", id: "LQ3K71Q1", version: "3.11.10" }
+    - { name: "Fast Item Frames", id: "FsoeTIV0", version: "26.3.0" }
+    - { name: "Voxy", id: "fxxUqruK", version: "0.2.20-beta", note: "LOD far terrain", horizon_builtin: "LOD distance" }
+    - { name: "Bobby", id: "M08ruV16", version: "5.2.16", note: "client-side render distance cache" }
+
+  visuals:
+    - { name: "Iris", id: "YL57xq9U", version: "1.11.7", note: "shader loader" }
+    - { name: "Entity Model Features", id: "4I1XuqiY", version: "3.3.12", note: "needed by Fresh Animations" }
+    - { name: "Entity Texture Features", id: "BVzZfTc1", version: "7.2.7", note: "needed by Fresh Animations" }
+    - { name: "LambDynamicLights", id: "yBW8D80W", version: "4.13.0", horizon_builtin: "dynamic lights" }
+    - { name: "Dynamic Lights", id: "7YjclEGc", version: "1.9.3", note: "no 26.3 build (needs MC <= 26.2.9); LambDynamicLights covers it", disabled: true }
+    - { name: "Particle Tweaks", id: "IlGAhsOM", version: "3.1" }
+    - { name: "Blur+", id: "NK39zBp2", version: "6.3.1" }
+    - { name: "Fadeless", id: "ncKjyGm3", version: "2.0.9" }
+    - { name: "Model Gap Fix", id: "QdG47OkI", version: "1.12", note: "no 26.3 build (needs MC 1.21.10-1.21.x)", disabled: true }
+    - { name: "Cubes Without Borders", id: "ETlrkaYF", version: "5.0.0", note: "borderless fullscreen" }
+    - { name: "Vanilla Refresh", source: "manual", file: "vanilla-refresh-1.4.28b.jar", note: "not installed through Prism, no update tracking" }
+
+  hud_and_ui:
+    - { name: "Xaero's Minimap", id: "1bokaNcj", version: "26.6.2", horizon_builtin: "minimap" }
+    - { name: "Xaero's World Map", id: "NcUtCpym", version: "1.47.2" }
+    - { name: "Zoomify", id: "w7ThoJFB", version: "2.17.0", horizon_builtin: "zoom" }
+    - { name: "Status Effect Bars", id: "x02cBj9Y", version: "1.0.12" }
+    - { name: "Pick Up Notifier", id: "ZX66K16c", version: "26.3.0" }
+    - { name: "Chat Heads", id: "Wb5oqrBJ", version: "1.3.2" }
+    - { name: "Shulker Box Tooltip", id: "2M01OLQq", version: "5.4.3" }
+    - { name: "Boat Item View", id: "BdKIyOLe", version: "0.0.11" }
+    - { name: "Mod Menu", id: "mOgUt4GM", version: "21.0.1" }
+
+  quality_of_life:
+    - { name: "Mouse Tweaks", id: "aC3cM3Vq", version: "2.31" }
+    - { name: "Controlling", id: "xv94TkTM", version: "26.3.4", note: "keybind search" }
+    - { name: "Searchables", id: "fuuu3xnx", version: "1.0.3" }
+    - { name: "Stendhal", id: "BWloQ9jK", version: "1.4.9", note: "sign and book editor" }
+    - { name: "Fabrishot", id: "3qsfQtE9", version: "1.19.0", note: "high-res screenshots" }
+    - { name: "Simple Voice Chat", id: "9eGKb6K1", version: "2.6.27" }
+
+  privacy:
+    - { name: "No Chat Reports", id: "qQyHxfxd", version: "2.21.0" }
+    - { name: "No Telemetry", id: "hg77g4Pw", version: "1.10.0" }
+
+  utility_client:
+    - { name: "Wurst Client", source: "manual", file: "Wurst-Client-v7.53-MC1.21.10.jar", note: "v7.57-MC26.3 exists, only on wurstclient.net; single-player only, gets you banned on most servers", disabled: true }
+
+  libraries:
+    - { name: "Fabric API", id: "P7dR8mSH", version: "0.166.2" }
+    - { name: "Fabric Language Kotlin", id: "Ha28R6CL", version: "1.14.2" }
+    - { name: "Architectury", id: "lhGA9TYQ", version: "22.0.5" }
+    - { name: "Cloth Config", id: "9s6osm5g", version: "26.3.159" }
+    - { name: "YetAnotherConfigLib", id: "1eAoo2KR", version: "3.9.7" }
+    - { name: "Forge Config API Port", id: "ohNO6lps", version: "26.3.1" }
+    - { name: "Puzzles Lib", id: "QAGBst4M", version: "26.3.18" }
+    - { name: "FrozenLib", id: "9KawNmQc", version: "3.0.3" }
+
+resource_packs:
+  # Load order isn't tracked here; set it in the game's Resource Packs screen.
+  - { name: "Fresh Animations", id: "50dA9Sha", version: "1.11.2" }
+  - { name: "Fresh Animations: Extensions", id: "YAVTU8mK", version: "1.10.1" }
+  - { name: "Bare Bones", id: "rox3U8B6", version: "1.4.12" }
+  - { name: "Even Better Enchants", id: "6udpuGCH", version: "3" }
+  - { name: "Enhanced Boss Bars", id: "U5SedJ9S", version: "1.6" }
+  - { name: "Vanilla Connected Glass", id: "CUC4h0GP", version: "1.2.0" }
+  - { name: "Invisible Item Frames", id: "gfr4403r", version: "V6" }
+  - { name: "Silent Portals", id: "DfFblSfP", version: "1.1" }
+  - { name: "Fullbright UB", id: "ItHr72Fy", version: "7.0", horizon_builtin: "fullbright" }
+  - { name: "No Villager Idle Sounds", source: "curseforge", id: "385803", file: "NoVillagerIdleSounds263.zip" }
+
+shader_packs:
+  - { name: "Complementary Shaders - Unbound", id: "R6NEzAwj", version: "r5.9.3" }
+  - { name: "Rethinking Voxels", id: "kmwfVOoi", version: "r0.1-beta9" }
+  - { name: "Vanilla Plus Shader", id: "EPsIYDj1", version: "3.3" }
+  - { name: "Miniature Shader", id: "UaS8ROxa", version: "2.19" }
+  - { name: "VanillAA", id: "W3QK7DQz", version: "1.3" }
+
+# Horizon (Rust client). Java mods don't run here: `mods check` only ports a mod's
+# textures and data, and every mod above is client code. These are the closest
+# native replacements, set up 2026-11-21.
+horizon:
+  native_mods:
+    # Compiled into the game with Horizon's Rust toolchain (installed 2026-11-21, `rust install`).
+    # Both are pinned to Horizon commit 0b14f8a, which isn't a downloadable release, so
+    # `native-build` leaves them out. They stay installed and enabled; run
+    # `mods update` then `native-build --trust-native-code` once their authors update them.
+    - { name: "Minimap, Worldmap and waypoints reworked", id: "minimap_worldmap_waypoints_reworked", version: "0.7.0", replaces: ["Xaero's Minimap", "Xaero's World Map"], status: "waiting for an update" }
+    - { name: "Universal Viewer", id: "universal_viewer", version: "0.1.13", replaces: ["Shulker Box Tooltip"], status: "waiting for an update" }
+  builtin_extras:
+    # %APPDATA%\horizon\horizon-extras.txt
+    zoom: { enabled: true, key: "C", replaces: "Zoomify" }
+    dynamicLights: { enabled: true, replaces: "LambDynamicLights" }
+    minimap: { enabled: true, replaces: "Xaero's Minimap", note: "turn off once the native minimap mod builds" }
+    entity_culling: { replaces: "EntityCulling", note: "always on in horizon-graphics.txt" }
+  resource_packs_enabled:
+    - "Even Better Enchants"
+    - "Invisible Item Frames"
+    - "Silent Portals"
+    - "Vanilla Connected Glass"
+    - "No Villager Idle Sounds"
+    - "Enhanced Boss Bars"
+  resource_packs_off:
+    - { name: "Fresh Animations (+ Extensions)", reason: "needs EMF/ETF, which Horizon can't run" }
+    - { name: "Fullbright UB", reason: "Horizon has a built-in fullbright" }
+    - { name: "Bare Bones", reason: "full texture overhaul that was never active in Java" }
+  shader: "Complementary Shaders - Unbound"
+  no_equivalent:
+    - "Mouse Tweaks"
+    - "Status Effect Bars"
+    - "Pick Up Notifier"
+    - "Chat Heads"
+    - "Fadeless"
+    - "Particle Tweaks"
+    - "Boat Item View"
+    - "Stendhal"
+    - "Fabrishot"
+    - "Simple Voice Chat"
+    - "Searchables / Controlling"

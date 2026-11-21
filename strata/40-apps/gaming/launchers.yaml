@@ -13,11 +13,18 @@ launchers:
       - name: "Genshin Impact"
         developer: "miHoYo"
 
+  # Minecraft mod list and migration notes: strata/40-apps/minecraft
+  horizon:
+    name: "Horizon Launcher (Rust reimplementation of Minecraft: Java Edition)"
+    install_dir: '%LOCALAPPDATA%\Programs\Horizon Launcher'
+    game_dir: '%APPDATA%\horizon'
+
   minecraft:
     name: "Prism Launcher"
     package: "PrismLauncher.PrismLauncher"
+    instance: "Fabric - Heavily Modded (26.3, Fabric 0.20.1)"
     runtimes:
-      - "Java 17 (Microsoft OpenJDK 17)"
+      - "Java 25 (Microsoft OpenJDK)"
 
   xbox:
     name: "Xbox App & Microsoft Gaming Services"

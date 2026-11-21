@@ -61,7 +61,7 @@ system_management:
   local_networking: ["LocalSend"]
 
 gaming_stack:
-  launchers: ["Steam", "Heroic Games Launcher", "HoYoPlay", "Prism Launcher", "Xbox App", "Ubisoft Connect", "Roblox"]
+  launchers: ["Steam", "Heroic Games Launcher", "HoYoPlay", "Horizon Launcher", "Prism Launcher", "Xbox App", "Ubisoft Connect", "Roblox"]
   vr_support: "SteamVR"
   engine_tools: ["Godot Engine", "scrcpy", "OCCT", "DDU", "HWiNFO64"]
 

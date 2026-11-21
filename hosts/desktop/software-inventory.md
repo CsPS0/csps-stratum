@@ -88,5 +88,5 @@ Preserved at [`strata/30-dev/ai/`](../../strata/30-dev/ai/):
 - **Steam Games**:
   *NTE: Neverness to Everness*, *THE FINALS*, *Battlefield™ 6*, *Counter-Strike 2*, *Bodycam*, *Tom Clancy's Rainbow Six Siege*, *PEAK*, *Turbo Overkill*, *STRAFTAT*, *The Forest*, *Silly Linguine Cat Simulator Deluxe Online*.
 - **VR & Customization**: SteamVR, Wallpaper Engine.
-- **Alternative Launchers**: Heroic Games (*Fortnite*), HoYoPlay (*Genshin Impact*), Prism Launcher (*Minecraft*), Xbox App (PC Game Pass), Ubisoft Connect, Roblox.
+- **Alternative Launchers**: Heroic Games (*Fortnite*), HoYoPlay (*Genshin Impact*), Horizon Launcher + Prism Launcher (*Minecraft*), Xbox App (PC Game Pass), Ubisoft Connect, Roblox.
 - **Game Dev & Utilities**: Godot Engine, scrcpy, OCCT, DDU, Logitech G HUB.

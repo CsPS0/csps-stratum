@@ -22,7 +22,7 @@ Game clients, libraries, multi-store launchers, and specialized hardware tuning 
 - **Alternative Launchers**:
   - **Heroic Games Launcher**: Epic Games library (*Fortnite*)
   - **HoYoPlay**: *Genshin Impact*
-  - **Prism Launcher**: Minecraft
+  - **Horizon Launcher** + **Prism Launcher**: Minecraft (see [`../minecraft/`](../minecraft/))
   - **Xbox App**: PC Game Pass
   - **Ubisoft Connect**
   - **Roblox**
@@ -41,5 +41,5 @@ Game clients, libraries, multi-store launchers, and specialized hardware tuning 
 ## Included Declarations
 
 - [`steam.yaml`](steam.yaml): Steam game catalog, AppIDs, and categories.
-- [`launchers.yaml`](launchers.yaml): Multi-store manifests (Heroic, HoYoPlay, Prism Launcher, Xbox, Ubisoft).
+- [`launchers.yaml`](launchers.yaml): Multi-store manifests (Heroic, HoYoPlay, Horizon, Prism Launcher, Xbox, Ubisoft).
 - [`tools.yaml`](tools.yaml): Hardware monitoring, engine tools, and peripheral tuning.

@@ -4,6 +4,6 @@ Declarative configuration for Windows Terminal (Package `Microsoft.WindowsTermin
 
 ## Features
 - **Font**: JetBrainsMono Nerd Font
-- **Appearance**: 80% background opacity with acrylic/glass blur
+- **Appearance**: OLED Monochrome colour scheme, 80% background opacity (no acrylic)
 - **Default Profile**: PowerShell Core 7 (`csps-dev`) with elevated execution enabled
 - **Keybindings**: Fast copy/paste (`Ctrl+C` / `Ctrl+V`), split pane (`Alt+Shift+D`)

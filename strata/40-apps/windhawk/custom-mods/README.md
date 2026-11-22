@@ -1,6 +1,6 @@
 # Custom Windhawk mods
 
-Two local mods that aren't in the Windhawk catalog. Both run inside Explorer and build with
+Three local mods that aren't in the Windhawk catalog. All three run inside Explorer and build with
 Windhawk's bundled clang: they compile with `-Wall` and no warnings, and link into a DLL with the
 libraries in their `@compilerOptions`.
 
@@ -20,8 +20,7 @@ the way "Taskbar Icon Separators" does.
 - **When it applies:** once, and again only when the list changes. A hash of the list is kept
   in the mod's storage, so apps you unpin by hand stay unpinned. To force a re-apply, turn on
   **Apply again**, save, then turn it off.
-- **Pins not in the list** keep their order after the listed ones. The Taskbar Icon Separators
-  separator is one of these, which keeps it at the end of the pinned apps.
+- **Pins not in the list** keep their order after the listed ones.
 - **How apps are matched:** by the program each pinned shortcut starts, because Windows renames
   the pinned shortcuts (`Brave (10).lnk`) whenever it rewrites a pin. If an app's install folder
   is versioned (Figma, Roblox), it falls back to the program's file name, but only when exactly
@@ -31,9 +30,10 @@ the way "Taskbar Icon Separators" does.
   groups the dock as general use | chat and media | development | gaming | customizing and system,
   with the last separator between pinned and running apps.
 - **Windhawk keeps a mod's saved settings across updates**, so each change of the default list
-  renames the setting (`pins` → `apps` in 1.3 → `layout` in 1.4) to make the new default take effect.
+  renames the setting (`pins` → `apps` in 1.3 → `layout` in 1.4 → `dock` in 1.5) to make the new default
+  take effect.
 - **Which apps are listed:** only apps that were already on the taskbar or pinned in Start.
-  Disk Cleanup, Superposition and Wintoys were left off. Wallpaper Engine is pinned by its
+  Disk Cleanup and Superposition were left off. Wallpaper Engine is pinned by its
   `launcher.exe`, because its Start entry is a Steam URL.
 
 ## Why `taskbar-attention-bounce` doesn't clash with Taskbar Dock Animation

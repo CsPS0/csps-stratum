@@ -1,6 +1,6 @@
 # Desktop Profile (`hosts/desktop`)
 
-This profile standardizes the workstation environment for **Windows 11 Pro**, tailored for multi-display development, GPU acceleration, and a customized glass-dock desktop aesthetic.
+This profile standardizes the workstation environment for **Windows 11 Pro**, tailored for multi-display development, GPU acceleration, and a black-and-white **OLED Monochrome** look with a macOS-style top bar and dock.
 
 ---
 
@@ -18,11 +18,11 @@ This profile standardizes the workstation environment for **Windows 11 Pro**, ta
 
 ## Desktop Aesthetics & Visuals
 
-Active wallpaper styling:
+![Main screen: top bar and dock](../../docs/screenshots/windows-desktop.png)
 
-### Wallpaper Engine Active Background
-![Wallpaper Engine Active Theme](assets/screenshots/wallpaper-engine-preview.jpg)
-*(Theme: "Mac Book Pro M1 N&B Dark", Workshop ID: 2818923055)*
+Wallpaper Engine runs *Orb Spiral - Black Hypnosis* (Workshop ID 3725918788) on the main screen and a
+Workshop scene (ID 3557068717) on the second. More shots, including the second screen, are in
+[`docs/screenshots/`](../../docs/screenshots/).
 
 ---
 
@@ -31,8 +31,9 @@ Active wallpaper styling:
 | Component | Software / Engine | Configuration & Source |
 |---|---|---|
 | **Dock / Shell** | [Windhawk](https://windhawk.net/) (v1.7.3) | [`strata/40-apps/windhawk/`](../../strata/40-apps/windhawk/) |
-| **Dock Theme** | LiquidGlass2 + macOS Dark Icons | `windows-11-taskbar-styler`, `icon-resource-redirect` |
-| **Wallpaper** | Wallpaper Engine (`wallpaper64`) | Dynamic background rendering (Asset `2818923055`) |
+| **Dock Look** | No theme: own rules for a black pill, dots and dividers; monochrome icons | `windows-11-taskbar-styler` ([`oled-dock.reg`](../../strata/40-apps/windhawk/oled-dock.reg)), [`dock-icons/`](../../strata/10-os/windows/dock-icons/), `icon-resource-redirect` |
+| **Top Bar** | YASB + native one-line menu bar | [`strata/40-apps/yasb/`](../../strata/40-apps/yasb/) |
+| **Wallpaper** | Wallpaper Engine (`wallpaper64`) | Animated backgrounds (Workshop `3725918788`, `3557068717`) |
 | **Terminal (Primary)** | [WezTerm](https://wezfurlong.org/wezterm/) | [`strata/20-shell/wezterm/`](../../strata/20-shell/wezterm/) |
 | **Terminal (Secondary)** | Windows Terminal | [`strata/20-shell/windows-terminal/`](../../strata/20-shell/windows-terminal/) |
 | **Shell & Prompt**| PowerShell 7+ with Oh My Posh | [`strata/20-shell/pwsh/`](../../strata/20-shell/pwsh/), [`strata/20-shell/oh-my-posh/`](../../strata/20-shell/oh-my-posh/) |

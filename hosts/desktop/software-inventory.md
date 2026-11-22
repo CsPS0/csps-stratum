@@ -18,6 +18,9 @@
   - Lightweight client modification with **41 active plugins**.
   - Highlights: `FakeNitro`, `MusicRichPresence`, `VoiceMessages`, `BetterNotesBox`, `BlurNSFW`, `ColorSighted`, `Decor`, `DisableCallIdle`, `NoTrack`, `OnePingPerDM`, `OpenInApp`, `petpet`, `PictureInPicture`, `ReadAllNotificationsButton`, `RelationshipNotifier`, `RevealAllSpoilers`, `ReverseImageSearch`, `SecretRingToneEnabler`, `ServerInfo`, `ShowHiddenChannels`, `SilentTyping`, `USRBG`, `ValidUser`, `WhoReacted`.
   - Profile preserved at [`strata/40-apps/vencord/`](../../strata/40-apps/vencord/).
+- **Element**: Matrix chat client.
+- **Brave**: main browser, stripped of Rewards, Wallet, VPN, Leo and telemetry with SlimBrave Neo (see [`strata/10-os/windows/`](../../strata/10-os/windows/README.md#debloat-one-time-cleanup)).
+- **LibreOffice**: office suite.
 
 ---
 
@@ -68,13 +71,15 @@ Preserved at [`strata/30-dev/ai/`](../../strata/30-dev/ai/):
 - **C/C++ (MSVC)**: Visual Studio Community 2026 Insiders & 2022 Build Tools (SDK 10.0.26100).
 - **VCS**: Git for Windows, GitHub CLI (`gh`), GitHub Desktop.
 - **R**: WinGet package `RProject.R`.
+- **Editors & IDEs**: Zed, VS Code Insiders, JetBrains Rider and Visual Studio Insiders, all on the OLED Monochrome theme ([`strata/40-apps/`](../../strata/40-apps/)).
+- **Other dev tools**: Figma, Zeal (offline docs), VirtualBox, Roblox Studio.
 
 ---
 
 ## 5. Shell, Terminals & System Telemetry
 
 - **WezTerm**: GPU-accelerated primary terminal emulator with modular Lua configuration (`strata/20-shell/wezterm/`).
-- **Windows Terminal**: Elevated PowerShell Core 7 default, JetBrainsMono Nerd Font, 80% opacity with acrylic blur (`strata/20-shell/windows-terminal/`).
+- **Windows Terminal**: Elevated PowerShell Core 7 default, JetBrainsMono Nerd Font, OLED Monochrome scheme, 80% opacity (`strata/20-shell/windows-terminal/`).
 - **Oh My Posh**: Custom diamond OS/Git prompt theme (`strata/20-shell/oh-my-posh/mytheme.omp.json`).
 - **PowerShell 7 (pwsh)**: Core profile with OSC 7 current working directory propagation (`strata/20-shell/pwsh/`).
 - **Fastfetch**: Fast system info utility with custom UTF-8 Totoro ASCII logo and live weather telemetry (`strata/20-shell/fastfetch/`).
@@ -89,4 +94,12 @@ Preserved at [`strata/30-dev/ai/`](../../strata/30-dev/ai/):
   *NTE: Neverness to Everness*, *THE FINALS*, *Battlefield™ 6*, *Counter-Strike 2*, *Bodycam*, *Tom Clancy's Rainbow Six Siege*, *PEAK*, *Turbo Overkill*, *STRAFTAT*, *The Forest*, *Silly Linguine Cat Simulator Deluxe Online*.
 - **VR & Customization**: SteamVR, Wallpaper Engine.
 - **Alternative Launchers**: Heroic Games (*Fortnite*), HoYoPlay (*Genshin Impact*), Horizon Launcher + Prism Launcher (*Minecraft*), Xbox App (PC Game Pass), Ubisoft Connect, Roblox.
-- **Game Dev & Utilities**: Godot Engine, scrcpy, OCCT, DDU, Logitech G HUB.
+- **Game Dev & Utilities**: Godot Engine, scrcpy, OCCT, DDU, Logitech G HUB, Mod Organizer.
+
+---
+
+## 7. Desktop Shell & Look
+
+- **Windhawk**: the dock, Start menu, Explorer and Settings styling, plus three custom mods ([`strata/40-apps/windhawk/`](../../strata/40-apps/windhawk/)).
+- **YASB**: the top bar, with a native one-line menu bar ([`strata/40-apps/yasb/`](../../strata/40-apps/yasb/)).
+- **Wallpaper Engine**: animated wallpapers (see [the desktop profile](README.md)).

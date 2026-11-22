@@ -40,9 +40,8 @@ a small native program in this folder.
 - No power button: shutdown, restart and sleep are in the Windows logo menu.
 - Solid black, no blur or animation, 30 px tall. YASB reserves the space, so maximised windows stay
   below it. Full-screen apps cover the bar (it isn't always on top), and the menu bar hides itself.
-- The dock's own tray and clock are hidden (rule 25 of the taskbar styler in
-  `strata/40-apps/windhawk/mods-settings.reg`, zero width rather than collapsed so LiquidGlass2 still
-  centres the dock), so the dock holds apps only. The tray-tweaks mod is disabled for the same reason.
+- The dock's own tray and clock are hidden (rule 25 of the taskbar styler,
+  `Visibility=Collapsed`, in `strata/40-apps/windhawk/oled-dock.reg`), so the dock holds apps only. The tray-tweaks mod is disabled for the same reason.
 
 ## The one-line menu (menubar.exe)
 

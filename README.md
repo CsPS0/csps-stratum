@@ -36,7 +36,7 @@ Like geological strata, your working environment is composed of hierarchical lay
 - **`10-os`**: Operating system plumbing (WinGet and Scoop package manifests, Topgrade updater config, the monochrome system colours and the monochrome dock and in-app icons).
 - **`20-shell`**: Interactive shell experience (PowerShell 7 profile, Oh My Posh theme, WezTerm, Windows Terminal, Fastfetch).
 - **`30-dev`**: Language toolchains, package managers, and the AI coding assistant configs (Antigravity, Claude Code, Codex).
-- **`40-apps`**: Application-level preferences (Zed, VS Code Insiders, Rider, Visual Studio, Windhawk, the YASB top bar, Steam, Sonora, Vencord, Aliucord, Minecraft, gaming and system tools).
+- **`40-apps`**: Application-level preferences (Zed, VS Code Insiders, Rider, Visual Studio, Windhawk, the YASB top bar, the AI usage widgets, the KDE dock, Steam, Sonora, Vencord, Aliucord, Minecraft, gaming and system tools).
 - **`hosts/`**: Final overlay matching the exact machine role (workstation desktop, laptop or handheld device). The laptop profile documents its KDE look; the laptop still pulls the repo and installs the shared editor themes by hand (see [Laptop](#laptop-arch-linux)).
 
 ---
@@ -66,13 +66,13 @@ csps-stratum/
 │   └── greyscale-theme.py   # Turns a colour theme file into greys of the same brightness
 ├── strata/                  # Composable configuration layers
 │   ├── 00-base/git/         # Universal Git configuration (LFS, line endings, identity template)
-│   ├── 10-os/windows/       # winget.json, scoop.json, topgrade.toml, monochrome-colors/, dock-icons/
+│   ├── 10-os/windows/       # winget.json, scoop.json, topgrade.toml, monochrome-colors/, dock-icons/, cursors/
 │   ├── 20-shell/            # pwsh, oh-my-posh, wezterm, windows-terminal, fastfetch
 │   ├── 30-dev/              # Toolchain manifest & AI assistants (antigravity, claude, codex)
-│   └── 40-apps/             # zed, vscode, rider, visual-studio, windhawk, yasb, steam, sonora, vencord,
-│                            # aliucord, minecraft, system-tools, gaming
+│   └── 40-apps/             # zed, vscode, rider, visual-studio, windhawk, yasb, ai-usage, kde-dock, steam,
+│                            # sonora, vencord, aliucord, minecraft, system-tools, gaming
 ├── hosts/                   # Machine-specific profiles
-│   ├── desktop/             # Workstation profile, setup.ps1, software-inventory.md, screenshots
+│   ├── desktop/             # Workstation profile, profile.yaml, setup.ps1, software-inventory.md
 │   ├── laptop/              # KDE Plasma look: OLED_Monochrome.colors, theme/icon/font settings
 │   └── mobile/              # Samsung Galaxy A52s 5G companion profile & package inventory
 ├── docs/screenshots/        # Reference screenshots of both machines
@@ -133,7 +133,7 @@ The top panel is laid out like the desktop's bar: application launcher and globa
 
 The usage widget shows the Claude and Antigravity quota used (click for details), each only while its app runs: run `strata/40-apps/ai-usage/install-kde.sh --add-to-panel` once (see [`ai-usage/`](strata/40-apps/ai-usage/)).
 
-The bottom dock is a small widget of its own, [`kde-dock/`](strata/40-apps/kde-dock/), with the same hover magnification as the Windows dock and a divider between pinned and unpinned apps: `strata/40-apps/kde-dock/install-kde-dock.sh --replace` swaps it in for KDE's task manager, keeping the pinned apps (`--restore` swaps back).
+The bottom dock is a small widget of its own, [`kde-dock/`](strata/40-apps/kde-dock/), with the same hover magnification as the Windows dock and dividers between app groups and between pinned and unpinned apps: `strata/40-apps/kde-dock/install-kde-dock.sh --replace` swaps it in for KDE's task manager, keeping the pinned apps (`--restore` swaps back).
 
 Then set `"workbench.colorTheme": "OLED Monochrome"` and `"material-icon-theme.saturation": 0` in the profile settings. Rider's theme is built by a PowerShell script on Windows. Copy the built jar to `~/.local/share/JetBrains/Rider<version>/` while Rider is closed, then pick **OLED Monochrome** under **Settings → Appearance**. The Windows-only strata (Windhawk, YASB, the menu bar, dock icons, system colours) don't apply.
 
@@ -154,7 +154,7 @@ Zed and VS Code Insiders share the same theme, keymap, fonts, layout and equival
 The desktop copies the style of the laptop's KDE `OLED_Monochrome` colour scheme without changing its own layout:
 - **Shell**: Windhawk overrides make the dock, Start menu, Settings and File Explorer black and grey ([`windhawk/`](strata/40-apps/windhawk/)). The Windows accent, selection and cursor colours are set to match ([`monochrome-colors/`](strata/10-os/windows/monochrome-colors/)).
 - **Icons**: monochrome dock, title-bar and Alt+Tab icons ([`dock-icons/`](strata/10-os/windows/dock-icons/)).
-- **Top bar**: a macOS-style [YASB](strata/40-apps/yasb/) bar on both monitors, with tray, memory, clock, the next Google Calendar event and the Claude / Antigravity quota used ([`ai-usage/`](strata/40-apps/ai-usage/), on the laptop's panel too). A small native menu bar shows the focused app's menus in one line.
+- **Top bar**: a macOS-style [YASB](strata/40-apps/yasb/) bar on both monitors, with clock, the next Google Calendar event, tray, keyboard layout, microphone, volume, notifications and the Claude / Antigravity quota used ([`ai-usage/`](strata/40-apps/ai-usage/), on the laptop's panel too). A small native menu bar shows the focused app's menus in one line.
 - **Terminals and prompt**: WezTerm, Windows Terminal and Oh My Posh use the same palette.
 
 ### 4. Strict Secret & Credential Hygiene

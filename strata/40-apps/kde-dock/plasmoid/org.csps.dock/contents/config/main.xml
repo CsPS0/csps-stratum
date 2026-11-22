@@ -8,6 +8,10 @@
     <entry name="launchers" type="StringList">
       <default></default>
     </entry>
+    <!-- Pinned apps followed by a divider, to group the dock by type (same format as launchers) -->
+    <entry name="dividers" type="StringList">
+      <default></default>
+    </entry>
     <!-- Hovered icon size in percent (the Windows dock uses 130) -->
     <entry name="maxScale" type="Int">
       <default>130</default>

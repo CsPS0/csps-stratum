@@ -30,6 +30,41 @@ PlasmoidItem {
         return tasks.data(tasks.makeModelIndex(row), role);
     }
 
+    // "applications:org.kde.dolphin.desktop" and "file:///usr/share/applications/org.kde.dolphin.desktop"
+    // both become "org.kde.dolphin.desktop", so a group divider holds whether the app runs or not.
+    function desktopName(url) {
+        const s = String(url || "");
+        return s.slice(Math.max(s.lastIndexOf("/"), s.lastIndexOf(":")) + 1);
+    }
+
+    readonly property var dividerNames: (Plasmoid.configuration.dividers || []).map(u => desktopName(u))
+
+    // Keep pinned apps in their pinned order even when they're running: KDE's model leaves a window
+    // that was open when the dock loaded wherever it first appeared, which can put it in another group.
+    function enforcePinnedOrder() {
+        const order = (tasks.launcherList || []).map(u => desktopName(u));
+        for (let pass = 0; pass < tasks.count; pass++) {
+            let moved = false;
+            let slot = 0;
+            const rows = [];
+            for (let row = 0; row < tasks.count; row++) {
+                if (roleAt(row, TaskManager.AbstractTasksModel.HasLauncher) !== true) continue;
+                const pos = order.indexOf(desktopName(roleAt(row, TaskManager.AbstractTasksModel.LauncherUrlWithoutIcon)));
+                rows.push({row: row, pos: pos < 0 ? 1e6 + row : pos});
+            }
+            rows.sort((a, b) => a.pos - b.pos);
+            for (const r of rows) {
+                if (r.row !== slot) {
+                    tasks.move(r.row, slot);
+                    moved = true;
+                    break;  // rows shifted: start over
+                }
+                slot++;
+            }
+            if (!moved) return;
+        }
+    }
+
     // Pinned apps live in the config; follow it, and write it back only when pinning from the menu.
     Connections {
         target: Plasmoid.configuration
@@ -61,10 +96,11 @@ PlasmoidItem {
 
         Component.onCompleted: launcherList = Plasmoid.configuration.launchers
         onDataChanged: root.rev++
-        onRowsInserted: root.rev++
+        onRowsInserted: { root.rev++; Qt.callLater(root.enforcePinnedOrder); }
         onRowsRemoved: root.rev++
         onRowsMoved: root.rev++
-        onModelReset: root.rev++
+        onModelReset: { root.rev++; Qt.callLater(root.enforcePinnedOrder); }
+        onLauncherListChanged: Qt.callLater(root.enforcePinnedOrder)
     }
 
     fullRepresentation: Item {
@@ -99,10 +135,16 @@ PlasmoidItem {
 
                     readonly property bool pinned: model.HasLauncher === true
                     readonly property bool running: model.IsLauncher !== true && model.IsStartup !== true
+                    // A divider before this app when the previous one ends a group (dividers setting),
+                    // or between the last pinned app and the first unpinned one.
                     readonly property bool divider: {
                         root.rev;
-                        return index > 0 && !pinned
-                            && root.roleAt(index - 1, TaskManager.AbstractTasksModel.HasLauncher) === true;
+                        if (index === 0 || root.roleAt(index - 1, TaskManager.AbstractTasksModel.HasLauncher) !== true)
+                            return false;
+                        if (!pinned)
+                            return true;
+                        const prev = root.roleAt(index - 1, TaskManager.AbstractTasksModel.LauncherUrlWithoutIcon);
+                        return root.dividerNames.indexOf(root.desktopName(prev)) >= 0;
                     }
                     readonly property real centerX: x + width - dock.slot / 2
                     readonly property real dist: root.hoverX < 0 ? 1e9 : Math.abs(root.hoverX - centerX)

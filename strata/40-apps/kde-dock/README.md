@@ -7,7 +7,10 @@ match the Windows dock (Windhawk `taskbar-dock-animation`):
   with a smooth falloff, as on macOS and the Windows dock.
 - **Bounce** when an app is launched from the dock.
 - **Running apps** get a dot underneath; the active window's dot is wider.
-- **Divider:** a thin line between pinned apps and unpinned running apps. Only shown when both exist.
+- **Dividers:** a thin line after each group of pinned apps listed in the `dividers` setting (the
+  laptop: general use | chat and media | development | gaming), and one between pinned apps and
+  unpinned running apps. Pinned apps stay in their pinned order even when they're running (KDE's
+  model would otherwise leave a window open since login wherever it first appeared).
 - **Clicks:**
   - Left click launches the app, or activates and minimises its window.
   - Middle click opens a new window.

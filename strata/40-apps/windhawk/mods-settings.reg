@@ -57,6 +57,97 @@ Windows Registry Editor Version 5.00
 "redirectionResourcePaths[0].redirect"=""
 "themeFolder"=""
 
+[HKEY_LOCAL_MACHINE\SOFTWARE\Windhawk\Engine\Mods\local@taskbar-attention-bounce]
+"LibraryFileName"="local@taskbar-attention-bounce_1.0_980910.dll"
+"Disabled"=dword:00000000
+"LoggingEnabled"=dword:00000000
+"Include"="explorer.exe"
+"Exclude"=""
+"Architecture"="x86-64"
+"Version"="1.0"
+"SettingsChangeTime"=dword:6b022a04
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Windhawk\Engine\Mods\local@taskbar-attention-bounce\Settings]
+"height"=dword:0000000c
+"period"=dword:00000640
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Windhawk\Engine\Mods\local@taskbar-pin-layout]
+"LibraryFileName"="local@taskbar-pin-layout_1.3_391021.dll"
+"Disabled"=dword:00000000
+"LoggingEnabled"=dword:00000000
+"Include"="explorer.exe"
+"Exclude"=""
+"Architecture"="x86-64"
+"Version"="1.3"
+"SettingsChangeTime"=dword:6b022c34
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Windhawk\Engine\Mods\local@taskbar-pin-layout\Settings]
+"pins[0]"="%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\Brave.lnk"
+"pins[1]"="%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\Sonora.lnk"
+"pins[2]"="%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\Discord.lnk"
+"pins[3]"="%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\Element.lnk"
+"pins[4]"="%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\Steam.lnk"
+"pins[5]"="%ProgramFiles(x86)%\\Steam\\steamapps\\common\\wallpaper_engine\\launcher.exe"
+"pins[6]"="%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\Heroic.lnk"
+"pins[7]"="%APPDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Ubisoft\\Ubisoft Connect\\Ubisoft Connect.lnk"
+"pins[8]"="%APPDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\HoYoPlay\\HoYoPlay.lnk"
+"pins[9]"="%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\Horizon Launcher.lnk"
+"pins[10]"="%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\Prism Launcher.lnk"
+"pins[11]"="%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\Mod Organizer\\Mod Organizer.lnk"
+"pins[12]"="%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\Zed.lnk"
+"pins[13]"="%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\Visual Studio Code - Insiders.lnk"
+"pins[14]"="%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\Visual Studio Insiders.lnk"
+"pins[15]"="%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\Oracle VirtualBox.lnk"
+"pins[16]"="%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\Roblox Studio.lnk"
+"pins[17]"="%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\GitHub Desktop.lnk"
+"pins[18]"="%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\WezTerm.lnk"
+"pins[19]"="shell:AppsFolder\\Microsoft.WindowsTerminal_8wekyb3d8bbwe!App"
+"pins[20]"="shell:AppsFolder\\Claude_pzs8sxrjxfjjc!Claude"
+"pins[21]"="%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\Antigravity.lnk"
+"pins[22]"="%APPDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Figma.lnk"
+"pins[23]"="%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\Zeal\\Zeal.lnk"
+"pins[24]"="%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\LibreOffice\\LibreOffice.lnk"
+"pins[25]"="%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\LocalSend.lnk"
+"pins[26]"="%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\UniGetUI (2).lnk"
+"pins[27]"="%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\Revo Uninstaller.lnk"
+"pins[28]"="%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\File Explorer.lnk"
+"pins[29]"="%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\WinDirStat.lnk"
+"pins[30]"="%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\HWiNFO® 64\\HWiNFO® 64.lnk"
+"pins[31]"="%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\Windhawk.lnk"
+"reapply"=dword:00000000
+"apps[0]"="%ProgramFiles%\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"
+"apps[1]"="%ProgramFiles%\\Sonora\\sonora.exe"
+"apps[2]"="%LOCALAPPDATA%\\Discord\\Discord.exe"
+"apps[3]"="%LOCALAPPDATA%\\element-desktop\\Element.exe"
+"apps[4]"="%ProgramFiles(x86)%\\Steam\\steam.exe"
+"apps[5]"="%ProgramFiles(x86)%\\Steam\\steamapps\\common\\wallpaper_engine\\launcher.exe"
+"apps[6]"="%ProgramFiles%\\Heroic\\Heroic.exe"
+"apps[7]"="%ProgramFiles(x86)%\\Ubisoft\\Ubisoft Game Launcher\\UbisoftConnect.exe"
+"apps[8]"="%ProgramFiles%\\HoYoPlay\\launcher.exe"
+"apps[9]"="%LOCALAPPDATA%\\Programs\\Horizon Launcher\\horizon-launcher.exe"
+"apps[10]"="%LOCALAPPDATA%\\Programs\\PrismLauncher\\prismlauncher.exe"
+"apps[11]"="%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\Mod Organizer\\Mod Organizer.lnk"
+"apps[12]"="%LOCALAPPDATA%\\Programs\\Zed\\Zed.exe"
+"apps[13]"="%LOCALAPPDATA%\\Programs\\Microsoft VS Code Insiders\\Code - Insiders.exe"
+"apps[14]"="%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\Visual Studio Insiders.lnk"
+"apps[15]"="%ProgramFiles%\\Oracle\\VirtualBox\\VirtualBox.exe"
+"apps[16]"="%APPDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Roblox\\Roblox Studio.lnk"
+"apps[17]"="%LOCALAPPDATA%\\GitHubDesktop\\GitHubDesktop.exe"
+"apps[18]"="%ProgramFiles%\\WezTerm\\wezterm-gui.exe"
+"apps[19]"="shell:AppsFolder\\Microsoft.WindowsTerminal_8wekyb3d8bbwe!App"
+"apps[20]"="shell:AppsFolder\\Claude_pzs8sxrjxfjjc!Claude"
+"apps[21]"="%LOCALAPPDATA%\\Programs\\antigravity\\Antigravity.exe"
+"apps[22]"="%APPDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Figma.lnk"
+"apps[23]"="%ProgramFiles%\\Zeal\\zeal.exe"
+"apps[24]"="%ProgramFiles%\\LibreOffice\\program\\soffice.exe"
+"apps[25]"="%ProgramFiles%\\LocalSend\\localsend_app.exe"
+"apps[26]"="%ProgramFiles%\\UniGetUI\\UniGetUI.exe"
+"apps[27]"="%ProgramFiles%\\VS Revo Group\\Revo Uninstaller\\RevoUnin.exe"
+"apps[28]"="pinned:File Explorer"
+"apps[29]"="%ProgramFiles%\\WinDirStat\\WinDirStat.exe"
+"apps[30]"="%ProgramFiles%\\HWiNFO64\\HWiNFO64.EXE"
+"apps[31]"="%ProgramFiles%\\Windhawk\\windhawk.exe"
+
 [HKEY_LOCAL_MACHINE\SOFTWARE\Windhawk\Engine\Mods\taskbar-button-click]
 "LibraryFileName"="taskbar-button-click_1.0.9_348661.dll"
 "Disabled"=dword:00000000
@@ -94,6 +185,23 @@ Windows Registry Editor Version 5.00
 "ExcludeSystemButtonsMode"=dword:00000003
 "LerpSpeed"=dword:00000064
 "DisableBounce"=dword:00000001
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Windhawk\Engine\Mods\taskbar-icon-separators]
+"LibraryFileName"="taskbar-icon-separators_1.0.33_876020.dll"
+"Disabled"=dword:00000000
+"Include"="explorer.exe"
+"Exclude"=""
+"Architecture"="x86-64"
+"Version"="1.0.33"
+"SettingsChangeTime"=dword:6b02254a
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Windhawk\Engine\Mods\taskbar-icon-separators\Settings]
+"width"=dword:00000014
+"interactionMode"="contextMenu"
+"iconRotation"=dword:00000000
+"iconBrightness"=dword:000000a8
+"iconAlpha"=dword:000000ad
+"customIcon"=""
 
 [HKEY_LOCAL_MACHINE\SOFTWARE\Windhawk\Engine\Mods\taskbar-icon-size]
 "LibraryFileName"="taskbar-icon-size_1.3.11_379285.dll"
@@ -195,7 +303,7 @@ Windows Registry Editor Version 5.00
 "SettingsChangeTime"=dword:6b020b73
 
 [HKEY_LOCAL_MACHINE\SOFTWARE\Windhawk\Engine\Mods\windows-11-file-explorer-styler\Settings]
-"theme"="OS26 Liquid Glass_variant_Compact"
+"theme"="NoCommandBar"
 "backgroundTranslucentEffect"="default"
 "backgroundTranslucentEffectRegion"=""
 "styleConstants[0]"=""
@@ -402,10 +510,6 @@ Windows Registry Editor Version 5.00
 "controlStyles[23].styles[5]"="Content@PressedSelected:=$Personalize"
 "controlStyles[24].target"="SystemSettings.View.SettingsNavigationViewItem[11] > Grid#NVIRootGrid > Microsoft.UI.Xaml.Controls.Primitives.NavigationViewItemPresenter#NavigationViewItemPresenter > Grid#LayoutRoot@PointerStates > Grid#PresenterContentRootGrid > Grid#ContentGrid > Border#IconColumn > Viewbox#IconBox > Border > ContentPresenter#Icon"
 "controlStyles[24].styles[0]"="Content@Normal:="
-"controlStyles[25].target"="SystemTray.SystemTrayFrame"
-"controlStyles[25].styles[0]"="Width=0"
-"controlStyles[25].styles[1]"="Opacity=0"
-"controlStyles[25].styles[2]"="IsHitTestVisible=False"
 "controlStyles[24].styles[1]"="Content@PointerOver:="
 "controlStyles[24].styles[2]"="Content@Pressed:="
 "controlStyles[24].styles[3]"="Content@Selected:="
@@ -646,10 +750,10 @@ Windows Registry Editor Version 5.00
 "Exclude"=""
 "Architecture"="x86-64"
 "Version"="1.11.2"
-"SettingsChangeTime"=dword:6b01fa28
+"SettingsChangeTime"=dword:6b02a570
 
 [HKEY_LOCAL_MACHINE\SOFTWARE\Windhawk\Engine\Mods\windows-11-taskbar-styler\Settings]
-"theme"="LiquidGlass2"
+"theme"=""
 "styleConstants[0]"=""
 "controlStyles[0].target"="Taskbar.AugmentedEntryPointButton#AugmentedEntryPointButton > Taskbar.TaskListButtonPanel#ExperienceToggleButtonRootPanel"
 "controlStyles[0].styles[0]"="Background:=<WindhawkBlur BlurAmount=\"7\" TintColor=\"#D9000000\"/>"
@@ -720,4 +824,27 @@ Windows Registry Editor Version 5.00
 "controlStyles[23].styles[0]"="Source:=<BitmapImage UriSource=\"file:///C:/Users/solti/.config/csps-stratum/icons/dock/org.kde.dolphin.png\"/>"
 "controlStyles[24].target"="Taskbar.TaskListButton[AutomationProperties.AutomationId=Appid: Claude_pzs8sxrjxfjjc!Claude] > * > Image#Icon"
 "controlStyles[24].styles[0]"="Source:=<BitmapImage UriSource=\"file:///C:/Users/solti/.config/csps-stratum/icons/dock/claude.png\"/>"
+"controlStyles[25].target"="SystemTray.SystemTrayFrame"
+"controlStyles[25].styles[0]"="Visibility=Collapsed"
+"controlStyles[26].target"="Taskbar.TaskbarFrame > Grid#RootGrid"
+"controlStyles[26].styles[0]"="HorizontalAlignment=Center"
+"controlStyles[1].styles[2]"="RadiusX=18"
+"controlStyles[1].styles[3]"="RadiusY=18"
+"controlStyles[1].styles[4]"="StrokeThickness=1"
+"controlStyles[26].styles[1]"="Width=Auto"
+"controlStyles[26].styles[2]"="Padding=12,0,12,0"
+"controlStyles[26].styles[3]"="Margin=58,4,0,4"
+"controlStyles[26].styles[4]"="Background:=Transparent"
+"controlStyles[27].target"="Taskbar.TaskbarFrame > Grid#RootGrid > Taskbar.TaskbarBackground > Grid > Rectangle#BackgroundStroke"
+"controlStyles[27].styles[0]"="Visibility=Collapsed"
+"controlStyles[28].target"="Grid#IconPanel@RunningIndicatorStates > Rectangle#RunningIndicator, Taskbar.TaskListLabeledButtonPanel@RunningIndicatorStates > Rectangle#RunningIndicator"
+"controlStyles[28].styles[0]"="Width=5"
+"controlStyles[28].styles[1]"="Height=4"
+"controlStyles[28].styles[2]"="RadiusX=2"
+"controlStyles[28].styles[3]"="RadiusY=2"
+"controlStyles[28].styles[4]"="Fill=#E6E6E6"
+"controlStyles[28].styles[5]"="Fill@Inactive=#80FFFFFF"
+"controlStyles[28].styles[6]"="Fill@RequestingAttention=#FFFFFFFF"
+"controlStyles[29].target"="Taskbar.TaskbarFrame > Grid#RootGrid > Taskbar.TaskbarBackground"
+"controlStyles[29].styles[0]"="Margin=0,0,58,0"
 

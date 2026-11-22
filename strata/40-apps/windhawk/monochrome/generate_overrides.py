@@ -81,6 +81,8 @@ def control_styles(rules, start=0):
 
 result = {}
 
+# The taskbar no longer uses LiquidGlass2 (it capped the dock's width, see oled-dock.reg); these
+# colour rules still come from it and are kept as rules 0-24, which the plain style set reuses.
 tb = overrides('windows-11-taskbar-styler', 'LiquidGlass2')
 result['windows-11-taskbar-styler'] = control_styles(tb)
 

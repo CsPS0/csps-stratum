@@ -125,6 +125,8 @@ The top panel is laid out like the desktop's bar: application launcher and globa
 
 The usage widget shows the Claude and Antigravity quota used (click for details), each only while its app runs: run `strata/40-apps/ai-usage/install-kde.sh --add-to-panel` once (see [`ai-usage/`](strata/40-apps/ai-usage/)).
 
+The bottom dock is a small widget of its own, [`kde-dock/`](strata/40-apps/kde-dock/), with the same hover magnification as the Windows dock and a divider between pinned and unpinned apps: `strata/40-apps/kde-dock/install-kde-dock.sh --replace` swaps it in for KDE's task manager, keeping the pinned apps (`--restore` swaps back).
+
 Then set `"workbench.colorTheme": "OLED Monochrome"` and `"material-icon-theme.saturation": 0` in the profile settings. Rider's theme is built by a PowerShell script on Windows. Copy the built jar to `~/.local/share/JetBrains/Rider<version>/` while Rider is closed, then pick **OLED Monochrome** under **Settings → Appearance**. The Windows-only strata (Windhawk, YASB, the menu bar, dock icons, system colours) don't apply.
 
 ---

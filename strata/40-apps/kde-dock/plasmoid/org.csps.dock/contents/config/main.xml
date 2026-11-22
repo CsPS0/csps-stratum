@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0 http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
+  <kcfgfile name=""/>
+  <group name="General">
+    <!-- Pinned apps, same format as KDE's task manager (applications:foo.desktop) -->
+    <entry name="launchers" type="StringList">
+      <default></default>
+    </entry>
+    <!-- Hovered icon size in percent (the Windows dock uses 130) -->
+    <entry name="maxScale" type="Int">
+      <default>130</default>
+    </entry>
+  </group>
+</kcfg>

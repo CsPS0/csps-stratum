@@ -60,6 +60,7 @@ static const int BAR_HEIGHT = 30;   // matches dimensions.height in the YASB con
 static const wchar_t* LOGO = L"\xF17A"; // Windows logo in Nerd Fonts
 static const wchar_t* CLASS_NAME = L"CspsMenuBar";
 static const UINT WM_RESTORE_BAR = WM_APP + 1, WM_REBUILD = WM_APP + 2;
+static const UINT_PTR RAISE_TIMER = 1;
 
 static int S(const Strip& s, int v) { return MulDiv(v, (int)s.dpi, 96); }
 
@@ -310,6 +311,14 @@ static void CALLBACK OnMinimize(HWINEVENTHOOK, DWORD, HWND h, LONG obj, LONG, DW
     if (obj == OBJID_WINDOW && IsBarWindow(h) && !g_strips.empty()) PostMessageW(g_strips[0].hwnd, WM_RESTORE_BAR, 0, (LPARAM)h);
 }
 
+// The YASB bars are topmost too, and one that (re)appears lands above the strips. Raise the strips
+// again shortly after, once YASB has finished placing it.
+static void CALLBACK OnShow(HWINEVENTHOOK, DWORD, HWND h, LONG obj, LONG, DWORD, DWORD)
+{
+    if (obj == OBJID_WINDOW && !StripOf(h) && IsBarWindow(h) && !g_strips.empty())
+        SetTimer(g_strips[0].hwnd, RAISE_TIMER, 300, nullptr);
+}
+
 // ---------- actions ----------
 
 static WORD NamedKey(const std::wstring& n, bool& ext)
@@ -477,6 +486,7 @@ static LRESULT CALLBACK WndProc(HWND h, UINT msg, WPARAM wp, LPARAM lp)
     case WM_DPICHANGED: if (s) { s->dpi = HIWORD(wp); MakeFonts(*s); Layout(*s); } return 0;
     case WM_DISPLAYCHANGE: PostMessageW(h, WM_REBUILD, 0, 0); return 0;
     case WM_REBUILD: CreateStrips(); return 0;
+    case WM_TIMER: if (wp == RAISE_TIMER) { KillTimer(h, RAISE_TIMER); LayoutAll(); } return 0;
     case WM_SETTINGCHANGE: if (s) Layout(*s); return 0;
     }
     return DefWindowProcW(h, msg, wp, lp);
@@ -537,9 +547,11 @@ int WINAPI wWinMain(HINSTANCE inst, HINSTANCE, PWSTR, int)
     HWINEVENTHOOK hook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, nullptr, OnForeground, 0, 0, WINEVENT_OUTOFCONTEXT);
     HWINEVENTHOOK minHook = SetWinEventHook(EVENT_SYSTEM_MINIMIZESTART, EVENT_SYSTEM_MINIMIZESTART, nullptr, OnMinimize, 0, 0, WINEVENT_OUTOFCONTEXT);
     HWINEVENTHOOK moveHook = SetWinEventHook(EVENT_OBJECT_LOCATIONCHANGE, EVENT_OBJECT_LOCATIONCHANGE, nullptr, OnLocationChange, 0, 0, WINEVENT_OUTOFCONTEXT);
+    HWINEVENTHOOK showHook = SetWinEventHook(EVENT_OBJECT_SHOW, EVENT_OBJECT_SHOW, nullptr, OnShow, 0, 0, WINEVENT_OUTOFCONTEXT);
 
     MSG m;
     while (GetMessageW(&m, nullptr, 0, 0) > 0) { TranslateMessage(&m); DispatchMessageW(&m); }
+    UnhookWinEvent(showHook);
     UnhookWinEvent(moveHook);
     UnhookWinEvent(minHook);
     UnhookWinEvent(hook);

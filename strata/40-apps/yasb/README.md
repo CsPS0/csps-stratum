@@ -91,10 +91,13 @@ all-day events are handled.
 ```powershell
 winget install --id AmN.yasb --exact
 Copy-Item .\strata\40-apps\yasb\config.yaml, .\strata\40-apps\yasb\styles.css "$HOME\.config\yasb\" -WhatIf   # drop -WhatIf to copy
-.\strata\40-apps\yasb\menubar\Build-MenuBar.ps1 -Autostart   # needs the Visual C++ build tools
+.\strata\40-apps\yasb\menubar\Build-MenuBar.ps1 -Autostart   # needs the Visual C++ build tools and an elevated prompt
 yasbc reload
-yasbc enable-autostart   # start YASB with Windows
+yasbc enable-autostart --task   # start YASB at sign-in; elevated prompt
 ```
+
+Both start from sign-in scheduled tasks (`YASB Reborn`, `MenuBar`) rather than the Run key.
+After a reboot on 2026-11-22, Explorer ran other Run entries but skipped YASB and the menu bar.
 
 YASB reloads by itself when either file changes (`watch_config`, `watch_stylesheet`).
 

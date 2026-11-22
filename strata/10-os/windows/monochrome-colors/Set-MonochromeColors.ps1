@@ -8,7 +8,8 @@
       Dark-mode apps fill toggles and buttons with the light shade, so they turn light grey.
     - Classic Win32/Qt colours: selection highlight #686B6F with white text, menu highlight,
       link/hot-tracking colour. Applied live with SetSysColors and stored for the next sign-in.
-    - Pointer: the plain white Windows Default scheme (replaces a custom-coloured one).
+    - Pointer: Bibata Modern Classic (black, as on the KDE laptop) once ..\cursors\Install-BibataCursors.ps1
+      has installed it; otherwise the plain white Windows Default scheme.
 
     All values are per-user (HKCU), no elevation. Before changing anything the current values
     are saved to a JSON backup; -Restore <file> puts them back (values that didn't exist are
@@ -49,12 +50,26 @@ function ConvertTo-Rgb([string]$hex) { ([Convert]::FromHexString($hex) | ForEach
 $palette = 'D9DADB', 'B4B6B8', '8E9194', '686B6F', '4E5053', '35373A', '1E1F21', '686B6F'
 $paletteBytes = [byte[]]($palette | ForEach-Object { [Convert]::FromHexString($_) + [byte]0 } | ForEach-Object { $_ })
 
-$cursorDir = '%SystemRoot%\cursors'
-$cursors = [ordered]@{
-    Arrow = 'aero_arrow.cur'; Help = 'aero_helpsel.cur'; AppStarting = 'aero_working.ani'; Wait = 'aero_busy.ani'
-    NWPen = 'aero_pen.cur'; No = 'aero_unavail.cur'; SizeNS = 'aero_ns.cur'; SizeWE = 'aero_ew.cur'
-    SizeNWSE = 'aero_nwse.cur'; SizeNESW = 'aero_nesw.cur'; SizeAll = 'aero_move.cur'; UpArrow = 'aero_up.cur'
-    Hand = 'aero_link.cur'; Pin = 'aero_pin.cur'; Person = 'aero_person.cur'; Crosshair = ''; IBeam = ''
+# Pointer: Bibata Modern Classic (black, same as the KDE laptop) when ..\cursors\Install-BibataCursors.ps1
+# has installed it, otherwise Windows' own white Aero scheme.
+if (Test-Path (Join-Path $env:LOCALAPPDATA 'Cursors\Bibata-Modern-Classic\Pointer.cur')) {
+    $cursorScheme = 'Bibata-Modern-Classic'
+    $cursorDir = '%LOCALAPPDATA%\Cursors\Bibata-Modern-Classic'
+    $cursors = [ordered]@{
+        Arrow = 'Pointer.cur'; Help = 'Help.cur'; AppStarting = 'Work.ani'; Wait = 'Busy.ani'
+        NWPen = 'Handwriting.cur'; No = 'Unavailable.cur'; SizeNS = 'Vert.cur'; SizeWE = 'Horz.cur'
+        SizeNWSE = 'Dgn1.cur'; SizeNESW = 'Dgn2.cur'; SizeAll = 'Move.cur'; UpArrow = 'Alternate.cur'
+        Hand = 'Link.cur'; Pin = 'Pin.cur'; Person = 'Person.cur'; Crosshair = 'Cross.cur'; IBeam = 'Text.cur'
+    }
+} else {
+    $cursorScheme = 'Windows Default'
+    $cursorDir = '%SystemRoot%\cursors'
+    $cursors = [ordered]@{
+        Arrow = 'aero_arrow.cur'; Help = 'aero_helpsel.cur'; AppStarting = 'aero_working.ani'; Wait = 'aero_busy.ani'
+        NWPen = 'aero_pen.cur'; No = 'aero_unavail.cur'; SizeNS = 'aero_ns.cur'; SizeWE = 'aero_ew.cur'
+        SizeNWSE = 'aero_nwse.cur'; SizeNESW = 'aero_nesw.cur'; SizeAll = 'aero_move.cur'; UpArrow = 'aero_up.cur'
+        Hand = 'aero_link.cur'; Pin = 'aero_pin.cur'; Person = 'aero_person.cur'; Crosshair = ''; IBeam = ''
+    }
 }
 
 # Key, value name, kind, data
@@ -75,8 +90,8 @@ $sys = [ordered]@{ Hilight = @(13, '686B6F'); HilightText = @(14, 'FFFFFF'); Hot
 foreach ($k in $sys.Keys) { Add-Setting $colors $k 'String' (ConvertTo-Rgb $sys[$k][1]) }
 
 $cur = 'HKCU:\Control Panel\Cursors'
-Add-Setting $cur '(default)' 'String' 'Windows Default'
-Add-Setting $cur 'Scheme Source' 'DWord' 2
+Add-Setting $cur '(default)' 'String' $cursorScheme
+Add-Setting $cur 'Scheme Source' 'DWord' $(if ($cursorScheme -eq 'Windows Default') { 2 } else { 1 })
 foreach ($k in $cursors.Keys) { Add-Setting $cur $k 'ExpandString' $(if ($cursors[$k]) { "$cursorDir\$($cursors[$k])" } else { '' }) }
 Add-Setting 'HKCU:\Software\Microsoft\Accessibility' 'CursorType' 'DWord' 0
 

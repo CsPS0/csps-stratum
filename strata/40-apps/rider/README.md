@@ -6,6 +6,7 @@
 |---|---|
 | `plugin.xml` | Plugin descriptor: registers the UI theme and the editor colour scheme |
 | `Build-RiderTheme.ps1` | Builds the theme plugin jar from the installed Rider's own theme files. `-Install` copies it into Rider's plugins folder. Supports `-WhatIf`. |
+| `Add-DesktopShortcut.ps1` | Puts an **Apply Rider OLED theme** shortcut on the desktop that runs `Build-RiderTheme.ps1 -Install` (close Rider first). Each Rider update installs into a new versioned folder and needs the theme rebuilt; this makes that one double-click. |
 
 ## What it looks like
 

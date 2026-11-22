@@ -1,7 +1,7 @@
 # Screenshots
 
-Reference shots of the finished **OLED Monochrome** setup, taken on 22 November 2026 with all
-windows minimised, with the [OLED Span](../../strata/40-apps/oled-span/) wallpaper (contours style)
+Reference shots of the finished **OLED Monochrome** setup, taken on 22 November 2026 with no
+windows on screen (Windows: Show Desktop), with the [OLED Span](../../strata/40-apps/oled-span/) wallpaper (contours style)
 on both machines. Use them to check a rebuild (the [`INSTALL-WITH-AI.md`](../../INSTALL-WITH-AI.md)
 prompt tells the agent to compare against them).
 

@@ -86,10 +86,19 @@ Windows Registry Editor Version 5.00
 
 [HKEY_LOCAL_MACHINE\SOFTWARE\Windhawk\Engine\Mods\windows-11-taskbar-styler]
 "Disabled"=dword:00000000
-"SettingsChangeTime"=dword:6b02bc53
+"SettingsChangeTime"=dword:6b02be7b
 ; taller taskbar window for the bounce headroom (the pill itself stays 52 px tall)
 [HKEY_LOCAL_MACHINE\SOFTWARE\Windhawk\Engine\Mods\taskbar-icon-size\Settings]
 "TaskbarHeight"=dword:0000004c
 
 [HKEY_LOCAL_MACHINE\SOFTWARE\Windhawk\Engine\Mods\taskbar-icon-size]
-"SettingsChangeTime"=dword:6b02bc53
+"SettingsChangeTime"=dword:6b02be7b
+
+; magnify every taskbar button. 'Apps only' (mode 3) was for LiquidGlass2's tray-in-dock layout; it also
+; skipped LibreOffice, whose app ID (TheDocumentFoundation.LibreOffice.Startcenter) contains 'start' and
+; matches the mod's Start button check. The tray is collapsed now and Windows' own buttons are hidden.
+[HKEY_LOCAL_MACHINE\SOFTWARE\Windhawk\Engine\Mods\taskbar-dock-animation\Settings]
+"ExcludeSystemButtonsMode"=dword:00000000
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Windhawk\Engine\Mods\taskbar-dock-animation]
+"SettingsChangeTime"=dword:6b02be7b

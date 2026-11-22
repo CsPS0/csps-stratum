@@ -22,9 +22,8 @@ This profile standardizes the workstation environment for **Windows 11 Pro**, ta
 
 Wallpaper Engine runs **OLED Span**, a procedural black-and-white scene stretched across both
 screens (the 16:9 main screen and the 16:10 one beside it); see
-[`strata/40-apps/oled-span/`](../../strata/40-apps/oled-span/). The shots in
-[`docs/screenshots/`](../../docs/screenshots/), including the second screen, were taken earlier, with
-Workshop wallpapers 3725918788 and 3557068717.
+[`strata/40-apps/oled-span/`](../../strata/40-apps/oled-span/). More shots, including the second
+screen, are in [`docs/screenshots/`](../../docs/screenshots/).
 
 ---
 

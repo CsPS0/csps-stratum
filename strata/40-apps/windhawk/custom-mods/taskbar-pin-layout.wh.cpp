@@ -2,7 +2,7 @@
 // @id              taskbar-pin-layout
 // @name            Taskbar Pin Layout
 // @description     Pins a list of apps to the taskbar in a set order (a macOS-style full dock)
-// @version         1.3
+// @version         1.5
 // @author          CsPS
 // @include         explorer.exe
 // @architecture    x86-64
@@ -21,13 +21,17 @@ Separators") keep their order after the listed ones.
 
 It applies the list once, and again only when you change the list or update the
 mod, so apps you unpin or move by hand afterwards stay that way. Each run writes
-what it did to `%TEMP%	askbar-pin-layout.log`.
+what it did to `%TEMP%\taskbar-pin-layout.log`.
 
 Each entry is one of:
 - a program (`.exe`) or shortcut (`.lnk`) path; `%ProgramFiles%`, `%LOCALAPPDATA%` and
-  other environment variables work,
+  other environment variables work, and one `*` in a folder name picks the newest
+  match (`%ProgramFiles%\JetBrains\JetBrains Rider *\bin\rider64.exe` follows updates),
 - `shell:AppsFolder\<AppUserModelID>` for Store apps (see `Get-StartApps`),
-- `pinned:<name>` for a pinned shortcut without a program, like `pinned:File Explorer`.
+- `pinned:<name>` for a pinned shortcut without a program, like `pinned:File Explorer`,
+- `separator` for a slot taken by a "Taskbar Icon Separators" separator: the
+  separators are placed into the slots in the order they were added. Add them from
+  the taskbar's right-click menu first; extra slots are left empty.
 
 Apps are matched to what's pinned by the program the pinned shortcut starts (or,
 if that differs, by the program's file name when only one pin has it), because
@@ -40,41 +44,48 @@ Windows 11 only.
 
 // ==WindhawkModSettings==
 /*
-- apps:
+- dock:
+  - 'pinned:File Explorer'
   - '%ProgramFiles%\BraveSoftware\Brave-Browser\Application\brave.exe'
-  - '%ProgramFiles%\Sonora\sonora.exe'
+  - '%ProgramFiles%\LibreOffice\program\soffice.exe'
+  - '%ProgramFiles%\LocalSend\localsend_app.exe'
+  - 'separator'
   - '%LOCALAPPDATA%\Discord\Discord.exe'
   - '%LOCALAPPDATA%\element-desktop\Element.exe'
+  - '%ProgramFiles%\Sonora\sonora.exe'
+  - 'separator'
+  - '%LOCALAPPDATA%\Programs\Zed\Zed.exe'
+  - '%LOCALAPPDATA%\Programs\Microsoft VS Code Insiders\Code - Insiders.exe'
+  - '%ProgramData%\Microsoft\Windows\Start Menu\Programs\Visual Studio Insiders.lnk'
+  - '%ProgramFiles%\JetBrains\JetBrains Rider *\bin\rider64.exe'
+  - '%ProgramFiles%\WezTerm\wezterm-gui.exe'
+  - 'shell:AppsFolder\Microsoft.WindowsTerminal_8wekyb3d8bbwe!App'
+  - '%LOCALAPPDATA%\GitHubDesktop\GitHubDesktop.exe'
+  - 'shell:AppsFolder\Claude_pzs8sxrjxfjjc!Claude'
+  - '%LOCALAPPDATA%\Programs\antigravity\Antigravity.exe'
+  - '%APPDATA%\Microsoft\Windows\Start Menu\Programs\Figma.lnk'
+  - '%ProgramFiles%\Zeal\zeal.exe'
+  - '%ProgramFiles%\Oracle\VirtualBox\VirtualBox.exe'
+  - '%APPDATA%\Microsoft\Windows\Start Menu\Programs\Roblox\Roblox Studio.lnk'
+  - 'separator'
   - '%ProgramFiles(x86)%\Steam\steam.exe'
-  - '%ProgramFiles(x86)%\Steam\steamapps\common\wallpaper_engine\launcher.exe'
   - '%ProgramFiles%\Heroic\Heroic.exe'
   - '%ProgramFiles(x86)%\Ubisoft\Ubisoft Game Launcher\UbisoftConnect.exe'
   - '%ProgramFiles%\HoYoPlay\launcher.exe'
   - '%LOCALAPPDATA%\Programs\Horizon Launcher\horizon-launcher.exe'
   - '%LOCALAPPDATA%\Programs\PrismLauncher\prismlauncher.exe'
   - '%ProgramData%\Microsoft\Windows\Start Menu\Programs\Mod Organizer\Mod Organizer.lnk'
-  - '%LOCALAPPDATA%\Programs\Zed\Zed.exe'
-  - '%LOCALAPPDATA%\Programs\Microsoft VS Code Insiders\Code - Insiders.exe'
-  - '%ProgramData%\Microsoft\Windows\Start Menu\Programs\Visual Studio Insiders.lnk'
-  - '%ProgramFiles%\Oracle\VirtualBox\VirtualBox.exe'
-  - '%APPDATA%\Microsoft\Windows\Start Menu\Programs\Roblox\Roblox Studio.lnk'
-  - '%LOCALAPPDATA%\GitHubDesktop\GitHubDesktop.exe'
-  - '%ProgramFiles%\WezTerm\wezterm-gui.exe'
-  - 'shell:AppsFolder\Microsoft.WindowsTerminal_8wekyb3d8bbwe!App'
-  - 'shell:AppsFolder\Claude_pzs8sxrjxfjjc!Claude'
-  - '%LOCALAPPDATA%\Programs\antigravity\Antigravity.exe'
-  - '%APPDATA%\Microsoft\Windows\Start Menu\Programs\Figma.lnk'
-  - '%ProgramFiles%\Zeal\zeal.exe'
-  - '%ProgramFiles%\LibreOffice\program\soffice.exe'
-  - '%ProgramFiles%\LocalSend\localsend_app.exe'
+  - 'separator'
+  - '%ProgramFiles%\Windhawk\windhawk.exe'
+  - 'shell:AppsFolder\11413PtruceanBogdan.Wintoys_ankwhmsh70gj6!Wintoys'
+  - '%ProgramFiles(x86)%\Steam\steamapps\common\wallpaper_engine\launcher.exe'
   - '%ProgramFiles%\UniGetUI\UniGetUI.exe'
   - '%ProgramFiles%\VS Revo Group\Revo Uninstaller\RevoUnin.exe'
-  - 'pinned:File Explorer'
   - '%ProgramFiles%\WinDirStat\WinDirStat.exe'
   - '%ProgramFiles%\HWiNFO64\HWiNFO64.EXE'
-  - '%ProgramFiles%\Windhawk\windhawk.exe'
-  $name: Pinned apps, in order
-  $description: One program, shortcut, shell:AppsFolder\AppID or pinned:<name> per entry.
+  - 'separator'
+  $name: Pinned apps and separators, in order
+  $description: One program, shortcut, shell:AppsFolder\AppID, pinned:<name> or separator per entry.
 - reapply: false
   $name: Apply again
   $description: >-
@@ -87,6 +98,7 @@ Windows 11 only.
 #include <shlobj.h>
 #include <shlwapi.h>
 
+#include <algorithm>
 #include <atomic>
 #include <cstdarg>
 #include <cstdio>
@@ -206,6 +218,29 @@ static std::vector<PinnedShortcut> ScanPinned() {
     return out;
 }
 
+// The "Taskbar Icon Separators" shortcuts, in the order they were added.
+static std::vector<std::wstring> ScanSeparators() {
+    std::vector<std::pair<ULONGLONG, std::wstring>> found;
+    std::wstring dir = Expand(L"%APPDATA%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\");
+    WIN32_FIND_DATAW fd;
+    HANDLE h = FindFirstFileW((dir + L"WindhawkSeparator.*.lnk").c_str(), &fd);
+    if (h != INVALID_HANDLE_VALUE) {
+        do {
+            ULONGLONG created = ((ULONGLONG)fd.ftCreationTime.dwHighDateTime << 32) | fd.ftCreationTime.dwLowDateTime;
+            found.push_back({created, dir + fd.cFileName});
+        } while (FindNextFileW(h, &fd));
+        FindClose(h);
+    }
+    std::sort(found.begin(), found.end());
+    std::vector<std::wstring> out;
+    for (auto& f : found) out.push_back(f.second);
+    return out;
+}
+
+static bool IsSeparatorSlot(const std::wstring& entry) {
+    return _wcsicmp(entry.c_str(), L"separator") == 0;
+}
+
 // Store apps (shell:AppsFolder\...) are used as they are; everything else is matched to a
 // pinned shortcut. Returns what to move, or empty when the app isn't pinned (yet).
 static std::wstring FindPinned(const std::wstring& entry, const std::vector<PinnedShortcut>& pinned) {
@@ -234,12 +269,38 @@ static std::wstring FindPinned(const std::wstring& entry, const std::vector<Pinn
     return only ? only->path : L"";
 }
 
+// "C:\Program Files\JetBrains\JetBrains Rider *\bin\rider64.exe": the * picks the newest
+// (highest-sorting) folder that matches, so versioned installs keep resolving after updates.
+static std::wstring ResolveWildcard(const std::wstring& path) {
+    size_t star = path.find(L'*');
+    if (star == std::wstring::npos) return path;
+    size_t dirStart = path.rfind(L'\\', star);
+    size_t dirEnd = path.find(L'\\', star);
+    if (dirStart == std::wstring::npos) return path;
+    std::wstring parent = path.substr(0, dirStart + 1);
+    std::wstring pattern = path.substr(dirStart + 1, (dirEnd == std::wstring::npos ? path.size() : dirEnd) - dirStart - 1);
+    std::wstring rest = dirEnd == std::wstring::npos ? L"" : path.substr(dirEnd);
+    std::wstring best;
+    WIN32_FIND_DATAW fd;
+    HANDLE h = FindFirstFileW((parent + pattern).c_str(), &fd);
+    if (h == INVALID_HANDLE_VALUE) return path;
+    do {
+        std::wstring candidate = parent + fd.cFileName + rest;
+        if (GetFileAttributesW(candidate.c_str()) != INVALID_FILE_ATTRIBUTES &&
+            (best.empty() || StrCmpLogicalW(fd.cFileName, best.c_str()) > 0)) {
+            best = fd.cFileName;
+        }
+    } while (FindNextFileW(h, &fd));
+    FindClose(h);
+    return best.empty() ? path : parent + best + rest;
+}
+
 static std::vector<std::wstring> ReadPins() {
     std::vector<std::wstring> pins;
     for (int i = 0;; i++) {
-        PCWSTR raw = Wh_GetStringSetting(L"apps[%d]", i);
+        PCWSTR raw = Wh_GetStringSetting(L"dock[%d]", i);
         bool done = !*raw;
-        if (!done) pins.push_back(Expand(raw));
+        if (!done) pins.push_back(ResolveWildcard(Expand(raw)));
         Wh_FreeStringSetting(raw);
         if (done) break;
     }
@@ -292,7 +353,9 @@ static void ApplyLayout() {
     bool pinnedSomething = false;
     for (auto& entry : pins) {
         if (g_stop) break;
-        if (_wcsnicmp(entry.c_str(), L"pinned:", 7) == 0 || !FindPinned(entry, pinned).empty()) continue;
+        if (IsSeparatorSlot(entry) || _wcsnicmp(entry.c_str(), L"pinned:", 7) == 0 ||
+            !FindPinned(entry, pinned).empty())
+            continue;
         PIDLIST_ABSOLUTE pidl = nullptr;
         if (FAILED(SHParseDisplayName(entry.c_str(), nullptr, &pidl, 0, nullptr)) || !pidl) {
             Log(L"not found: %s", entry.c_str());
@@ -310,8 +373,20 @@ static void ApplyLayout() {
 
     // Pass 2: put every app at its position. The position always follows the list (a failed
     // move doesn't shift the ones after it); moving in ascending order pulls each into place.
+    auto separators = ScanSeparators();
+    size_t nextSeparator = 0;
     for (size_t i = 0; i < pins.size() && !g_stop; i++) {
-        std::wstring target = FindPinned(pins[i], pinned);
+        std::wstring target;
+        if (IsSeparatorSlot(pins[i])) {
+            if (nextSeparator >= separators.size()) {
+                Log(L"move %d: no separator left for this slot (add one from the taskbar's menu)", (int)i);
+                failed++;
+                continue;
+            }
+            target = separators[nextSeparator++];
+        } else {
+            target = FindPinned(pins[i], pinned);
+        }
         PIDLIST_ABSOLUTE pidl = nullptr;
         if (target.empty() || FAILED(SHParseDisplayName(target.c_str(), nullptr, &pidl, 0, nullptr)) || !pidl) {
             Log(L"move %d: not pinned %s", (int)i, pins[i].c_str());

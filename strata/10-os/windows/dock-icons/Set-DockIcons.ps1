@@ -61,16 +61,21 @@ if ($IncludeStartMenu) {
     }
 }
 
+# Windows renames pinned shortcuts whenever it rewrites a pin ("Brave (10).lnk"), so match on the
+# name without that " (n)" suffix; map names may also use * (e.g. "JetBrains Rider*" for its version).
+$pins = Get-ChildItem -LiteralPath $pinDir -Filter '*.lnk' |
+    ForEach-Object { [pscustomobject]@{ Path = $_.FullName; Name = ($_.BaseName -replace ' \(\d+\)$', '') } }
+
 # Collect every shortcut to change: the taskbar pin plus matching Start menu entries
 $jobs = foreach ($entry in $map) {
-    $pin = Join-Path $pinDir "$($entry.Name).lnk"
+    $pin = ($pins | Where-Object { $_.Name -like $entry.Name } | Select-Object -First 1).Path
     $ico = Join-Path $IconDir "$($entry.Icon).ico"
-    if (-not (Test-Path -LiteralPath $pin)) { Write-Host "  [SKIP] $($entry.Name) (not pinned)"; continue }
+    if (-not $pin) { Write-Host "  [SKIP] $($entry.Name) (not pinned)"; continue }
     if (-not (Test-Path -LiteralPath $ico)) { Write-Host "  [SKIP] $($entry.Name) (no icon)"; continue }
     [pscustomobject]@{ Label = $entry.Name; Path = $pin; Icon = $ico }
     $target = $shell.CreateShortcut($pin).TargetPath
     foreach ($s in $startLinks) {
-        if (($target -and $s.Target -eq $target) -or $s.Name -eq $entry.Name) {
+        if (($target -and $s.Target -eq $target) -or $s.Name -like $entry.Name) {
             [pscustomobject]@{ Label = "$($entry.Name) (Start: $($s.Name))"; Path = $s.Path; Icon = $ico }
         }
     }

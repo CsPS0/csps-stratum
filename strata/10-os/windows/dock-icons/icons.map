@@ -1,23 +1,36 @@
 # Pinned taskbar shortcut name | icon file name without .ico
+# Names are matched without Windows' " (n)" suffix and may use * (Rider's name includes its version).
 # Plain names come from yet-another-monochrome-icon-set (apps/scalable/<name>.svg, built by build-icons.sh).
 # logo-* icons are monochrome versions of the app's own icon (see README); the set has no match for these.
-# File Explorer and Claude aren't pinned shortcuts; they get their icons from the taskbar styler (see README).
+# File Explorer, Claude, Terminal and Wintoys aren't pinned shortcuts; they get their icons from the
+# taskbar styler (see README).
 Antigravity|antigravity
 Brave|brave
 Discord|discord
 Element|logo-element
+Figma|logo-figma
 GitHub Desktop|github-desktop
 Heroic|heroic
 Horizon Launcher|logo-horizon
+HoYoPlay|logo-hoyoplay
+HWiNFO® 64|hwinfo
+JetBrains Rider*|jetbrains-rider
+launcher|logo-wallpaperengine
+LibreOffice|libreoffice-startcenter
 LocalSend|localsend
+Mod Organizer|logo-modorganizer
 Oracle VirtualBox|logo-virtualbox
 Prism Launcher|org.prismlauncher.PrismLauncher
 Revo Uninstaller|logo-revo
 Roblox Studio|org.vinegarhq.Vinegar
 Sonora|logo-sonora
 Steam|steam
-UniGetUI (2)|logo-unigetui
+Ubisoft Connect|logo-ubisoft
+UniGetUI|logo-unigetui
 Visual Studio Code - Insiders|visual-studio-code
+Visual Studio Insiders|logo-visualstudio
 WezTerm|wezterm
+Windhawk|logo-windhawk
 WinDirStat|logo-windirstat
+Zeal|logo-zeal
 Zed|Zed

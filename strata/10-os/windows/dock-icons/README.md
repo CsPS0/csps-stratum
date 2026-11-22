@@ -46,19 +46,33 @@ path, so a changed icon needs a new file name; overwriting the old file keeps sh
 
 ### File Explorer and Claude
 
-These buttons aren't pinned `.lnk` files (File Explorer is a built-in shell pin, Claude is a
-packaged app), so their icons come from two `windows-11-taskbar-styler` rules that swap the
-button image by app ID (stored in `strata/40-apps/windhawk/mods-settings.reg`):
+These buttons aren't pinned `.lnk` files (File Explorer is a built-in shell pin; Claude, Windows
+Terminal and Wintoys are packaged apps), so their icons come from `windows-11-taskbar-styler`
+rules that swap the button image by app ID (stored in `strata/40-apps/windhawk/mods-settings.reg`):
 
 ```
 Taskbar.TaskListButton[AutomationProperties.AutomationId=Appid: Microsoft.Windows.Explorer] > * > Image#Icon
-    Source:=<BitmapImage UriSource="file:///C:/Users/<you>/.config/csps-stratum/icons/dock/org.kde.dolphin.png"/>
+    Source:=<BitmapImage UriSource="file:///C:/Users/<you>/.config/csps-stratum/icons/dock/logo-explorer.png"/>
 Taskbar.TaskListButton[AutomationProperties.AutomationId=Appid: Claude_pzs8sxrjxfjjc!Claude] > * > Image#Icon
     Source:=<BitmapImage UriSource="file:///C:/Users/<you>/.config/csps-stratum/icons/dock/claude.png"/>
+Taskbar.TaskListButton[AutomationProperties.AutomationId=Appid: Microsoft.WindowsTerminal_8wekyb3d8bbwe!App] > * > Image#Icon
+    Source:=<BitmapImage UriSource="file:///C:/Users/<you>/.config/csps-stratum/icons/dock/logo-terminal.png"/>
+Taskbar.TaskListButton[AutomationProperties.AutomationId=Appid: 11413PtruceanBogdan.Wintoys_ankwhmsh70gj6!Wintoys] > * > Image#Icon
+    Source:=<BitmapImage UriSource="file:///C:/Users/<you>/.config/csps-stratum/icons/dock/logo-wintoys.png"/>
 ```
 
-The PNGs are 256 px renders of `org.kde.dolphin.svg` and `claude.svg` from the same icon set.
-The same rule works for any other running app: find its ID with `Get-StartApps`.
+`claude.png` is a 256 px render of `claude.svg` from the same icon set. The `logo-*.png` files are
+the apps' own icons in brightened greyscale (File Explorer uses Windows' own folder icon from
+`explorer.exe`; Terminal and Wintoys use their package's 256 px logo). The same rule works for any
+other running app: find its ID with `Get-StartApps`.
+
+### Making the logo-* icons on Windows
+
+For apps added later, the 256 px icon can be extracted with `user32!PrivateExtractIcons` and
+converted with Python/Pillow instead of ImageMagick: greyscale, then brighten (`v / 0.65`, capped at
+255) and keep the alpha channel. Save both `logo-<app>.ico` (16-256 px, for pinned shortcuts) and
+`logo-<app>.png` (256 px, for styler rules). Don't invert dark tiles (Figma, Mod Organizer): they
+stay dark grey like the original.
 
 ### Icons inside apps (title bars, Alt+Tab, Task Manager, Explorer)
 

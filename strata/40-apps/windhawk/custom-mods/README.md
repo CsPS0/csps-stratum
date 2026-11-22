@@ -7,6 +7,7 @@ libraries in their `@compilerOptions`.
 | Mod | What it does |
 |---|---|
 | [`taskbar-pin-layout.wh.cpp`](taskbar-pin-layout.wh.cpp) | Fills the taskbar like a macOS dock: pins a list of apps in a fixed order. |
+| [`taskbar-trailing-separator.wh.cpp`](taskbar-trailing-separator.wh.cpp) | Like the macOS Dock: the last separator (pinned \| running) only shows while an app that isn't pinned is open. Hidden, it keeps its layout slot (opacity 0, a negative right margin of its own width), so the mod can still tell from the buttons' positions what comes after it. It doesn't use `ItemsRepeater`'s index API: Windhawk's headers are WinUI 3 and the taskbar's list is WinUI 2. |
 | [`taskbar-attention-bounce.wh.cpp`](taskbar-attention-bounce.wh.cpp) | Makes an app's icon keep hopping, like on the macOS Dock, while the app asks for attention. That's the state Windows normally shows as an orange button. It stops once you switch to the app. |
 
 ## Why `taskbar-pin-layout` is a mod
@@ -25,8 +26,12 @@ the way "Taskbar Icon Separators" does.
   the pinned shortcuts (`Brave (10).lnk`) whenever it rewrites a pin. If an app's install folder
   is versioned (Figma, Roblox), it falls back to the program's file name, but only when exactly
   one pin has it.
-- **Windhawk keeps a mod's saved settings across updates.** v1.3 renamed the list from `pins` to
-  `apps` so the new default list takes effect over the list saved by 1.1.
+- **Groups:** `separator` entries are slots for "Taskbar Icon Separators" separators, filled in the
+  order the separators were added (add them from the taskbar's right-click menu first). The list
+  groups the dock as general use | chat and media | development | gaming | customizing and system,
+  with the last separator between pinned and running apps.
+- **Windhawk keeps a mod's saved settings across updates**, so each change of the default list
+  renames the setting (`pins` → `apps` in 1.3 → `layout` in 1.4) to make the new default take effect.
 - **Which apps are listed:** only apps that were already on the taskbar or pinned in Start.
   Disk Cleanup, Superposition and Wintoys were left off. Wallpaper Engine is pinned by its
   `launcher.exe`, because its Start entry is a Steam URL.

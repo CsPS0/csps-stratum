@@ -246,6 +246,24 @@ static void Paint(Strip& s, HDC dc)
 
 // ---------- following focus ----------
 
+// Hide a strip while the focused app covers its whole screen (games, videos), like the bar does
+static void UpdateHidden(bool force)
+{
+    HWND h = g_target;
+    std::wstring cls = ClassOf(h);
+    bool desktop = cls == L"Progman" || cls == L"WorkerW";
+    HMONITOR mon = MonitorFromWindow(h, MONITOR_DEFAULTTONEAREST);
+    RECT wr = {}; GetWindowRect(h, &wr);
+    bool changed = force;
+    for (auto& s : g_strips)
+    {
+        bool covers = wr.left <= s.monRect.left && wr.top <= s.monRect.top && wr.right >= s.monRect.right && wr.bottom >= s.monRect.bottom;
+        bool hide = !desktop && !IsIconic(h) && s.mon == mon && covers;
+        if (hide != s.hidden) { s.hidden = hide; changed = true; }
+    }
+    if (changed) LayoutAll();
+}
+
 static void SetTarget(HWND h)
 {
     g_target = h;
@@ -261,20 +279,19 @@ static void SetTarget(HWND h)
     POINT pt; GetCursorPos(&pt);
     HMONITOR mon = desktop ? MonitorFromPoint(pt, MONITOR_DEFAULTTOPRIMARY) : MonitorFromWindow(h, MONITOR_DEFAULTTONEAREST);
     g_activeMon = mon;
-
-    // Hide a strip while an app covers its whole screen (games, videos), like the bar does
-    RECT wr; GetWindowRect(h, &wr);
-    for (auto& s : g_strips)
-    {
-        bool covers = wr.left <= s.monRect.left && wr.top <= s.monRect.top && wr.right >= s.monRect.right && wr.bottom >= s.monRect.bottom;
-        s.hidden = !desktop && s.mon == mon && covers;
-    }
-    LayoutAll();
+    UpdateHidden(true);
 }
 
 static void CALLBACK OnForeground(HWINEVENTHOOK, DWORD, HWND h, LONG obj, LONG, DWORD, DWORD)
 {
     if (obj == OBJID_WINDOW && IsAppWindow(h)) SetTarget(h);
+}
+
+// Games often take focus while still windowed and go fullscreen a moment later, so check again
+// whenever the focused window moves or resizes
+static void CALLBACK OnLocationChange(HWINEVENTHOOK, DWORD, HWND h, LONG obj, LONG, DWORD, DWORD)
+{
+    if (obj == OBJID_WINDOW && h && h == g_target) UpdateHidden(false);
 }
 
 // When something focuses Windows' desktop window (window managers such as Komorebi do on empty
@@ -519,9 +536,11 @@ int WINAPI wWinMain(HINSTANCE inst, HINSTANCE, PWSTR, int)
     CreateStrips();
     HWINEVENTHOOK hook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, nullptr, OnForeground, 0, 0, WINEVENT_OUTOFCONTEXT);
     HWINEVENTHOOK minHook = SetWinEventHook(EVENT_SYSTEM_MINIMIZESTART, EVENT_SYSTEM_MINIMIZESTART, nullptr, OnMinimize, 0, 0, WINEVENT_OUTOFCONTEXT);
+    HWINEVENTHOOK moveHook = SetWinEventHook(EVENT_OBJECT_LOCATIONCHANGE, EVENT_OBJECT_LOCATIONCHANGE, nullptr, OnLocationChange, 0, 0, WINEVENT_OUTOFCONTEXT);
 
     MSG m;
     while (GetMessageW(&m, nullptr, 0, 0) > 0) { TranslateMessage(&m); DispatchMessageW(&m); }
+    UnhookWinEvent(moveHook);
     UnhookWinEvent(minHook);
     UnhookWinEvent(hook);
     for (auto& s : g_strips) DestroyWindow(s.hwnd);

@@ -19,7 +19,9 @@ a small native program in this folder.
 
 - **Left, every screen (menubar.exe):** `[Windows logo]  App name  File  Edit  View  Go  Window`,
   one line like macOS, following whichever app has focus. As on macOS, the screen without the
-  focused app shows the same menus dimmed; they still work when clicked.
+  focused app shows the same menus dimmed; they still work when clicked. It hides on a screen
+  while the focused app covers that whole screen (games, videos), including apps that go
+  fullscreen after they take focus.
 - **Main screen, centre (YASB):** date and time (click for the calendar), then the next Google
   Calendar event, e.g. `14:00  Standup` (hover: the next few events; click: opens Google Calendar).
   See *Next calendar event* below. These two sit in `centre-bar`, a 560 px bar of their own pinned

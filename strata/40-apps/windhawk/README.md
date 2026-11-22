@@ -43,7 +43,7 @@ The desktop profile uses Windhawk for an **OLED monochrome** look that mirrors t
 
 ## Monochrome overrides
 
-The styler mods keep their themes for layout (`OnlySearch_variant_Minimal` for the Start menu, recoloured by [`oled-start.reg`](oled-start.reg), `NoCommandBar` for Explorer, `TranslucentShell` for the notification center); the taskbar has no theme and its shape comes from [`oled-dock.reg`](oled-dock.reg) (rules 25-29, and 32-34 for the transparent hover and attention states). On top of each theme, custom `controlStyles` / `styleConstants` recolour only the colour properties:
+The styler mods keep their themes for layout (`OnlySearch_variant_Minimal` for the Start menu, recoloured by [`oled-start.reg`](oled-start.reg), `NoCommandBar` for Explorer, `TranslucentShell` for the notification center); the taskbar has no theme and its shape comes from [`oled-dock.reg`](oled-dock.reg) (rules 25-29, 32-34 for the transparent hover and attention states, and 35 plus 8 px radii on rules 9-10 to keep the hover preview rounded). On top of each theme, custom `controlStyles` / `styleConstants` recolour only the colour properties:
 
 | Theme property | Monochrome value |
 |---|---|

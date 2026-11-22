@@ -103,6 +103,8 @@ cd "$HOME\Projects\csps-stratum"
 .\bin\stratum.ps1 sync -Profile desktop
 ```
 
+> **Fresh install:** the junk was removed once with [Win11Debloat](https://github.com/Raphire/Win11Debloat) (preinstalled apps, telemetry, ads, Copilot/Recall) and Brave was stripped with [SlimBrave Neo](https://github.com/ChaoticSi1ence/SlimBrave-Neo). Both are third-party, not part of `sync`; see [`strata/10-os/windows/`](strata/10-os/windows/README.md#debloat-one-time-cleanup) for what they do and how to run them.
+
 > **Before step 5:** files in the repository are published copies with personal values removed. `strata/00-base/git/.gitconfig` contains `<YOUR_NAME>` / `<YOUR_EMAIL>` placeholders, and the Sonora and Vencord settings have their account fields blanked. Fill those in locally (without committing them) or restore them from the backup afterwards.
 
 ### Laptop (Arch Linux)

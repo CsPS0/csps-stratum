@@ -1,0 +1,88 @@
+{
+	"camera" : 
+	{
+		"center" : "0.00000 0.00000 -1.00000",
+		"eye" : "0.00000 0.00000 0.00000",
+		"up" : "0.00000 1.00000 0.00000"
+	},
+	"general" : 
+	{
+		"ambientcolor" : "0.30000 0.30000 0.30000",
+		"bloom" : false,
+		"camerafade" : false,
+		"cameraparallax" : false,
+		"camerashake" : false,
+		"clearcolor" : "0.00000 0.00000 0.00000",
+		"clearenabled" : true,
+		"hdr" : false,
+		"orthogonalprojection" : 
+		{
+			"height" : 2400,
+			"width" : 1080
+		},
+		"skylightcolor" : "0.30000 0.30000 0.30000",
+		"zoom" : 1.0
+	},
+	"objects" : 
+	[
+		{
+			"alpha" : 1.0,
+			"angles" : "0.00000 0.00000 0.00000",
+			"id" : 1,
+			"image" : "models/oledspan_0.json",
+			"name" : "contours",
+			"origin" : "540.00000 1200.00000 0.00000",
+			"scale" : "1.00000 1.00000 1.00000",
+			"size" : "1080.00000 2400.00000",
+			"visible" : 
+			{
+				"user" : 
+				{
+					"condition" : "0",
+					"name" : "style"
+				},
+				"value" : true
+			}
+		}
+,
+		{
+			"alpha" : 1.0,
+			"angles" : "0.00000 0.00000 0.00000",
+			"id" : 2,
+			"image" : "models/oledspan_1.json",
+			"name" : "silk",
+			"origin" : "540.00000 1200.00000 0.00000",
+			"scale" : "1.00000 1.00000 1.00000",
+			"size" : "1080.00000 2400.00000",
+			"visible" : 
+			{
+				"user" : 
+				{
+					"condition" : "1",
+					"name" : "style"
+				},
+				"value" : false
+			}
+		}
+,
+		{
+			"alpha" : 1.0,
+			"angles" : "0.00000 0.00000 0.00000",
+			"id" : 3,
+			"image" : "models/oledspan_2.json",
+			"name" : "halftone",
+			"origin" : "540.00000 1200.00000 0.00000",
+			"scale" : "1.00000 1.00000 1.00000",
+			"size" : "1080.00000 2400.00000",
+			"visible" : 
+			{
+				"user" : 
+				{
+					"condition" : "2",
+					"name" : "style"
+				},
+				"value" : false
+			}
+		}
+	]
+}

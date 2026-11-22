@@ -36,7 +36,7 @@ Like geological strata, your working environment is composed of hierarchical lay
 - **`10-os`**: Operating system plumbing (WinGet and Scoop package manifests, Topgrade updater config, the monochrome system colours and the monochrome dock and in-app icons).
 - **`20-shell`**: Interactive shell experience (PowerShell 7 profile, Oh My Posh theme, WezTerm, Windows Terminal, Fastfetch).
 - **`30-dev`**: Language toolchains, package managers, and the AI coding assistant configs (Antigravity, Claude Code, Codex).
-- **`40-apps`**: Application-level preferences (Zed, VS Code Insiders, Rider, Visual Studio, Windhawk, the YASB top bar, the AI usage widgets, the KDE dock, Steam, Sonora, Vencord, Aliucord, Minecraft, gaming and system tools).
+- **`40-apps`**: Application-level preferences (Zed, VS Code Insiders, Rider, Visual Studio, Windhawk, the YASB top bar, the AI usage widgets, the KDE dock, the OLED Span wallpaper (Windows, KDE and phone), Steam, Sonora, Vencord, Aliucord, Minecraft, gaming and system tools).
 - **`hosts/`**: Final overlay matching the exact machine role (workstation desktop, laptop or handheld device). The laptop profile documents its KDE look; the laptop still pulls the repo and installs the shared editor themes by hand (see [Laptop](#laptop-arch-linux)).
 
 ---
@@ -69,8 +69,8 @@ csps-stratum/
 │   ├── 10-os/windows/       # winget.json, scoop.json, topgrade.toml, monochrome-colors/, dock-icons/, cursors/
 │   ├── 20-shell/            # pwsh, oh-my-posh, wezterm, windows-terminal, fastfetch
 │   ├── 30-dev/              # Toolchain manifest & AI assistants (antigravity, claude, codex)
-│   └── 40-apps/             # zed, vscode, rider, visual-studio, windhawk, yasb, ai-usage, kde-dock, steam,
-│                            # sonora, vencord, aliucord, minecraft, system-tools, gaming
+│   └── 40-apps/             # zed, vscode, rider, visual-studio, windhawk, yasb, ai-usage, kde-dock,
+│                            # oled-span, steam, sonora, vencord, aliucord, minecraft, system-tools, gaming
 ├── hosts/                   # Machine-specific profiles
 │   ├── desktop/             # Workstation profile, profile.yaml, setup.ps1, software-inventory.md
 │   ├── laptop/              # KDE Plasma look: OLED_Monochrome.colors, theme/icon/font settings

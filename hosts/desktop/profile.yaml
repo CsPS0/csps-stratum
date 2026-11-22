@@ -31,7 +31,7 @@ customization_stack:
     icon_theme: "All White Icons (niivu)"
   wallpapers:
     engine: Wallpaper Engine (wallpaper64)
-    active_theme: "Orb Spiral - Black Hypnosis (3725918788); second screen: Workshop scene 3557068717"
+    active_theme: "OLED Span (scene), stretched across both monitors"
   terminals:
     primary: WezTerm
     secondary: Windows Terminal

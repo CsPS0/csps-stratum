@@ -1,0 +1,80 @@
+{
+  "title": "OLED Span",
+  "description": "Procedural black-and-white wallpaper that fits any monitor size: stretch it across monitors of different aspect ratios (16:9 + 16:10) without squashing. Styles: topographic contours, silk, halftone.",
+  "type": "web",
+  "file": "index.html",
+  "preview": "preview.jpg",
+  "tags": ["Abstract", "Minimalist"],
+  "general": {
+    "properties": {
+      "schemecolor": {
+        "order": 0,
+        "text": "ui_browse_properties_scheme_color",
+        "type": "color",
+        "value": "0 0 0"
+      },
+      "style": {
+        "order": 100,
+        "text": "Style",
+        "type": "combo",
+        "value": "contours",
+        "options": [
+          { "label": "Topographic contours", "value": "contours" },
+          { "label": "Silk", "value": "silk" },
+          { "label": "Halftone", "value": "halftone" }
+        ]
+      },
+      "speed": {
+        "order": 101,
+        "text": "Speed",
+        "type": "slider",
+        "value": 30,
+        "min": 0,
+        "max": 100
+      },
+      "size": {
+        "order": 102,
+        "text": "Pattern size (%)",
+        "type": "slider",
+        "value": 100,
+        "min": 40,
+        "max": 250
+      },
+      "brightness": {
+        "order": 103,
+        "text": "Brightness (%)",
+        "type": "slider",
+        "value": 100,
+        "min": 20,
+        "max": 160
+      },
+      "topdim": {
+        "order": 104,
+        "text": "Keep the top bar strip dark",
+        "type": "bool",
+        "value": true
+      },
+      "resolution": {
+        "order": 105,
+        "text": "Render resolution",
+        "type": "combo",
+        "value": "auto",
+        "options": [
+          { "label": "Auto (half for silk)", "value": "auto" },
+          { "label": "Full", "value": "full" },
+          { "label": "Half", "value": "half" }
+        ]
+      },
+      "screen": {
+        "order": 106,
+        "text": "Placement",
+        "type": "combo",
+        "value": "span",
+        "options": [
+          { "label": "Stretched across monitors / left screen", "value": "span" },
+          { "label": "Right screen (per-monitor mode)", "value": "right" }
+        ]
+      }
+    }
+  }
+}

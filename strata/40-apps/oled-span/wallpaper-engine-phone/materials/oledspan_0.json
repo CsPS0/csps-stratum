@@ -1,0 +1,24 @@
+{
+	"passes" : 
+	[
+		{
+			"blending" : "normal",
+			"combos" : 
+			{
+				"STYLE" : 0
+			},
+			"cullmode" : "nocull",
+			"depthtest" : "disabled",
+			"depthwrite" : "disabled",
+			"shader" : "oledspan",
+			"textures" : [ "util/white" ],
+			"usershadervalues" : 
+			{
+				"brightness" : "brightness",
+				"size" : "size",
+				"speed" : "speed",
+				"topdim" : "topdim"
+			}
+		}
+	]
+}

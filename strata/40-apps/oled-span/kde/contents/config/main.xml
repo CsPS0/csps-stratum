@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+  <kcfgfile name=""/>
+
+  <group name="General">
+    <entry name="Style" type="Int">
+      <label>0 topographic contours, 1 silk, 2 halftone</label>
+      <default>0</default>
+    </entry>
+    <entry name="Speed" type="Double">
+      <default>1.0</default>
+    </entry>
+    <entry name="Size" type="Double">
+      <default>1.0</default>
+    </entry>
+    <entry name="Brightness" type="Double">
+      <default>1.0</default>
+    </entry>
+    <entry name="TopDim" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="TopBand" type="Int">
+      <label>Height of the top panel in logical pixels</label>
+      <default>32</default>
+    </entry>
+    <entry name="PauseMaximized" type="Bool">
+      <label>Pause while a window is maximized on this screen</label>
+      <default>true</default>
+    </entry>
+    <entry name="PauseFullscreen" type="Bool">
+      <label>Pause while any window is fullscreen</label>
+      <default>true</default>
+    </entry>
+    <entry name="Fps" type="Int">
+      <default>15</default>
+    </entry>
+  </group>
+</kcfg>

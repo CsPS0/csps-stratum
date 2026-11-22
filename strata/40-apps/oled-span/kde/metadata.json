@@ -1,0 +1,13 @@
+{
+  "KPackageStructure": "Plasma/Wallpaper",
+  "KPlugin": {
+    "Authors": [{ "Name": "CsPS0" }],
+    "Description": "Procedural black-and-white animated wallpaper: topographic contours, silk or halftone",
+    "Icon": "preferences-desktop-wallpaper",
+    "Id": "com.csps.oledspan",
+    "License": "MIT",
+    "Name": "OLED Span"
+  },
+  "X-KDE-ParentApp": "org.kde.plasmashell",
+  "X-Plasma-API-Minimum-Version": "6.0"
+}

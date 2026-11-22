@@ -13,7 +13,7 @@ desktop copies. Most of it is KDE settings rather than files, listed here so it 
 | Icons | yet-another-monochrome-icon-set | AUR `yamis-icon-theme-git` |
 | Cursor | Bibata Modern Classic | AUR `bibata-cursor-theme-bin` (Windows: [`strata/10-os/windows/cursors/`](../../strata/10-os/windows/cursors/)) |
 | Fonts | Inter 10 (UI, 9 toolbars, 8 smallest), JetBrainsMono Nerd Font 10 (fixed) | `inter-font`, `ttf-jetbrains-mono-nerd` |
-| Wallpaper | a monochrome geometric PNG | not in the repo; use your own |
+| Wallpaper | **OLED Span**, an animated black-and-white Plasma wallpaper plugin (15 fps) | [`strata/40-apps/oled-span/`](../../strata/40-apps/oled-span/) (`install-kde.sh --apply`) |
 | Shell | zsh + Starship | [`strata/20-shell/`](../../strata/20-shell/) |
 
 ## Panels

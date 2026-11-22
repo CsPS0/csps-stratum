@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OLED Span</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+  canvas { display: block; width: 100vw; height: 100vh; }
+  #debug { position: fixed; left: 40px; top: 60px; font: 14px monospace; color: #fff; display: none; }
+  #dead { position: fixed; display: none; background: repeating-linear-gradient(45deg, #300 0 10px, #000 10px 20px); }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="dead"></div>
+<div id="debug"></div>
+<script>
+// OLED Span: a procedural black-and-white wallpaper for Wallpaper Engine. Everything is drawn from
+// virtual-desktop pixel coordinates and the clock, so it fits any monitor size or aspect ratio, and a
+// picture stretched across monitors of different heights is never squashed.
+
+const VERT = `#version 300 es
+in vec2 a;
+void main() { gl_Position = vec4(a, 0.0, 1.0); }`;
+
+const FRAG = `#version 300 es
+precision highp float;
+uniform vec2 uRes;      // canvas size in pixels
+uniform float uScale;   // canvas pixels per desktop pixel
+uniform vec2 uOffset;   // desktop position of the canvas's top-left corner
+uniform float uTime;
+uniform int uStyle;     // 0 contours, 1 silk, 2 halftone
+uniform float uSize;    // pattern size multiplier
+uniform float uBright;
+uniform float uTopDim;  // 1 = keep the top bar strip dark
+out vec4 outColor;
+
+// 3D simplex noise by Ian McEwan and Stefan Gustavson (Ashima Arts), MIT licence.
+vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec4 permute(vec4 x) { return mod289(((x * 34.0) + 10.0) * x); }
+vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+float snoise(vec3 v) {
+  const vec2 C = vec2(1.0 / 6.0, 1.0 / 3.0);
+  const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+  vec3 i = floor(v + dot(v, C.yyy));
+  vec3 x0 = v - i + dot(i, C.xxx);
+  vec3 g = step(x0.yzx, x0.xyz);
+  vec3 l = 1.0 - g;
+  vec3 i1 = min(g.xyz, l.zxy);
+  vec3 i2 = max(g.xyz, l.zxy);
+  vec3 x1 = x0 - i1 + C.xxx;
+  vec3 x2 = x0 - i2 + C.yyy;
+  vec3 x3 = x0 - D.yyy;
+  i = mod289(i);
+  vec4 p = permute(permute(permute(
+            i.z + vec4(0.0, i1.z, i2.z, 1.0))
+          + i.y + vec4(0.0, i1.y, i2.y, 1.0))
+          + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+  float n_ = 0.142857142857;
+  vec3 ns = n_ * D.wyz - D.xzx;
+  vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+  vec4 x_ = floor(j * ns.z);
+  vec4 y_ = floor(j - 7.0 * x_);
+  vec4 x = x_ * ns.x + ns.yyyy;
+  vec4 y = y_ * ns.x + ns.yyyy;
+  vec4 h = 1.0 - abs(x) - abs(y);
+  vec4 b0 = vec4(x.xy, y.xy);
+  vec4 b1 = vec4(x.zw, y.zw);
+  vec4 s0 = floor(b0) * 2.0 + 1.0;
+  vec4 s1 = floor(b1) * 2.0 + 1.0;
+  vec4 sh = -step(h, vec4(0.0));
+  vec4 a0 = b0.xzyw + s0.xzyw * sh.xxyy;
+  vec4 a1 = b1.xzyw + s1.xzyw * sh.zzww;
+  vec3 p0 = vec3(a0.xy, h.x);
+  vec3 p1 = vec3(a0.zw, h.y);
+  vec3 p2 = vec3(a1.xy, h.z);
+  vec3 p3 = vec3(a1.zw, h.w);
+  vec4 norm = taylorInvSqrt(vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3)));
+  p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
+  vec4 m = max(0.5 - vec4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3)), 0.0);
+  m = m * m;
+  return 105.0 * dot(m * m, vec4(dot(p0, x0), dot(p1, x1), dot(p2, x2), dot(p3, x3)));
+}
+
+float fbm(vec3 p) {
+  float s = 0.0, a = 0.5;
+  for (int i = 0; i < 4; i++) { s += a * snoise(p); p.xy *= 2.03; p.z *= 1.5; a *= 0.5; }
+  return s;
+}
+
+float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+
+void main() {
+  // desktop pixel of this fragment, y pointing down like Windows coordinates
+  vec2 px = vec2(gl_FragCoord.x, uRes.y - gl_FragCoord.y) / uScale + uOffset;
+  vec2 p = px / (900.0 * uSize);
+  float t = uTime;
+  float c = 0.0;
+
+  if (uStyle == 0) {
+    // topographic contour lines, every fifth one brighter
+    float n = fbm(vec3(p, t * 0.02));
+    float lv = n * 14.0;
+    float idx = floor(lv + 0.5);
+    float d = abs(lv - idx);
+    float w = fwidth(lv);
+    bool major = mod(idx, 5.0) < 0.5;
+    float line = 1.0 - smoothstep(0.0, w * (major ? 1.6 : 1.0), d);
+    c = line * (major ? 0.55 : 0.24);
+  } else if (uStyle == 1) {
+    // silk: domain-warped noise turned into thin satin sheens that drift and fold
+    vec2 q = p * 0.6;
+    float a = fbm(vec3(q, t * 0.015));
+    float b = fbm(vec3(q + vec2(5.2, 1.3), t * 0.015));
+    float n = fbm(vec3(q + 1.4 * vec2(a, b), t * 0.02));
+    float band = 0.5 + 0.5 * sin(9.0 * n + 3.0 * a);
+    float sheen = pow(band, 8.0) * smoothstep(-0.35, 0.45, b);
+    c = sheen * 0.55 + pow(band, 60.0) * 0.25;
+  } else {
+    // halftone: a fixed grid of dots whose size follows the noise
+    float cell = 24.0;
+    vec2 g = px / cell;
+    vec2 id = floor(g);
+    vec2 f = fract(g) - 0.5;
+    float n = fbm(vec3((id + 0.5) * cell / (900.0 * uSize), t * 0.03)) * 0.5 + 0.5;
+    float r = mix(0.03, 0.42, smoothstep(0.3, 0.85, n));
+    float aa = 1.0 / (cell * uScale);
+    float dotv = 1.0 - smoothstep(r - aa, r + aa, length(f));
+    c = dotv * mix(0.14, 0.6, smoothstep(0.4, 0.9, n));
+  }
+
+  c *= uBright;
+  c *= mix(1.0, smoothstep(30.0, 90.0, px.y), uTopDim);
+  c += (hash(gl_FragCoord.xy) - 0.5) / 255.0;  // dither against banding
+  outColor = vec4(vec3(max(c, 0.0)), 1.0);
+}`;
+
+const STYLES = { contours: 0, silk: 1, halftone: 2 };
+const url = new URLSearchParams(location.search);
+const settings = {
+  style: url.get('style') || 'contours',
+  speed: +(url.get('speed') ?? 30),        // 0-100
+  size: +(url.get('size') ?? 100),         // percent
+  brightness: +(url.get('brightness') ?? 100),
+  resolution: url.get('resolution') || 'auto',
+  topdim: url.get('topdim') !== '0',
+  screen: url.get('screen') || 'span',
+  fps: +(url.get('fps') ?? 30),
+};
+const debug = url.has('debug');
+
+// Wallpaper Engine calls these on load and whenever a setting changes (only changed keys are passed).
+window.wallpaperPropertyListener = {
+  applyUserProperties(p) {
+    for (const k of ['style', 'speed', 'size', 'brightness', 'resolution', 'topdim', 'screen']) {
+      if (p[k]) settings[k] = p[k].value;
+    }
+    resize();
+  },
+  applyGeneralProperties(p) {
+    if (p.fps !== undefined) settings.fps = p.fps;
+  },
+};
+
+const canvas = document.getElementById('c');
+const gl = canvas.getContext('webgl2', { antialias: false, alpha: false });
+let prog, loc = {};
+
+function compile(type, src) {
+  const s = gl.createShader(type);
+  gl.shaderSource(s, src);
+  gl.compileShader(s);
+  if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+  return s;
+}
+
+if (gl) {
+  prog = gl.createProgram();
+  gl.attachShader(prog, compile(gl.VERTEX_SHADER, VERT));
+  gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FRAG));
+  gl.bindAttribLocation(prog, 0, 'a');
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  for (const u of ['uRes', 'uScale', 'uOffset', 'uTime', 'uStyle', 'uSize', 'uBright', 'uTopDim']) {
+    loc[u] = gl.getUniformLocation(prog, u);
+  }
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(0);
+  gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+}
+
+let scale = 1;
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  const res = settings.resolution === 'auto' ? (settings.style === 'silk' ? 'half' : 'full') : settings.resolution;
+  scale = res === 'half' ? 0.5 : 1;
+  canvas.width = Math.round(innerWidth * dpr * scale);
+  canvas.height = Math.round(innerHeight * dpr * scale);
+  if (debug) showDebug(dpr);
+}
+
+function showDebug(dpr) {
+  const el = document.getElementById('debug');
+  el.style.display = 'block';
+  el.textContent = `viewport ${innerWidth}x${innerHeight} @ ${dpr}x, canvas ${canvas.width}x${canvas.height}`;
+  // grey out the part of a 3840x1200 span that no monitor shows (left screen is only 1080 tall)
+  const dead = document.getElementById('dead');
+  if (innerWidth === 3840 && innerHeight === 1200) {
+    Object.assign(dead.style, { display: 'block', left: '0', top: '1080px', width: '1920px', height: '120px' });
+  }
+}
+
+let last = 0;
+function frame(now) {
+  requestAnimationFrame(frame);
+  if (!gl) return;
+  if (settings.fps > 0 && now - last < 1000 / settings.fps - 1) return;
+  last = now;
+  // time comes from the wall clock, so two per-monitor copies stay in step
+  const seconds = (Date.now() / 1000) % 86400;
+  const dpr = window.devicePixelRatio || 1;
+  const offsetX = settings.screen === 'right' ? 1920 * dpr : 0;
+  gl.viewport(0, 0, canvas.width, canvas.height);
+  gl.uniform2f(loc.uRes, canvas.width, canvas.height);
+  gl.uniform1f(loc.uScale, scale);
+  gl.uniform2f(loc.uOffset, offsetX, 0);
+  gl.uniform1f(loc.uTime, seconds * settings.speed / 30);
+  gl.uniform1i(loc.uStyle, STYLES[settings.style] ?? 0);
+  gl.uniform1f(loc.uSize, settings.size / 100);
+  gl.uniform1f(loc.uBright, settings.brightness / 100);
+  gl.uniform1f(loc.uTopDim, settings.topdim ? 1 : 0);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+}
+
+addEventListener('resize', resize);
+resize();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

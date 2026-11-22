@@ -1,0 +1,77 @@
+{
+	"title" : "OLED Span (scene)",
+	"description" : "Procedural black-and-white wallpaper for a 1920x1080 + 1920x1200 pair stretched across both monitors, drawn by Wallpaper Engine itself (no browser). Styles: topographic contours, silk, halftone.",
+	"type" : "scene",
+	"file" : "scene.json",
+	"preview" : "preview.jpg",
+	"tags" : [ "Abstract", "Minimalist" ],
+	"general" : 
+	{
+		"properties" : 
+		{
+			"schemecolor" : 
+			{
+				"order" : 0,
+				"text" : "ui_browse_properties_scheme_color",
+				"type" : "color",
+				"value" : "0 0 0"
+			},
+			"style" : 
+			{
+				"order" : 100,
+				"options" : 
+				[
+					{ "label" : "Topographic contours", "value" : "0" },
+					{ "label" : "Silk", "value" : "1" },
+					{ "label" : "Halftone", "value" : "2" }
+				],
+				"text" : "Style",
+				"type" : "combo",
+				"value" : "0"
+			},
+			"speed" : 
+			{
+				"fraction" : true,
+				"max" : 3,
+				"min" : 0,
+				"order" : 101,
+				"precision" : 2,
+				"step" : 0.05,
+				"text" : "Speed",
+				"type" : "slider",
+				"value" : 1
+			},
+			"size" : 
+			{
+				"fraction" : true,
+				"max" : 2.5,
+				"min" : 0.4,
+				"order" : 102,
+				"precision" : 2,
+				"step" : 0.05,
+				"text" : "Pattern size",
+				"type" : "slider",
+				"value" : 1
+			},
+			"brightness" : 
+			{
+				"fraction" : true,
+				"max" : 1.6,
+				"min" : 0.2,
+				"order" : 103,
+				"precision" : 2,
+				"step" : 0.05,
+				"text" : "Brightness",
+				"type" : "slider",
+				"value" : 1
+			},
+			"topdim" : 
+			{
+				"order" : 104,
+				"text" : "Keep the top bar strip dark",
+				"type" : "bool",
+				"value" : true
+			}
+		}
+	}
+}

@@ -94,6 +94,8 @@ and the README in every strata/ folder you'd use. Note each part's platform requ
     widget (calendar/), Claude/Antigravity usage widgets (with ai-usage/).
   - ai-usage: the usage script, YASB popup, and a KDE Plasma 6 panel widget.
   - kde-dock: the KDE Plasma 6 dock widget (magnification, bounce, dots, group dividers).
+  - oled-span: the animated black-and-white wallpaper, as Wallpaper Engine scenes (desktop span and
+    phone), a web build, and a KDE Plasma 6 wallpaper plugin.
   - zed, vscode, rider, visual-studio: OLED Monochrome editor themes.
   - steam (Millennium theme colours), sonora, vencord/aliucord, gaming, minecraft, system-tools.
 - hosts/laptop: the KDE look (colour scheme file, Plasma style, icons, fonts, panels).

@@ -20,9 +20,11 @@ This profile standardizes the workstation environment for **Windows 11 Pro**, ta
 
 ![Main screen: top bar and dock](../../docs/screenshots/windows-desktop.png)
 
-Wallpaper Engine runs *Orb Spiral - Black Hypnosis* (Workshop ID 3725918788) on the main screen and a
-Workshop scene (ID 3557068717) on the second. More shots, including the second screen, are in
-[`docs/screenshots/`](../../docs/screenshots/).
+Wallpaper Engine runs **OLED Span**, a procedural black-and-white scene stretched across both
+screens (the 16:9 main screen and the 16:10 one beside it); see
+[`strata/40-apps/oled-span/`](../../strata/40-apps/oled-span/). The shots in
+[`docs/screenshots/`](../../docs/screenshots/), including the second screen, were taken earlier, with
+Workshop wallpapers 3725918788 and 3557068717.
 
 ---
 
@@ -33,7 +35,7 @@ Workshop scene (ID 3557068717) on the second. More shots, including the second s
 | **Dock / Shell** | [Windhawk](https://windhawk.net/) (v1.7.3) | [`strata/40-apps/windhawk/`](../../strata/40-apps/windhawk/) |
 | **Dock Look** | No theme: own rules for a black pill, dots and dividers; monochrome icons | `windows-11-taskbar-styler` ([`oled-dock.reg`](../../strata/40-apps/windhawk/oled-dock.reg)), [`dock-icons/`](../../strata/10-os/windows/dock-icons/), `icon-resource-redirect` |
 | **Top Bar** | YASB + native one-line menu bar | [`strata/40-apps/yasb/`](../../strata/40-apps/yasb/) |
-| **Wallpaper** | Wallpaper Engine (`wallpaper64`) | Animated backgrounds (Workshop `3725918788`, `3557068717`) |
+| **Wallpaper** | Wallpaper Engine (`wallpaper64`) | OLED Span scene, stretched across both monitors ([`strata/40-apps/oled-span/`](../../strata/40-apps/oled-span/)) |
 | **Terminal (Primary)** | [WezTerm](https://wezfurlong.org/wezterm/) | [`strata/20-shell/wezterm/`](../../strata/20-shell/wezterm/) |
 | **Terminal (Secondary)** | Windows Terminal | [`strata/20-shell/windows-terminal/`](../../strata/20-shell/windows-terminal/) |
 | **Shell & Prompt**| PowerShell 7+ with Oh My Posh | [`strata/20-shell/pwsh/`](../../strata/20-shell/pwsh/), [`strata/20-shell/oh-my-posh/`](../../strata/20-shell/oh-my-posh/) |

@@ -17,7 +17,8 @@ the shorter main screen is drawn but never seen.
 | Halftone | A 24 px dot grid whose dots swell and shrink. |
 
 Every build has the same settings: style, speed, pattern size, brightness, and an option to keep the
-strip behind the top bar (or the phone's status bar) dark.
+strip behind the top bar (or the phone's status bar) dark. The phone build plays a recorded video,
+so its settings are fixed when it is sent (see [Phone](#phone-wallpaper-engine-for-android)).
 
 ## Builds
 
@@ -26,10 +27,11 @@ strip behind the top bar (or the phone's status bar) dark.
 | [`wallpaper-engine-scene/`](wallpaper-engine-scene/) | Windows desktop, both screens | Wallpaper Engine, scene | **In use.** 92 MB RAM, 66 MB video memory, ~0.1% of a CPU core |
 | [`wallpaper-engine-web/`](wallpaper-engine-web/) | Windows, any layout | Wallpaper Engine, web (embedded Chromium) | 220-335 MB RAM, 127 MB video memory, ~1% of a core |
 | [`kde/`](kde/) | Arch laptop, KDE Plasma 6 | Plasma's own wallpaper system | **In use.** No extra RAM; 15 fps costs ~4% of a core (plasmashell plus KWin) on the HD 630 |
-| [`wallpaper-engine-phone/`](wallpaper-engine-phone/) | Android phone, portrait | Wallpaper Engine Android app, scene | Not measured |
+| [`wallpaper-engine-phone/`](wallpaper-engine-phone/) | Android phone, portrait | Wallpaper Engine Android app, as a 30 s video recorded from the scene | **In use.** Not measured (a looping H.264 video) |
 
-The two Wallpaper Engine scene builds share one shader; they differ in canvas size (3840x1200 or
-1080x2400), the status-bar strip, and the phone's smaller default pattern size.
+The two Wallpaper Engine scene builds share one shader. The phone's differs in canvas size (1080x1920
+instead of 3840x1200), a seamless 30-second loop, the status-bar strip, and denser defaults (pattern
+size 0.5, 20 px halftone grid) to make up for the phone enlarging the video.
 
 ## Windows: Wallpaper Engine
 
@@ -102,11 +104,22 @@ desktop app; it can't download them itself.
    network.
 3. Right-click **OLED Span (phone)** → **Send to mobile device**. If pairing doesn't work, choose
    **Export .mpkg** there instead, copy the file to the phone, and import it in the app.
-4. Set it as the wallpaper in the app and pick a style.
+4. Set it as the wallpaper in the app.
 
-The desktop app optimises scenes for phones before sending them. Shaders that compile on Windows
-can still fail on a phone's GLSL ES. If it shows black, turn on **Write Errors to Log** in the app's
-settings and read the log. The canvas is 1080x2400 (20:9); on other screen shapes it is scaled to fill,
-which only crops a little of the pattern.
+The desktop app doesn't send the shader. It records the scene as a **30-second 1080x1920 H.264
+video**, which the phone loops and enlarges to fill its screen (found on 22 November 2026 from the
+phone's media log over `adb`). That shapes the phone build:
+
+- **Canvas 1080x1920.** An earlier 1080x2400 canvas was cropped to 9:16 when recorded, which cut off
+  the top 240 rows, and the darkened status-bar strip with them. On the Galaxy A52s (1080x2400) the
+  video is enlarged 1.25x, so the strip, at rows 80-180 of the video, lands at ~100-225 px on screen.
+- **A seamless 30-second loop.** Instead of moving forward in time, the pattern travels round a
+  closed path through the noise and is back where it started after exactly 30 seconds, so the
+  video's restart doesn't jump (frame-to-frame change stays at 9-11 per second through a restart).
+  **Motion per loop** sets how far it travels.
+- **Settings are fixed at send time**: change them on the desktop, then send it again.
+
+The phone draws nothing itself, so it costs only video playback. To check what it's playing, run
+`adb shell dumpsys media.metrics | grep weclient` with the phone on USB debugging.
 
 The simplex noise in the shaders is by Ian McEwan and Stefan Gustavson (Ashima Arts), MIT licence.

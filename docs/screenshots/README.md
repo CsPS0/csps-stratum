@@ -29,7 +29,16 @@ Setup: [`strata/40-apps/windhawk/`](../../strata/40-apps/windhawk/), [`strata/40
 Setup: [`hosts/laptop/`](../../hosts/laptop/), [`strata/40-apps/kde-dock/`](../../strata/40-apps/kde-dock/),
 [`strata/40-apps/ai-usage/`](../../strata/40-apps/ai-usage/), [`strata/40-apps/oled-span/`](../../strata/40-apps/oled-span/).
 
+## Phone (Galaxy A52s, Android)
+
+| File | What it shows |
+|---|---|
+| [`phone-home.png`](phone-home.png) | An empty home-screen page (1080x2400) with OLED Span playing in the Wallpaper Engine app; the strip behind the status bar is dark. |
+
+Setup: [`strata/40-apps/oled-span/`](../../strata/40-apps/oled-span/) (`wallpaper-engine-phone`).
+
 ## Left out
 
 The calendar-event widget was hidden while taking the Windows shots, and the laptop's desktop icons
-were hidden (the desktop pointed at an empty folder for the shot), because both show personal names.
+were hidden (the desktop pointed at an empty folder for the shot), because both show personal names. The phone shot is an empty home-screen page, since the main one
+shows widgets with personal details (location, account balance).

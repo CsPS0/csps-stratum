@@ -1,6 +1,6 @@
 {
 	"title": "OLED Span (phone)",
-	"description": "Procedural black-and-white live wallpaper for a portrait phone screen (made for 1080x2400). Styles: topographic contours, silk, halftone. Send it to the Wallpaper Engine Android app.",
+	"description": "Procedural black-and-white wallpaper for the Wallpaper Engine Android app. Sending it records a 30-second 1080x1920 video that loops seamlessly. Styles: topographic contours, silk, halftone.",
 	"type": "scene",
 	"file": "scene.json",
 	"preview": "preview.jpg",
@@ -43,7 +43,7 @@
 				"order": 101,
 				"precision": 2,
 				"step": 0.05,
-				"text": "Speed",
+				"text": "Motion per loop",
 				"type": "slider",
 				"value": 1
 			},
@@ -56,7 +56,7 @@
 				"step": 0.05,
 				"text": "Pattern size",
 				"type": "slider",
-				"value": 0.6
+				"value": 0.5
 			},
 			"brightness": {
 				"fraction": true,

@@ -1,6 +1,8 @@
 
-// OLED Span, phone scene version: the same procedural pattern as the web wallpaper, drawn by Wallpaper
-// Engine itself instead of an embedded browser. One full-canvas layer per style (STYLE combo).
+// OLED Span, phone version. Sending a scene to the Wallpaper Engine Android app records it as a
+// 30-second 1080x1920 video, which the phone loops and enlarges to fill its screen. So the canvas is
+// 1080x1920, and the motion is a closed loop that repeats exactly every 30 seconds (no jump when the
+// video restarts). Speed sets how far the pattern travels per loop. One layer per style (STYLE combo).
 
 // [COMBO] {"material":"Style","combo":"STYLE","type":"options","default":0}
 
@@ -14,7 +16,14 @@ uniform float g_TopDim; // {"material":"topdim","default":1}
 
 varying vec2 v_TexCoord;
 
-#define CANVAS vec2(1080.0, 2400.0)
+#define CANVAS vec2(1080.0, 1920.0)
+#define LOOP_SECONDS 30.0
+
+// A point on a closed path through the noise: the same value every LOOP_SECONDS.
+vec3 drift(float phase) {
+	float th = 6.28318530718 * frac(g_Time / LOOP_SECONDS) + phase;
+	return vec3(0.10 * cos(th), 0.10 * sin(th), 0.30 * sin(th)) * g_Speed;
+}
 
 // 3D simplex noise by Ian McEwan and Stefan Gustavson (Ashima Arts), MIT licence.
 vec3 mod289v3(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
@@ -79,15 +88,14 @@ float fbm(vec3 p) {
 float hash(vec2 p) { return frac(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
 
 void main() {
-	// canvas pixel, y pointing down; the canvas is a 1080x2400 portrait phone screen
+	// canvas pixel, y pointing down; the canvas is the 1080x1920 frame the phone video is recorded at
 	vec2 px = v_TexCoord * CANVAS;
 	vec2 p = px / (900.0 * g_Size);
-	float t = g_Time * g_Speed;
 	float c = 0.0;
 
 #if STYLE == 0
 	// topographic contour lines, every fifth one brighter
-	float n = fbm(vec3(p, t * 0.02));
+	float n = fbm(vec3(p, 0.0) + drift(0.0));
 	float lv = n * 14.0;
 	float idx = floor(lv + 0.5);
 	float d = abs(lv - idx);
@@ -98,19 +106,19 @@ void main() {
 #elif STYLE == 1
 	// silk: domain-warped noise turned into thin satin sheens
 	vec2 q = p * 0.6;
-	float a = fbm(vec3(q, t * 0.015));
-	float b = fbm(vec3(q + vec2(5.2, 1.3), t * 0.015));
-	float n = fbm(vec3(q + 1.4 * vec2(a, b), t * 0.02));
+	float a = fbm(vec3(q, 0.0) + drift(0.0));
+	float b = fbm(vec3(q + vec2(5.2, 1.3), 0.0) + drift(2.1));
+	float n = fbm(vec3(q + 1.4 * vec2(a, b), 0.0) + drift(4.2));
 	float band = 0.5 + 0.5 * sin(9.0 * n + 3.0 * a);
 	float sheen = pow(band, 8.0) * smoothstep(-0.35, 0.45, b);
 	c = sheen * 0.55 + pow(band, 60.0) * 0.25;
 #else
 	// halftone: a fixed grid of dots whose size follows the noise
-	float cell = 24.0;
+	float cell = 20.0;
 	vec2 gp = px / cell;
 	vec2 id = floor(gp);
 	vec2 f = frac(gp) - 0.5;
-	float n = fbm(vec3((id + 0.5) * cell / (900.0 * g_Size), t * 0.03)) * 0.5 + 0.5;
+	float n = fbm(vec3((id + 0.5) * cell / (900.0 * g_Size), 0.0) + drift(1.0)) * 0.5 + 0.5;
 	float r = mix(0.03, 0.42, smoothstep(0.3, 0.85, n));
 	float aa = 1.0 / cell;
 	float dotv = 1.0 - smoothstep(r - aa, r + aa, length(f));
@@ -118,7 +126,8 @@ void main() {
 #endif
 
 	c *= g_Brightness;
-	c *= mix(1.0, smoothstep(90.0, 220.0, px.y), g_TopDim);
+	// the phone enlarges the video 1.25x (1920 -> 2400 rows), so this is ~100-225 px on screen
+	c *= mix(1.0, smoothstep(80.0, 180.0, px.y), g_TopDim);
 	c += (hash(px) - 0.5) / 255.0;
 	gl_FragColor = vec4(max(c, 0.0), max(c, 0.0), max(c, 0.0), 1.0);
 }

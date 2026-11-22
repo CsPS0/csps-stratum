@@ -32,11 +32,13 @@ powershell -ExecutionPolicy Bypass -File .\SlimBrave.ps1
 ```
 
 Run them again after a major Windows feature update (it can bring apps and suggestions back) or a
-Brave reinstall. SlimBrave Neo also runs on Linux: the laptop's Brave gets the same policies from a
-config converted from this machine's (45 policies, plus automatic secure DNS; the rest are
-Chrome/ChromeOS-only keys its Linux version doesn't list), applied with
-`sudo python3 slimbrave-linux.py --import <config.json>`, which writes
-`/etc/brave/policies/managed/slimbrave.json`.
+Brave reinstall. SlimBrave Neo also runs on Linux: the laptop's Brave gets a config converted from
+this machine's policies, applied with `sudo python3 slimbrave-linux.py --import <config.json>`, which
+writes `/etc/brave/policies/managed/slimbrave.json`. Of this machine's 68 policies, 45 exist in the
+Linux version (the rest are Chrome/ChromeOS-only), and secure DNS is set to automatic. The laptop runs
+**Brave Origin**, which is built without Rewards, Wallet, VPN, Leo, News, Talk, Playlist, Web
+Discovery, Speedreader, the Wayback Machine prompt and Email Aliases, so SlimBrave skips those 11
+policies there and writes the other 34: the result is as stripped as Windows.
 
 ## Monochrome look (matches the KDE "OLED Monochrome" laptop)
 - `monochrome-colors/Set-MonochromeColors.ps1`: system-wide colours, per user, no elevation.

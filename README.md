@@ -8,6 +8,11 @@
 
 `csps-stratum` solves configuration drift across heterogeneous machines. Instead of maintaining monolithic dotfiles or disparate setups per machine, **Stratum** organizes system configurations into modular, composable layers stacked cleanly according to the host platform, form factor, and development workflow.
 
+![Windows 11 desktop: top bar and dock](docs/screenshots/windows-desktop.png)
+
+More in [`docs/screenshots/`](docs/screenshots/). **Want this look?** Clone the repo and give your AI coding agent the prompt in
+[`INSTALL-WITH-AI.md`](INSTALL-WITH-AI.md): it checks your system, asks what to keep or change, plans, then builds it.
+
 ---
 
 ## The Stratum Model
@@ -32,13 +37,13 @@ Like geological strata, your working environment is composed of hierarchical lay
 - **`20-shell`**: Interactive shell experience (PowerShell 7 profile, Oh My Posh theme, WezTerm, Windows Terminal, Fastfetch).
 - **`30-dev`**: Language toolchains, package managers, and the AI coding assistant configs (Antigravity, Claude Code, Codex).
 - **`40-apps`**: Application-level preferences (Zed, VS Code Insiders, Rider, Visual Studio, Windhawk, the YASB top bar, Steam, Sonora, Vencord, Aliucord, Minecraft, gaming and system tools).
-- **`hosts/`**: Final overlay matching the exact machine role (workstation desktop or handheld device). The laptop has no host profile yet; it pulls the repo and installs the shared editor themes by hand (see [Laptop](#laptop-arch-linux)).
+- **`hosts/`**: Final overlay matching the exact machine role (workstation desktop, laptop or handheld device). The laptop profile documents its KDE look; the laptop still pulls the repo and installs the shared editor themes by hand (see [Laptop](#laptop-arch-linux)).
 
 ---
 
 ## Device Profiles Matrix
 
-| Attribute | Desktop (`hosts/desktop`) | Laptop (Dell, no host profile yet) | Mobile (`hosts/mobile`) |
+| Attribute | Desktop (`hosts/desktop`) | Laptop (`hosts/laptop`) | Mobile (`hosts/mobile`) |
 |---|---|---|---|
 | **Primary OS** | Windows 11 Pro | Arch Linux, KDE Plasma | Android 14 (One UI 6.1) |
 | **Form Factor** | Dual-monitor, high-performance workstation | Single screen, battery-constrained | Touchscreen, compact CLI companion |
@@ -68,14 +73,15 @@ csps-stratum/
 │                            # aliucord, minecraft, system-tools, gaming
 ├── hosts/                   # Machine-specific profiles
 │   ├── desktop/             # Workstation profile, setup.ps1, software-inventory.md, screenshots
+│   ├── laptop/              # KDE Plasma look: OLED_Monochrome.colors, theme/icon/font settings
 │   └── mobile/              # Samsung Galaxy A52s 5G companion profile & package inventory
+├── docs/screenshots/        # Reference screenshots of both machines
+├── INSTALL-WITH-AI.md       # Paste-in prompt for an AI agent to rebuild this setup on your machine
 ├── .gitattributes           # Line ending & encoding rules (LF on Unix, CRLF on PS1, UTF-16 .reg)
 ├── .gitignore               # Exclusion of secrets, keys, machine caches, and local agent files
 ├── LICENSE
 └── README.md
 ```
-
-A `laptop` host profile isn't in the repository yet.
 
 ---
 
@@ -109,7 +115,7 @@ cd "$HOME\Projects\csps-stratum"
 
 ### Laptop (Arch Linux)
 
-The laptop's KDE Plasma setup is configured by hand; the repo shares the editor themes with it. Pull, then install them (each settings file is backed up first):
+The laptop's KDE Plasma setup is configured by hand; [`hosts/laptop/`](hosts/laptop/) lists its look (colour scheme, Plasma style, icons, cursor, fonts) and the repo shares the editor themes with it. Pull, then install them (each settings file is backed up first):
 
 ```sh
 cd ~/REPOS/csps-stratum && git pull --ff-only

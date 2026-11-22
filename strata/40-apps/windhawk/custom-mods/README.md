@@ -40,8 +40,14 @@ the way "Taskbar Icon Separators" does.
 
 - It hooks `TaskListButton::UpdateVisualStates` and watches the icon panel's
   `RunningIndicatorStates` group for `RequestingAttentionRunningIndicator`.
-- It animates the icon's composition `Translation.Y`. Taskbar Dock Animation uses the icon's
+- It animates the button's composition `Translation.Y`. Taskbar Dock Animation uses
   `RenderTransform` for magnification, so each mod has its own transform.
+- It moves the whole button, not the icon: Windows clips each icon to its button
+  (`UpdateMultiWindowClip`), so an icon hopping on its own was cut off flat at the dock's top
+  edge. The button isn't clipped, so it can use the taskbar's 16 px of headroom above the pill
+  (the dot under the icon hops with it).
+- No red: the styler rules 32-34 in `oled-dock.reg` keep the button background transparent in the
+  attention state (and when hovered), so the bounce and the white dot are the only signal.
 
 ## Install
 

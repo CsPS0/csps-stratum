@@ -2,7 +2,7 @@
 // @id              taskbar-attention-bounce
 // @name            Taskbar Attention Bounce
 // @description     Bounces a taskbar icon like the macOS Dock while its app asks for attention
-// @version         1.0
+// @version         1.2
 // @author          CsPS
 // @include         explorer.exe
 // @architecture    x86-64
@@ -17,9 +17,10 @@ When an app asks for attention (a new message, a prompt, a finished download: th
 taskbar button Windows would otherwise just turn orange), its icon keeps hopping
 like on the macOS Dock until you switch to the app.
 
-- Works with Windows 11's own taskbar and with "Taskbar Dock Animation": the hop
-  uses the icon's composition translation, not its render transform, so the two
-  don't fight over the icon.
+- The whole taskbar button hops (its composition translation), not just the icon:
+  Windows clips each button's icon to the button, so an icon on its own can't rise
+  above the dock. Works with "Taskbar Dock Animation", which magnifies with the
+  render transform, so the two don't fight.
 - Settings: how high the icon jumps and how long one hop cycle takes.
 
 Windows 11 only.
@@ -28,9 +29,12 @@ Windows 11 only.
 
 // ==WindhawkModSettings==
 /*
-- height: 12
+- hopHeight: 20
   $name: Bounce height (px)
-  $description: How far the icon jumps up on the first hop.
+  $description: >-
+    How far the button jumps up on the first hop. The taskbar window clips anything
+    above its top edge, so leave room for it (the OLED dock's taskbar is 76 px tall
+    with the pill 20 px below its top: up to 20 px stays whole).
 - period: 1600
   $name: Cycle length (ms)
   $description: One hop, a smaller hop and a pause.
@@ -68,11 +72,11 @@ struct {
 std::atomic<bool> g_unloading{false};
 std::atomic<bool> g_taskbarViewDllLoaded{false};
 
-// Icons that are bouncing right now, keyed by their ABI pointer (UI thread only).
+// Buttons that are bouncing right now, keyed by their ABI pointer (UI thread only).
 std::unordered_map<void*, winrt::weak_ref<wux::FrameworkElement>> g_bouncing;
 
 void LoadSettings() {
-    int h = Wh_GetIntSetting(L"height");
+    int h = Wh_GetIntSetting(L"hopHeight");
     int p = Wh_GetIntSetting(L"period");
     g_settings.height = (float)(h < 2 ? 2 : h > 40 ? 40 : h);
     g_settings.period = p < 600 ? 600 : p > 5000 ? 5000 : p;
@@ -114,15 +118,9 @@ bool IsRequestingAttention(wux::FrameworkElement const& button) {
     return attention;
 }
 
-wux::FrameworkElement FindIcon(wux::FrameworkElement const& button) {
-    return FindDescendant(button, [](wux::FrameworkElement const& fe) {
-        return fe.Name() == L"Icon" && fe.try_as<wux::Controls::Image>() != nullptr;
-    });
-}
-
-void StartBounce(wux::FrameworkElement const& icon) {
-    ElementCompositionPreview::SetIsTranslationEnabled(icon, true);
-    auto visual = ElementCompositionPreview::GetElementVisual(icon);
+void StartBounce(wux::FrameworkElement const& button) {
+    ElementCompositionPreview::SetIsTranslationEnabled(button, true);
+    auto visual = ElementCompositionPreview::GetElementVisual(button);
     auto compositor = visual.Compositor();
 
     auto up = compositor.CreateCubicBezierEasingFunction({0.2f, 0.0f}, {0.4f, 1.0f});
@@ -141,8 +139,8 @@ void StartBounce(wux::FrameworkElement const& icon) {
     visual.StartAnimation(L"Translation.Y", anim);
 }
 
-void StopBounce(wux::FrameworkElement const& icon) {
-    auto visual = ElementCompositionPreview::GetElementVisual(icon);
+void StopBounce(wux::FrameworkElement const& button) {
+    auto visual = ElementCompositionPreview::GetElementVisual(button);
     visual.StopAnimation(L"Translation.Y");
     visual.Properties().InsertVector3(L"Translation", {0.0f, 0.0f, 0.0f});
 }
@@ -153,16 +151,14 @@ void OnButtonUpdated(void* pThis) {
     try {
         auto button = ElementFromThis(pThis);
         if (!button) return;
-        auto icon = FindIcon(button);
-        if (!icon) return;
-        void* key = winrt::get_abi(icon);
+        void* key = winrt::get_abi(button);
         bool attention = IsRequestingAttention(button);
         bool bouncing = g_bouncing.count(key) > 0;
         if (attention && !bouncing) {
-            StartBounce(icon);
-            g_bouncing[key] = winrt::make_weak(icon);
+            StartBounce(button);
+            g_bouncing[key] = winrt::make_weak(button);
         } else if (!attention && bouncing) {
-            StopBounce(icon);
+            StopBounce(button);
             g_bouncing.erase(key);
         }
     } catch (...) {

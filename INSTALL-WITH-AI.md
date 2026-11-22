@@ -88,7 +88,7 @@ and the README in every strata/ folder you'd use. Note each part's platform requ
 - strata/30-dev: toolchains, AI coding assistant configs.
 - strata/40-apps:
   - windhawk: taskbar dock look (oled-dock.reg, no theme; rules for the pill, dots, collapsed tray,
-    transparent hover), Explorer/Start/Settings stylers, dock animation, separators, and three custom
+    transparent hover), a search-only Start menu (oled-start.reg), Explorer/Settings stylers, dock animation, separators, and three custom
     mods in custom-mods/ (pin layout, attention bounce, trailing separator).
   - yasb: macOS-style top bar for Windows with a native C++ menu bar (menubar/), next-calendar-event
     widget (calendar/), Claude/Antigravity usage widgets (with ai-usage/).

@@ -11,7 +11,7 @@ The desktop profile uses Windhawk for an **OLED monochrome** look that mirrors t
 | Mod Identifier | Version | Purpose & Visual Role |
 |---|---|---|
 | `windows-11-taskbar-styler` | 1.11.2 | Draws the OLED dock with **no theme** (custom XAML styles only, [`oled-dock.reg`](oled-dock.reg)): a floating black pill (black blur fill, faint border, 18 px corners) sized to the pinned apps and centred on the screen (the dock reserves a fixed, unidentified 58 px after the last app; rules 26 and 29 offset it), macOS-style running dots, and the tray collapsed (rule 25: `Visibility=Collapsed`). It used to run the LiquidGlass2 theme, which caps the dock at screen width − 2 × (tray width + 50) and measures the tray even when hidden: with 32 pinned apps Windows then shrank every icon to fit about 1540 px. Without the theme the dock uses the whole screen width. |
-| `windows-11-start-menu-styler`| 1.7 | Pairs the Start Menu with the **LiquidGlass2** glass theme. |
+| `windows-11-start-menu-styler`| 1.8 | A search-only Start menu: the **OnlySearch (Minimal)** theme keeps just the search box, and [`oled-start.reg`](oled-start.reg) (rules 25-29) makes its pane black with a faint border, the field dark grey, and swaps the colour search icon for the monochrome glyph. |
 | `windows-11-file-explorer-styler`| 1.7.2 | Compact navigation bar (`NoCommandBar` theme) in OLED monochrome: the file list, Home and Gallery backgrounds are solid `#FF000000` and the toolbar buttons `#FF121314`. These were 85 %-black `WindhawkBlur` glass. The styler's background effect is `default` (it was `micaAlt`, a see-through wallpaper tint), so the styler leaves the backdrop alone. Translucent-windows then repaints Explorer's panels transparent and puts an opaque black backdrop behind them (rule 3 for `explorer.exe`, `FF000000`). Measured on a fresh window over a red background: `#000000` everywhere. Two combinations that don't work: the styler's `none` or `micaAlt` turns the black backdrop off, and the styler adds a faint `#191919` into the panels. Already-open windows keep their old backdrop until reopened. |
 | `windows-11-notification-center-styler`| 1.8 | Harmonizes Action Center and notification popups with the translucent palette. |
 | `windows-11-settings-styler`| 1.2.1 | StoreFrame11 layout (slim icon sidebar) for the Settings app, in OLED monochrome: solid black window, sidebar and title bar (dark-mode `SolidBackgroundFillColorBase`, `LayerFillColorDefault`, `ApplicationPageBackgroundThemeBrush`, caption colours → `#FF000000`), search box `#121314` with a `#35373A` outline, borders `#1E1F21`. All 16 background layers that were see-through `HostBackdrop` acrylic (window root, title bar, page, content area, sidebar) are now solid `#FF000000`, and the base colours are no longer transparent; together these were the macOS "liquid glass" look. |
@@ -36,12 +36,14 @@ The desktop profile uses Windhawk for an **OLED monochrome** look that mirrors t
 
 - `userprofile.json`: Canonical Windhawk active mods declaration.
 - `mods-settings.reg`: Exported registry settings under `HKLM\SOFTWARE\Windhawk\Engine\Mods`.
+- `oled-dock.reg`: the taskbar dock's rules (no theme, pill, dots, collapsed tray). Import elevated.
+- `oled-start.reg`: the OnlySearch Start menu's black pane, grey field and monochrome search glyph. Import elevated, then `Stop-Process -Name StartMenuExperienceHost` to reload it.
 
 ---
 
 ## Monochrome overrides
 
-The styler mods keep their themes for layout (`LiquidGlass2` for the Start menu, `NoCommandBar` for Explorer, `TranslucentShell` for the notification center); the taskbar has no theme and its shape comes from [`oled-dock.reg`](oled-dock.reg) (rules 25-29). On top of each theme, custom `controlStyles` / `styleConstants` recolour only the colour properties:
+The styler mods keep their themes for layout (`OnlySearch_variant_Minimal` for the Start menu, recoloured by [`oled-start.reg`](oled-start.reg), `NoCommandBar` for Explorer, `TranslucentShell` for the notification center); the taskbar has no theme and its shape comes from [`oled-dock.reg`](oled-dock.reg) (rules 25-29). On top of each theme, custom `controlStyles` / `styleConstants` recolour only the colour properties:
 
 | Theme property | Monochrome value |
 |---|---|

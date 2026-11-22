@@ -11,6 +11,7 @@ prompt tells the agent to compare against them).
 | [`windows-desktop.png`](windows-desktop.png) | Main monitor: YASB top bar with the native menu bar, centred clock, Claude usage and tray; the Windhawk dock with grouped, monochrome icons. |
 | [`windows-top-bar.png`](windows-top-bar.png) | The top bar on its own. |
 | [`windows-dock.png`](windows-dock.png) | The dock on its own: separators between app groups, running dots. |
+| [`windows-start-search.png`](windows-start-search.png) | The search-only Start menu: black pane, dark grey field, monochrome search glyph. |
 | [`windows-second-screen.png`](windows-second-screen.png) | Second monitor: the same top bar, without the tray. |
 
 Setup: [`strata/40-apps/windhawk/`](../../strata/40-apps/windhawk/), [`strata/40-apps/yasb/`](../../strata/40-apps/yasb/),

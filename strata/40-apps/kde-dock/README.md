@@ -7,9 +7,14 @@ match the Windows dock (Windhawk `taskbar-dock-animation`):
   with a smooth falloff, as on macOS and the Windows dock.
 - **Bounce** when an app is launched from the dock.
 - **Running apps** get a dot underneath; the active window's dot is wider.
-- **Dividers:** a thin line after each group of pinned apps listed in the `dividers` setting (the
-  laptop: general use | chat and media | development | gaming), and one between pinned apps and
-  unpinned running apps. Pinned apps stay in their pinned order even when they're running (KDE's
+- **Dividers:** a thin line after each group of pinned apps listed in the `dividers` setting, and
+  one between pinned apps and unpinned running apps. The laptop's groups match the Windows dock:
+  general use (Dolphin, Brave, LibreOffice, LocalSend) | chat and media (Discord, Element, Sonora) |
+  development (Zed, VS Code, Rider, WezTerm, Claude, Antigravity, Zeal) | gaming (Steam, Horizon) |
+  system (System Settings, Filelight, System Monitor, the KDE counterparts of the Windows group).
+  Zeal has no icon in the monochrome theme, so a per-user copy of its launcher
+  (`~/.local/share/applications/org.zealdocs.zeal.desktop`) points at the greyscale `logo-zeal.png`
+  made for the Windows dock. Pinned apps stay in their pinned order even when they're running (KDE's
   model would otherwise leave a window open since login wherever it first appeared).
 - **Clicks:**
   - Left click launches the app, or activates and minimises its window.

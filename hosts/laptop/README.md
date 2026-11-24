@@ -29,6 +29,11 @@ desktop copies. Most of it is KDE settings rather than files, listed here so it 
   `kdepim-runtime`) and the PIM events plugin (`kdepim-addons`); sign in from Merkuro Calendar's
   **Settings → Configure Merkuro Calendar → Accounts** (the menu is in the top panel's global menu).
 
+## Agent tooling
+
+- `python3` (Arch package `python`): needed by the AI usage widget ([`strata/40-apps/ai-usage/`](../../strata/40-apps/ai-usage/)) and by Claude Code's guard hook ([`strata/30-dev/ai/hooks/`](../../strata/30-dev/ai/hooks/)).
+- Agent environment rules: [`ENV.md`](ENV.md), deployed to `~/.agents/ENV.md`.
+
 ## Apply
 
 ```sh

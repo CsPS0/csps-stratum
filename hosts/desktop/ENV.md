@@ -3,6 +3,7 @@
 Deployed to `~/.agents/ENV.md` by `hosts/desktop/setup.ps1`. Edit the copy in csps-stratum, not the deployed file.
 
 - Windows 11 Pro. Repos live in `D:\REPOS\<name>`.
+- Start Claude Code sessions inside a repo, never in the home folder.
 - Default shell is PowerShell 7 (`pwsh`). Write PowerShell unless the tool you are using runs Git Bash.
 - In PowerShell, do not use POSIX-only commands or flags:
   - `rm -rf` → `Remove-Item -Recurse -Force`

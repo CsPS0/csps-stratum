@@ -189,7 +189,8 @@ Live test: in a fresh `claude` session, ask it to run `rm -rf /tmp/guard-hook-te
       "mcp__claude_ai_Google_Calendar__*",
       "mcp__claude_ai_Google_Drive__*",
       "mcp__claude_ai_Gmail__*",
-      "mcp__claude_ai_Vercel__*"
+      "mcp__claude_ai_Vercel__*",
+      "mcp__claude-in-chrome__*"
     ]
   },
   "deniedMcpServers": [
@@ -204,6 +205,7 @@ Live test: in a fresh `claude` session, ask it to run `rm -rf /tmp/guard-hook-te
 
 - **`deniedMcpServers`** stops the terminal from loading these connectors at all. A session then prints "claude.ai MCP servers blocked by enterprise policy: …", which is expected.
 - **The `mcp__claude_ai_*` deny rules** are a second layer, in case a connector is loaded some other way.
+- **`mcp__claude-in-chrome__*`** blocks every Claude in Chrome tool, so Claude Code cannot reach those services through the browser either. The server has the same name in the terminal (`claude --chrome`) and the desktop app. The desktop app's built-in browser (`mcp__Claude_Browser__*`) is a separate server and keeps working. Check with `claude -p --chrome "list your MCP tool prefixes"`: `claude-in-chrome` must not appear.
 - **The desktop app (Windows/macOS) is not covered by either.** It delivers connectors in-process, so only permission rules on the connector's ID-based server name reach them: `mcp__<connector-id>__*`. The snapshot holds placeholders for those; the desktop's real IDs are in its `~/.claude/settings.json`.
 - **Check:** `claude mcp list` should show Claude Docs, Trello and Figma as connected, plus the two plugins, but not Gmail, Google Calendar, Google Drive, Slack or Vercel.
 

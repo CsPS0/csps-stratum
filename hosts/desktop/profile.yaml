@@ -49,10 +49,11 @@ developer_toolchains:
   editors: ["Zed", "VS Code Insiders", "Visual Studio 2026 Insiders", "Rider", "Antigravity"]
 
 ai_assistant_ecosystem:
-  google_antigravity: "Antigravity 2.28.2 (Gemini 3.8, Chrome DevTools, Data Agent Kit, Flutter, GCP, Science)"
-  claude_code: "Claude Code (Sonnet default, Fable advisor; superpowers, claude-mem, ponytail, frontend-design)"
+  google_antigravity: "Antigravity 2.34.0 (Gemini 3.8, Auto preset, sandbox on; Chrome DevTools, Context7, Flutter, Firebase, GCP)"
+  claude_code: "Claude Code (Sonnet default, Fable advisor; superpowers, frontend-design; ponytail in school repos only)"
   openai_codex: "OpenAI Codex CLI (elevated Windows sandbox, computer-use, Zed integration)"
-  shared_mcp: ["Serena MCP", "Context7 MCP", "GitHub MCP", "Dart MCP", "Vercel MCP"]
+  shared_mcp: ["GitHub MCP", "Vercel MCP", "Dart MCP"]
+  shared_rules: "~/.agents/RULES.md (Claude Code and Antigravity)"
 
 system_management:
   disk_tools: ["WinDirStat"]

@@ -2,6 +2,8 @@
 assistant:
   name: "Claude Code"
   config_path: "~/.claude"
+  rules: "~/.claude/CLAUDE.md imports ~/.agents/RULES.md (shared with Antigravity)"
+  memory: "Built-in auto memory only (claude-mem is disabled)"
 
 installed_skills:
   - name: "one-skill-to-rule-them-all"
@@ -14,18 +16,20 @@ installed_skills:
     path: "~/.claude/skills/humanizer"
     role: "Refines player/user-facing text to read naturally without robotic phrasing"
 
+shared_skills:                        # ~/.agents/skills, linked into ~/.claude/skills
+  - "anti-slop-design"
+  - "orca-cli"
+  - "orchestration"
+  - "trello-use"
+
 enabled_plugins:
   planning_and_workflow:
     - name: "superpowers"
       role: "Brainstorming, structured plan creation, subagent dispatch, test-driven dev"
-    - name: "claude-mem"
-      role: "Cross-session memory search, project timeline reports, and design audits"
     - name: "frontend-design"
       role: "Distinctive, production-grade UI and page design"
 
   code_quality_and_editing:
-    - name: "ponytail"
-      role: "Concise, bloat-free code style enforcement and shortcut auditing"
     - name: "claude-md-management"
       role: "Audits and updates CLAUDE.md project memory files"
 
@@ -43,6 +47,10 @@ enabled_plugins:
     - "csharp-lsp"
     - "php-lsp"
 
+project_scoped:                       # set in each repo's .claude/settings.local.json or local MCP scope
+  ponytail: "enabled only in school repos"
+  dart_mcp: "local scope in the Flutter repo"
+  roblox_studio_mcp_and_hooks: "local scope in the Roblox repo"
+
 # Installed but currently disabled in claude-settings.json:
-# serena, context7, deep-project / deep-plan / deep-implement, feature-dev,
-# code-simplifier, security-guidance, claude-security, firecrawl
+# claude-mem (data kept), ponytail (global; on in school repos), security-guidance, claude-security

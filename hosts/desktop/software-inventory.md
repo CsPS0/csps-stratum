@@ -43,15 +43,16 @@ Preserved at [`strata/40-apps/system-tools/`](../../strata/40-apps/system-tools/
 
 Preserved at [`strata/30-dev/ai/`](../../strata/30-dev/ai/):
 
-### Google Antigravity (v2.28.2)
-- Interactive pair-programming environment with Gemini 3.8 Flash/Pro models.
-- **Active Plugins**: `chrome-devtools-plugin`, `data-agent-kit-plugin`, `flutter`, `google-cloud-developer`, `science`, `firebase`, `gemini-api`, `gdocs`, `gsheets`, `gslides`, `gdrive`, `gcalendar`, `android-cli-plugin`.
-- **MCP Servers**: Serena MCP, Context7 MCP, GitHub MCP, Playwright MCP, Vercel MCP, Trello MCP.
+### Google Antigravity (v2.34.0, `agy` CLI 1.5.16)
+- Interactive pair-programming environment with Gemini 3.8 Flash/Pro models. Permission preset Auto, terminal sandbox on, remote control off.
+- **Active Plugins**: `chrome-devtools-plugin`, `context7`, `flutter`, `firebase`, `gemini-api`, `google-cloud-developer`, `google-antigravity-sdk`, `modern-web-guidance-plugin`, `android-cli-plugin`.
+- **MCP Servers**: Serena MCP, GitHub MCP, Vercel MCP, Trello MCP (Context7 and Dart MCP come from their plugins).
 
 ### Claude Code CLI
 - Terminal assistant with high-effort planning and subagent dispatch.
-- **Skills**: `one-skill-to-rule-them-all`, `graphify`, `humanizer`.
-- **Enabled Plugins**: `superpowers`, `claude-mem`, `ponytail`, `frontend-design`, `commit-commands`, `claude-md-management`, `github`, `vercel`, `typescript-lsp`, `pyright-lsp`, `csharp-lsp`, `php-lsp`.
+- **Skills**: `one-skill-to-rule-them-all`, `graphify`, `humanizer`, plus the shared `anti-slop-design`, `orca-cli`, `orchestration`, `trello-use`.
+- **Enabled Plugins**: `superpowers`, `frontend-design`, `commit-commands`, `claude-md-management`, `github`, `vercel`, `typescript-lsp`, `pyright-lsp`, `csharp-lsp`, `php-lsp`. `ponytail` is enabled only in school repos; `claude-mem` is disabled.
+- **MCP Servers**: Horizon (all projects), Dart MCP (Flutter repo only), Roblox Studio MCP (Roblox repo only).
 
 ### OpenAI Codex CLI
 - Sandboxed execution runtime with direct `zed` editor integration.

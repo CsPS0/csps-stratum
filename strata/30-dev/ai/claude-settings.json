@@ -1,49 +1,78 @@
 {
   "permissions": {
-    "defaultMode": "auto"
+    "defaultMode": "auto",
+    "deny": [
+      "Read(~/.ssh/**)",
+      "Edit(~/.ssh/**)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Bash(git push --force)",
+      "Bash(git push --force *)",
+      "Bash(git push -f)",
+      "Bash(git push -f *)",
+      "PowerShell(git push --force)",
+      "PowerShell(git push --force *)",
+      "PowerShell(git push -f)",
+      "PowerShell(git push -f *)",
+      "PowerShell(Remove-Item *-Recurse*-Force*)",
+      "PowerShell(Remove-Item *-Force*-Recurse*)"
+    ],
+    "ask": [
+      "Bash(git push --force-with-lease*)",
+      "PowerShell(git push --force-with-lease*)",
+      "Bash(flutter build *)",
+      "Bash(dart compile *)",
+      "PowerShell(flutter build *)",
+      "PowerShell(dart compile *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pwsh -NoProfile -File C:/Users/<you>/.claude/hooks/guard-destructive.ps1",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "autoMode": {
+    "soft_deny": [
+      "$defaults",
+      "Pala release builds: in the pala repo (including its subfolders and git worktrees), do not run any flutter build or dart compile command unless my current message names that build. Release binaries come from CI. A request to test or deploy does not count as a request to build."
+    ],
+    "environment": [
+      "$defaults",
+      "Source control: repos I own under github.com/CsPS0. Forks there contain third-party code, so treat their upstream code as external",
+      "Deploy target: Vercel team csps-productions",
+      "Primary use: personal and school software development on Windows 11 (Flutter, web, Roblox, Minecraft modding)",
+      "Local repos: D:\\REPOS\\<name>; routine reads and edits inside the current repo are expected day-to-day work",
+      "Repository visibility: all CsPS0 repos are PUBLIC except the private ones named in the live config. Never copy content from a private repo into a public one, and never push credentials or personal data to any repo"
+    ]
   },
   "model": "sonnet",
   "enableWorkflows": true,
   "enabledPlugins": {
-    "atlassian@claude-plugins-official": false,
-    "browser-use@claude-plugins-official": false,
-    "claude-code-setup@claude-plugins-official": false,
     "claude-md-management@claude-plugins-official": true,
-    "claude-mem@thedotmack": true,
+    "claude-mem@thedotmack": false,
     "claude-security@claude-plugins-official": false,
-    "code-simplifier@claude-plugins-official": false,
     "commit-commands@claude-plugins-official": true,
-    "context7@claude-plugins-official": false,
     "csharp-lsp@claude-plugins-official": true,
-    "deep-implement@piercelamb-plugins": false,
-    "deep-plan@piercelamb-plugins": false,
-    "deep-project@piercelamb-plugins": false,
-    "exa@claude-plugins-official": false,
-    "feature-dev@claude-plugins-official": false,
-    "firecrawl@claude-plugins-official": false,
     "frontend-design@claude-plugins-official": true,
     "github@claude-plugins-official": true,
-    "gitlab@claude-plugins-official": false,
-    "headroom@headroom-marketplace": false,
-    "linear@claude-plugins-official": false,
     "php-lsp@claude-plugins-official": true,
-    "playwright@claude-plugins-official": false,
-    "ponytail@ponytail": true,
+    "ponytail@ponytail": false,
     "pyright-lsp@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": false,
-    "serena@claude-plugins-official": false,
-    "skill-creator@claude-plugins-official": false,
     "superpowers@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
     "vercel@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
-    "piercelamb-plugins": {
-      "source": {
-        "source": "github",
-        "repo": "piercelamb/deep-project"
-      }
-    },
     "ponytail": {
       "source": {
         "source": "github",
@@ -55,12 +84,6 @@
         "source": "github",
         "repo": "thedotmack/claude-mem"
       }
-    },
-    "headroom-marketplace": {
-      "source": {
-        "source": "github",
-        "repo": "headroomlabs-ai/headroom"
-      }
     }
   },
   "modelSettings": {
@@ -70,7 +93,7 @@
   },
   "advisorModel": "fable",
   "autoUpdatesChannel": "latest",
-  "skipDangerousModePermissionPrompt": true,
+  "skipDangerousModePermissionPrompt": false,
   "theme": "dark",
   "switchModelsOnFlag": true
 }

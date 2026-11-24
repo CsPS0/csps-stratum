@@ -1,28 +1,46 @@
 # Google Antigravity Configuration & Tooling Profile
 assistant:
   name: "Google Antigravity"
-  version: "2.28.2"
+  version: "2.34.0"
+  cli: "agy 1.5.16"
   config_path: "~/.gemini"
 
-installed_plugins:
+permissions:
+  preset: "Auto"                      # Settings > General > Global Permissions > Permission Preset
+  terminal_sandbox: true              # config.json enableTerminalSandbox, CLI enableTerminalSandbox
+  non_workspace_file_access: "ask"    # CLI allowNonWorkspaceAccess: false
+  remote_control: false
+  cli_deny_rules:                     # ~/.gemini/antigravity-cli/settings.json permissions.deny
+    - "read_file / write_file on ~/.ssh"
+    - "git push --force and -f (prefix and regex forms)"
+    - "rm -rf / Remove-Item -Recurse -Force (prefix and regex forms)"
+    - "format, diskpart, reg delete"
+
+rules:
+  global_file: "~/.gemini/GEMINI.md"
+  includes: "~/.agents/RULES.md (shared with Claude Code)"
+
+enabled_plugins:
   - id: "chrome-devtools-plugin"
     role: "Browser automation, DOM inspection, accessibility & cookie debugging"
-  - id: "data-agent-kit-plugin"
-    role: "BigQuery, Spark, Dataproc, and data pipeline management"
+  - id: "context7"
+    role: "Live library documentation (hosted MCP at mcp.context7.com)"
   - id: "flutter"
-    role: "Dart & Flutter static analysis, testing, and widget inspection"
-  - id: "google-cloud-developer"
-    role: "Google Cloud Platform CLI tools and architecture recipes"
-  - id: "science"
-    role: "Scientific research, AlphaFold, PDB, NCBI, and literature search"
+    role: "Dart & Flutter analysis, testing, and widget inspection (starts dart mcp-server)"
   - id: "firebase"
     role: "Firebase hosting, authentication, rules, and Firestore"
   - id: "gemini-api"
     role: "Gemini 3.x API development, Live streaming, and multimodal integration"
-  - id: "gworkspace"
-    role: "Docs, Sheets, Slides, Drive, and Calendar tools"
+  - id: "google-cloud-developer"
+    role: "Google Cloud Platform CLI tools and architecture recipes"
+  - id: "google-antigravity-sdk"
+    role: "Antigravity SDK guidance"
+  - id: "modern-web-guidance-plugin"
+    role: "Current web platform guidance"
   - id: "android-cli-plugin"
     role: "Android CLI, virtual devices, and SDK component management"
+
+disabled_plugins: ["data-agent-kit-plugin", "science", "science-overview", "google_maps_platform", "google-developer-knowledge", "gcalendar", "gdocs", "gdrive", "gsheets", "gslides"]
 
 builtin_skills:
   - "agy-customizations (Customization system guide & loader)"
@@ -32,18 +50,21 @@ builtin_skills:
   - "ui-plugin-navigation (UI plugin toggle and discovery)"
   - "antigravity_guide (Comprehensive CLI & IDE guide)"
 
-mcp_servers:
+shared_skills:                        # ~/.agents/skills, linked into ~/.gemini/config/skills
+  - "anti-slop-design"
+  - "orca-cli"
+  - "orchestration"
+  - "trello-use"
+
+mcp_servers:                          # ~/.gemini/config/mcp_config.json
   serena:
     type: "semantic_code_intelligence"
     tools: ["find_symbol", "replace_symbol_body", "get_symbols_overview", "find_declaration"]
-  context7:
-    type: "live_documentation"
-    tools: ["resolve-library-id", "query-docs"]
   github:
     type: "repository_management"
-  playwright:
-    type: "headless_browser_automation"
   vercel:
     type: "cloud_deployment"
-  dart-mcp-server:
-    type: "dart_language_server"
+  trello:
+    type: "task_boards"
+  # context7 and dart-mcp-server come from the context7 and flutter plugins;
+  # browser debugging comes from chrome-devtools-plugin (playwright and browser-use removed).

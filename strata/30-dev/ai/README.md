@@ -14,34 +14,39 @@ This layer orchestrates the workstation's multi-agent AI coding ecosystem, stand
 
 ---
 
-## Unified MCP Ecosystem
+## MCP Servers
 
-All three assistants share standard access to essential Model Context Protocol servers:
+Each assistant gets only the servers it uses. Claude Code scopes the game and Flutter servers to their repos.
 
 ```mermaid
 graph TD
     AGY["Google Antigravity"] --> Serena["Serena MCP (Symbol Navigation & Surgical Edits)"]
-    Claude["Claude Code"] --> Serena
-    Codex["OpenAI Codex"] --> Serena
-
-    AGY --> Context7["Context7 MCP (Live Verified Documentation)"]
-    Claude --> Context7
-    Codex --> Context7
+    AGY --> Context7["Context7 MCP (via the context7 plugin)"]
+    Codex["OpenAI Codex"] --> Context7
 
     AGY --> GH["GitHub MCP (PRs, Issues & Repositories)"]
-    Claude --> GH
+    Claude["Claude Code"] --> GH
     Codex --> GH
 
-    AGY --> DartMCP["Dart MCP (Flutter Analysis & Diagnostics)"]
-    Claude --> DartMCP
+    AGY --> DartMCP["Dart MCP (via the flutter plugin)"]
+    Claude -->|"Flutter repo only"| DartMCP
     Codex --> DartMCP
+
+    Claude -->|"Roblox repo only"| Roblox["Roblox Studio MCP"]
+    Claude --> Horizon["Horizon MCP (Minecraft)"]
 ```
+
+## Shared Rules and Skills
+
+- Both Claude Code and Antigravity load the same rules file, `~/.agents/RULES.md`: Claude Code through `@~/.agents/RULES.md` in `~/.claude/CLAUDE.md`, Antigravity through an include in `~/.gemini/GEMINI.md`. It covers Windows shell rules, tool preferences, which agent owns which kind of work, and the `HANDOFF.md` handoff routine.
+- Shared skills live once in `~/.agents/skills` and are linked into `~/.claude/skills` and `~/.gemini/config/skills`.
+- Claude Code runs a `PreToolUse` guard hook (`~/.claude/hooks/guard-destructive.ps1`) that blocks force pushes and recursive deletes outside the repo root.
 
 ---
 
 ## Universal Non-Negotiable Hard Rules
 
-Regardless of which assistant is executing a session, all tools adhere to the shared agent rules (kept locally in `AGENTS.md`, which is not published):
+Regardless of which assistant is executing a session, all tools adhere to the shared agent rules: `~/.agents/RULES.md` on each machine (Claude Code and Antigravity), plus each repo's local `AGENTS.md`, which is not published:
 1. **Zero AI Attribution**: No `Co-Authored-By:` or `Generated with...` lines in commits, pull requests, or code headers.
 2. **Absolute Secret Hygiene**: Never commit keys, session tokens, or personal identifiers.
 3. **Verify Before Declaring Complete**: Always run local syntax and dry-run tests before concluding work.

@@ -15,7 +15,17 @@
       "PowerShell(git push -f)",
       "PowerShell(git push -f *)",
       "PowerShell(Remove-Item *-Recurse*-Force*)",
-      "PowerShell(Remove-Item *-Force*-Recurse*)"
+      "PowerShell(Remove-Item *-Force*-Recurse*)",
+      "mcp__<slack-connector-id>__*",
+      "mcp__<google-calendar-connector-id>__*",
+      "mcp__<google-drive-connector-id>__*",
+      "mcp__<gmail-connector-id>__*",
+      "mcp__<vercel-connector-id>__*",
+      "mcp__claude_ai_Slack__*",
+      "mcp__claude_ai_Google_Calendar__*",
+      "mcp__claude_ai_Google_Drive__*",
+      "mcp__claude_ai_Gmail__*",
+      "mcp__claude_ai_Vercel__*"
     ],
     "ask": [
       "Bash(git push --force-with-lease*)",
@@ -26,6 +36,13 @@
       "PowerShell(dart compile *)"
     ]
   },
+  "deniedMcpServers": [
+    { "serverName": "claude.ai Slack" },
+    { "serverName": "claude.ai Google Calendar" },
+    { "serverName": "claude.ai Google Drive" },
+    { "serverName": "claude.ai Gmail" },
+    { "serverName": "claude.ai Vercel" }
+  ],
   "hooks": {
     "PreToolUse": [
       {

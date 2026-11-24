@@ -179,7 +179,33 @@ Check the scratch directory once: in a `claude` session, the system prompt's "Sc
 Live test: in a fresh `claude` session, ask it to run `rm -rf /tmp/guard-hook-test-does-not-exist`. It should be refused with "Blocked by guard-destructive hook".
 - Check JSON after editing: `python -m json.tool ~/.claude/settings.json >/dev/null && echo ok`.
 
-**claude.ai connectors:** open `/mcp` in `claude` and turn off Gmail, Slack, Google Drive, Google Calendar and Vercel for Claude Code if they are on. Keep Trello, Figma, Claude Docs.
+**claude.ai connectors:** block Gmail, Google Calendar, Google Drive, Slack and the Vercel connector in Claude Code without disconnecting them from your account, so they keep working in the claude.ai chat. Trello, Figma, Claude Docs and the github and vercel plugins stay on. On the laptop, Claude Code runs in the terminal, so two layers apply. Merge both into `~/.claude/settings.json`; keep your existing entries:
+
+```json
+{
+  "permissions": {
+    "deny": [
+      "mcp__claude_ai_Slack__*",
+      "mcp__claude_ai_Google_Calendar__*",
+      "mcp__claude_ai_Google_Drive__*",
+      "mcp__claude_ai_Gmail__*",
+      "mcp__claude_ai_Vercel__*"
+    ]
+  },
+  "deniedMcpServers": [
+    { "serverName": "claude.ai Slack" },
+    { "serverName": "claude.ai Google Calendar" },
+    { "serverName": "claude.ai Google Drive" },
+    { "serverName": "claude.ai Gmail" },
+    { "serverName": "claude.ai Vercel" }
+  ]
+}
+```
+
+- **`deniedMcpServers`** stops the terminal from loading these connectors at all. A session then prints "claude.ai MCP servers blocked by enterprise policy: …", which is expected.
+- **The `mcp__claude_ai_*` deny rules** are a second layer, in case a connector is loaded some other way.
+- **The desktop app (Windows/macOS) is not covered by either.** It delivers connectors in-process, so only permission rules on the connector's ID-based server name reach them: `mcp__<connector-id>__*`. The snapshot holds placeholders for those; the desktop's real IDs are in its `~/.claude/settings.json`.
+- **Check:** `claude mcp list` should show Claude Docs, Trello and Figma as connected, plus the two plugins, but not Gmail, Google Calendar, Google Drive, Slack or Vercel.
 
 ## 6. Per-repo, git-ignored pieces (not in the snapshot)
 

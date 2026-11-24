@@ -20,7 +20,13 @@ shared_skills:                        # ~/.agents/skills, linked into ~/.claude/
   - "anti-slop-design"
   - "orca-cli"
   - "orchestration"
+  - "security-audit"
   - "trello-use"
+
+pinned_skills:                        # installed with `npx skills add ... --global`; commit from ~/.agents/.skill-lock.json
+  security-audit:
+    source: "https://github.com/cloudflare/security-audit-skill"
+    commit: "c1c8a8c1471069fb0e188eeaff69b8e8db6564a8"
 
 enabled_plugins:
   planning_and_workflow:
@@ -53,4 +59,4 @@ project_scoped:                       # set in each repo's .claude/settings.loca
   roblox_studio_mcp_and_hooks: "local scope in the Roblox repo"
 
 # Installed but currently disabled in claude-settings.json:
-# claude-mem (data kept), ponytail (global; on in school repos), security-guidance, claude-security
+# claude-mem (data kept), ponytail (global; on in school repos), security-guidance

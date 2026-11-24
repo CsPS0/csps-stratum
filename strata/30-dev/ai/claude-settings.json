@@ -59,7 +59,6 @@
   "enabledPlugins": {
     "claude-md-management@claude-plugins-official": true,
     "claude-mem@thedotmack": false,
-    "claude-security@claude-plugins-official": false,
     "commit-commands@claude-plugins-official": true,
     "csharp-lsp@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,

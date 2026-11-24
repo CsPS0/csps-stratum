@@ -54,6 +54,7 @@ shared_skills:                        # ~/.agents/skills, linked into ~/.gemini/
   - "anti-slop-design"
   - "orca-cli"
   - "orchestration"
+  - "security-audit"
   - "trello-use"
 
 mcp_servers:                          # ~/.gemini/config/mcp_config.json

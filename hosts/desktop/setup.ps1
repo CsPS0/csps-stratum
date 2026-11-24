@@ -116,6 +116,8 @@ Ensure-SymlinkOrCopy -SourcePath (Join-Path $repoRoot "strata\40-apps\zed\themes
 Ensure-SymlinkOrCopy -SourcePath (Join-Path $repoRoot "strata\40-apps\vscode\settings.json") -TargetPath (Join-Path $env:APPDATA "Code - Insiders\User\settings.json")
 Ensure-SymlinkOrCopy -SourcePath (Join-Path $repoRoot "strata\40-apps\sonora\settings.json") -TargetPath (Join-Path $env:APPDATA "sonora\settings.json")
 Ensure-SymlinkOrCopy -SourcePath (Join-Path $repoRoot "strata\40-apps\vencord\settings.json") -TargetPath (Join-Path $env:APPDATA "Vencord\settings\settings.json")
+# Machine-specific agent rules, imported by ~/.claude/CLAUDE.md and ~/.gemini/GEMINI.md
+Ensure-SymlinkOrCopy -SourcePath (Join-Path $repoRoot "hosts\desktop\ENV.md") -TargetPath (Join-Path $HOME ".agents\ENV.md")
 
 # 4. Verify Developer Toolchains
 Write-Host "`n[4/8] Checking Developer Toolchains..." -ForegroundColor White

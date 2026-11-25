@@ -106,9 +106,56 @@ def when(iso):
 
 # ---------------------------------------------------------------- Claude
 
+# Browsers start claude.exe (through cmd) as the Claude browser extension's native messaging host.
+# That copy runs whenever the browser does, so it doesn't count as Claude being open.
+BROWSERS = {"brave.exe", "chrome.exe", "msedge.exe", "firefox.exe", "vivaldi.exe", "opera.exe", "arc.exe"}
+
+
+def win_process_tree():
+    """{pid: (parent pid, lower-case exe name)} from a Toolhelp snapshot (Windows only)."""
+    import ctypes
+    from ctypes import wintypes
+
+    class Entry(ctypes.Structure):
+        _fields_ = [("dwSize", wintypes.DWORD), ("cntUsage", wintypes.DWORD),
+                    ("th32ProcessID", wintypes.DWORD), ("th32DefaultHeapID", ctypes.c_size_t),
+                    ("th32ModuleID", wintypes.DWORD), ("cntThreads", wintypes.DWORD),
+                    ("th32ParentProcessID", wintypes.DWORD), ("pcPriClassBase", wintypes.LONG),
+                    ("dwFlags", wintypes.DWORD), ("szExeFile", wintypes.WCHAR * 260)]
+
+    k32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    k32.CreateToolhelp32Snapshot.restype = wintypes.HANDLE
+    k32.Process32FirstW.argtypes = k32.Process32NextW.argtypes = [wintypes.HANDLE, ctypes.POINTER(Entry)]
+    snap = k32.CreateToolhelp32Snapshot(0x2, 0)  # TH32CS_SNAPPROCESS
+    tree = {}
+    if not snap or snap == wintypes.HANDLE(-1).value:
+        return tree
+    try:
+        e = Entry(dwSize=ctypes.sizeof(Entry))
+        ok = k32.Process32FirstW(snap, ctypes.byref(e))
+        while ok:
+            tree[e.th32ProcessID] = (e.th32ParentProcessID, e.szExeFile.lower())
+            ok = k32.Process32NextW(snap, ctypes.byref(e))
+    finally:
+        k32.CloseHandle(snap)
+    return tree
+
+
+def browser_hosted(pid, tree):
+    for _ in range(3):  # claude.exe <- cmd.exe <- browser
+        pid = tree.get(pid, (0, ""))[0]
+        if tree.get(pid, (0, ""))[1] in BROWSERS:
+            return True
+    return False
+
+
 def claude_running(procs):
-    names = {"claude.exe"} if WIN else {"claude", "claude-desktop"}
-    return any(name in names for _, name, _ in procs)
+    if WIN:
+        tree = win_process_tree()
+        if tree:
+            return any(name == "claude.exe" and not browser_hosted(pid, tree) for pid, (_, name) in tree.items())
+        return any(name == "claude.exe" for _, name, _ in procs)
+    return any(name in {"claude", "claude-desktop"} and "--chrome-native-host" not in argv for _, name, argv in procs)
 
 
 def claude_token():

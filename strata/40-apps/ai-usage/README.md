@@ -10,7 +10,9 @@ Claude 37% used    Antigravity 12% used
 - **Antigravity:** the most-used model. Shown while Antigravity runs.
 - **Click** for a dropdown with every limit (Claude: 5-hour and 7-day; Antigravity: each model),
   its bar, percent used and reset time. Click again, press Esc or click elsewhere to close it.
-- Each one disappears when its app is closed, and takes no room in the bar.
+- Each one disappears when its app is closed, and takes no room in the bar. The `claude.exe` a
+  browser starts for the Claude browser extension (Brave → `cmd` → `claude.exe`) doesn't count as
+  Claude being open; it runs whenever the browser does.
 
 | File | Deploys to | Purpose |
 |---|---|---|

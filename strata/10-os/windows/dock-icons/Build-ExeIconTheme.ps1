@@ -110,11 +110,34 @@ foreach ($m in $map) {
     $base = Join-Path $work ([IO.Path]::GetFileNameWithoutExtension($dll))
     Set-Content -Path "$base.rc" -Value "$group ICON `"$($ico.Replace('\', '\\'))`"" -Encoding ascii
     & $rc /nologo /fo "$base.res" "$base.rc" | Out-Null
-    if ($LASTEXITCODE) { throw "rc failed for $dll" }
-    & $link /nologo /dll /noentry /machine:x64 "/out:$(Join-Path $OutDir $dll)" "$base.res" | Out-Null
-    if ($LASTEXITCODE) { throw "link failed for $dll" }
+    if ($LASTEXITCODE) { Write-Host "  [FAIL] $dll (rc)"; continue }
+    # Link in the work folder: the icon mod keeps the theme DLL loaded in every running program that
+    # asked for that icon (Discord, Element, WezTerm...), so the file in $OutDir is often locked
+    & $link /nologo /dll /noentry /machine:x64 "/out:$base.dll" "$base.res" | Out-Null
+    if ($LASTEXITCODE) { Write-Host "  [FAIL] $dll (link)"; continue }
+    $target = Join-Path $OutDir $dll
+    if (Test-Path -LiteralPath $target) {
+        # the linker stamps the time into the DLL, so compare the icon that went in instead
+        $stamp = "$target.icon"
+        if ((Test-Path -LiteralPath $stamp) -and (Get-Content -LiteralPath $stamp -Raw).Trim() -eq (Get-FileHash -LiteralPath $ico).Hash) {
+            Write-Host "  [SAME] $dll"; continue
+        }
+        try { Remove-Item -LiteralPath $target -Force -ErrorAction Stop }
+        catch {
+            # A loaded DLL can't be deleted or overwritten, but it can be renamed out of the way;
+            # programs that have it loaded keep the old icon until they restart
+            Rename-Item -LiteralPath $target -NewName "$dll.old-$(Get-Date -Format 'yyyyMMddHHmmss')"
+            Write-Host "  [INFO] $dll was in use; the old copy was renamed and goes away on a later run"
+        }
+    }
+    Move-Item -LiteralPath "$base.dll" -Destination $target
+    Set-Content -LiteralPath "$target.icon" -Value (Get-FileHash -LiteralPath $ico).Hash -Encoding ascii
     Write-Host "  [BUILD] $dll ($($exe.Name) icon $group)"
 }
+
+# Old copies renamed above can be deleted once no program has them loaded
+Get-ChildItem -Path $OutDir -Filter '*.dll.old-*' -ErrorAction SilentlyContinue |
+    ForEach-Object { Remove-Item -LiteralPath $_.FullName -Force -ErrorAction SilentlyContinue }
 
 if ($PSCmdlet.ShouldProcess((Join-Path $OutDir 'theme.ini'), 'Write')) {
     New-Item -ItemType Directory -Path $OutDir -Force | Out-Null

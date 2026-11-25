@@ -89,6 +89,21 @@ Needs `rc.exe` (Windows SDK) and `link.exe` (MSVC build tools).
 ```
 
 Apps pick the icon up when they next start. Rebuild after an app update that moves its files.
+The icon mod keeps a theme DLL loaded in every running program that asked for that icon, so the
+file is often locked (Discord, Element, WezTerm). The script links in a temp folder, skips icons
+that haven't changed, renames a locked DLL out of the way (`*.dll.old-*`, deleted on a later run)
+and keeps going if one program fails. `-Register` only needs an elevated session the first time;
+after that it reports the theme as already registered.
+
+### After an app update turns an icon colourful again
+
+Updaters (GitHub Desktop's, for example) re-create the pinned shortcut as `<App> (2).lnk` with the
+app's own icon and move the program to a new `app-<version>` folder. On the desktop,
+`D:\Tools\Scripts\refresh-grey-icons.bat` does the whole fix: `Set-DockIcons.ps1 -IncludeStartMenu`,
+`Build-ExeIconTheme.ps1 -Register`, an Explorer restart (the taskbar caches pinned icons), then it
+starts YASB and the menu bar again if the restart stopped them. Run it from Explorer or your own
+terminal, not from a shell inside the Claude app: that app's writes under `AppData` (where the
+pins live) go to its private package store.
 What it reaches depends on how each app loads its window icon:
 
 | Window icon changes | Window icon stays | Why |

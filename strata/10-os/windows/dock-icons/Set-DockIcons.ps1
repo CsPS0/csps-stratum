@@ -98,6 +98,6 @@ foreach ($j in $jobs) {
     }
 }
 if ($manifest) {
-    $manifest | Export-Csv (Join-Path $backup 'manifest.csv') -NoTypeInformation
+    $manifest | Export-Csv (Join-Path $backup 'manifest.csv')
     Write-Host "Backup: $backup"
 }

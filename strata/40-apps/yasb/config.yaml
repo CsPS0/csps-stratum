@@ -1,81 +1,16 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/amnweb/yasb/main/schema.json
 
 # Monochrome top bar, laid out like the KDE laptop's top panel and the macOS menu bar:
-# app menu on the left, date/time and next event in the exact centre (centre-bar), the rest on the right.
-# The other screen gets the app menu (menubar.exe) and the clock.
+# app name and the rest of menubar.exe's strip on the left, date/time and next event in the exact
+# centre (centre-bar), the rest on the right. Both screens get the same two bars.
+# The bars float: 6 px from the screen's top and sides, 32 px tall, rounded (styles.css), and the
+# 6 px below them is reserved too, so maximised windows keep a gap. menubar.cpp has the same numbers.
 watch_stylesheet: true
 watch_config: true
 debug: false
-update_check: false
+update_check: true
 bars:
-  primary-bar:
-    enabled: true
-    screens: ['primary']
-    class_name: yasb-bar
-    alignment:
-      position: top
-      align: center
-    animation:
-      enabled: false
-    blur_effect:
-      enabled: false
-    window_flags:
-      always_on_top: true   # stays over a full-screen app left behind another window (a game behind Claude)
-      windows_app_bar: true
-      hide_on_fullscreen: true   # and gets out of the way while that app is focused
-    dimensions:
-      width: 100%
-      height: 30
-    padding:
-      top: 0
-      left: 0
-      bottom: 0
-      right: 0
-    widgets:
-      # left end is drawn by menubar.exe (Windows logo, app name, File/Edit/View...), see menubar\
-      left: []
-      center: []   # the date/time and next event live in centre-bar, pinned to the exact middle
-      right:
-      - claude_usage
-      - antigravity_usage
-      - systray
-      - language
-      - microphone
-      - volume
-      - notifications
-  centre-bar:
-    # YASB centres the middle section only within its share of the bar, and the right side is much
-    # wider than the left, so the clock sat left of centre. This fixed-width bar is centred on the
-    # screen itself. Not an app bar (the main bar already reserves the space), kept above it.
-    enabled: true
-    screens: ['primary']
-    class_name: yasb-bar
-    alignment:
-      position: top
-      align: center
-    animation:
-      enabled: false
-    blur_effect:
-      enabled: false
-    window_flags:
-      always_on_top: true
-      windows_app_bar: false
-      hide_on_fullscreen: true
-    dimensions:
-      width: 560
-      height: 30
-    padding:
-      top: 0
-      left: 0
-      bottom: 0
-      right: 0
-    widgets:
-      left: []
-      center:
-      - clock
-      - calendar_event
-      right: []
-  secondary-bar:
+  top-bar:
     enabled: true
     screens: ['*']
     class_name: yasb-bar
@@ -92,18 +27,70 @@ bars:
       hide_on_fullscreen: true   # and gets out of the way while that app is focused
     dimensions:
       width: 100%
+      height: 32
+    padding:
+      top: 6
+      left: 6
+      bottom: 6
+      right: 6
+    layouts:
+      # the left section's widgets sit at its right end, just left of the clock; menubar.exe's strip
+      # stops short of them ([bar] reserve in menubar.ini)
+      left:
+        alignment: right
+        stretch: true
+    widgets:
+      # left end is drawn by menubar.exe: app name, desktop dots (2+ desktops), what's playing with
+      # its visualizer; see menubar\
+      left:
+      - cpu
+      - memory
+      - gpu
+      - weather
+      center: []   # the date/time and next event live in centre-bar, pinned to the exact middle
+      right:
+      - claude_usage
+      - antigravity_usage
+      - systray
+      - language
+      - microphone
+      - volume
+      - notifications
+      - power
+  centre-bar:
+    # YASB centres the middle section only within its share of the bar, and the right side is much
+    # wider than the left, so the clock sat left of centre. This bar is centred on the screen itself
+    # and only as wide as the clock and event, so the main bar's right side can use the rest (a fixed
+    # 560 px covered the start of the Claude usage once the tray grew). Not an app bar (the main bar
+    # already reserves the space), kept above it, and drawn inside the main bar's 1 px outline.
+    enabled: true
+    screens: ['*']
+    class_name: centre-bar
+    alignment:
+      position: top
+      align: center
+    animation:
+      enabled: false
+    blur_effect:
+      enabled: false
+    window_flags:
+      always_on_top: true
+      windows_app_bar: false
+      hide_on_fullscreen: true
+    dimensions:
+      width: auto
       height: 30
     padding:
-      top: 0
+      top: 7
       left: 0
       bottom: 0
       right: 0
     widgets:
-      # left end is drawn by menubar.exe here too (Windows logo, app name, menus; dimmed when the focused app is on the other screen)
       left: []
       center:
       - clock
       - calendar_event
+      - quick_apps
       right: []
 widgets:
   calendar_event:
@@ -295,3 +282,107 @@ widgets:
         on_left: toggle_notification
         on_right: do_nothing
         on_middle: do_nothing
+  cpu:
+    # click: small popup with a 2-minute graph, usage, frequency and cores; right-click: frequency
+    type: yasb.cpu.CpuWidget
+    options:
+      label: "CPU {info[percent][total]}%"
+      label_alt: "CPU {info[freq][current]:.0f} MHz"
+      update_interval: 2000
+      hide_decimal: true
+      menu: &stats_menu
+        enabled: true
+        blur: false
+        round_corners: true
+        round_corners_type: normal
+        border_color: None
+        alignment: center
+        direction: down
+        offset_top: 6
+        graph_history_size: 60
+        show_graph: true
+        show_graph_grid: false
+      callbacks:
+        on_left: toggle_menu
+        on_middle: do_nothing
+        on_right: toggle_label
+  memory:
+    # click: popup with graph, used / free / committed; right-click: used of total
+    type: yasb.memory.MemoryWidget
+    options:
+      label: "RAM {virtual_mem_percent}%"
+      label_alt: "RAM {virtual_mem_used}/{virtual_mem_total}"
+      update_interval: 2000
+      hide_decimal: true
+      menu: *stats_menu
+      callbacks:
+        on_left: toggle_menu
+        on_middle: do_nothing
+        on_right: toggle_label
+  gpu:
+    # NVIDIA (NVML) load; click: popup with load and temperature graphs, VRAM; right-click: VRAM
+    type: yasb.gpu.GpuWidget
+    options:
+      label: "GPU {info[utilization]}%"
+      label_alt: "GPU {info[mem_used]}/{info[mem_total]}"
+      update_interval: 2000
+      hide_decimal: true
+      menu: *stats_menu
+      callbacks:
+        on_left: toggle_menu
+        on_middle: do_nothing
+        on_right: toggle_label
+  weather:
+    # Open-Meteo (free, no account). The first click asks for your city (search in the popup); it's
+    # saved by YASB in its own weather.json, not in this repo. Click: forecast card.
+    type: yasb.open_meteo.OpenMeteoWidget
+    options:
+      label: "<span>{icon}</span> {temp}"
+      label_alt: "{location} {temp}"
+      update_interval: 1800
+      hide_decimal: true
+      units: metric
+      forecast_days: 5
+      tooltip: true
+      weather_card:
+        # compact: small icons, 5 days, no hourly strip (it drew see-through and cut off its icons)
+        blur: false
+        round_corners: true
+        round_corners_type: normal
+        border_color: None
+        alignment: center
+        direction: down
+        offset_top: 6
+        icon_size: 32
+        show_hourly_forecast: false
+        time_format: 24h
+      callbacks:   # without these a click does nothing (YASB's default), so setup can't open
+        on_left: toggle_card
+        on_middle: do_nothing
+        on_right: toggle_label
+  quick_apps:
+    # Icon buttons next to the clock: File Explorer, WezTerm, Task Manager, Settings
+    type: yasb.applications.ApplicationsWidget
+    options:
+      label: "{data}"
+      class_name: quick-apps
+      tooltip: true
+      app_list:
+      - { icon: "", launch: "explorer.exe", name: "File Explorer" }
+      - { icon: "", launch: "wezterm-gui", name: "WezTerm" }
+      - { icon: "", launch: "taskmgr", name: "Task Manager" }
+      - { icon: "", launch: "start ms-settings:", name: "Settings" }
+  power:
+    # Opens menubar.exe's power menu (menubar.ini [power]), whose Restart and Shut Down sign back in
+    # and lock on the next boot. YASB's own power menu runs plain shutdown /r, which stops at the
+    # pre-sign-in screen.
+    type: yasb.custom.CustomWidget
+    options:
+      label: ""
+      label_alt: ""
+      class_name: power-widget
+      tooltip: false
+      callbacks:
+        on_left: 'exec %USERPROFILE%\.config\yasb\menubar\menubar.exe --menu power'
+        on_middle: do_nothing
+        on_right: do_nothing

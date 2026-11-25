@@ -29,14 +29,20 @@ if ($PSCmdlet.ShouldProcess($OutDir, 'Build and install menubar.exe and menubar.
     New-Item -ItemType Directory -Path $obj, $OutDir -Force | Out-Null
     $src = Join-Path $PSScriptRoot 'menubar.cpp'
     $tmpExe = Join-Path $obj 'menubar.exe'
-    cmd /c "`"$vcvars`" >nul && cl /nologo /O2 /EHsc /W3 /utf-8 /DUNICODE /D_UNICODE /Fo`"$obj\\`" `"$src`" /Fe:`"$tmpExe`" /link /SUBSYSTEM:WINDOWS"
+    cmd /c "`"$vcvars`" >nul && cl /nologo /O2 /EHsc /W3 /std:c++17 /utf-8 /DUNICODE /D_UNICODE /Fo`"$obj\\`" `"$src`" /Fe:`"$tmpExe`" /link /SUBSYSTEM:WINDOWS"
     if ($LASTEXITCODE) { throw 'build failed' }
     Get-Process menubar -ErrorAction SilentlyContinue | Where-Object Path -eq $exe | Stop-Process
     Start-Sleep -Milliseconds 300
     Copy-Item $tmpExe $exe -Force
     Copy-Item (Join-Path $PSScriptRoot 'menubar.ini') $OutDir -Force
     Remove-Item $obj -Recurse -Force
-    if (-not $Autostart) { Start-Process $exe }   # with -Autostart the task starts it, un-elevated
+    # Start it through the sign-in task when there is one: started from here, it would belong to this
+    # terminal's (or agent app's) process group and be killed when that closes. With -Autostart the
+    # task is (re)created and started below.
+    if (-not $Autostart) {
+        schtasks /query /tn MenuBar 2>$null | Out-Null
+        if ($LASTEXITCODE -eq 0) { schtasks /run /tn MenuBar | Out-Null } else { Start-Process $exe }
+    }
     Write-Host "Installed $exe"
 }
 

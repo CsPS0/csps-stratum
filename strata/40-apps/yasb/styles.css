@@ -35,7 +35,9 @@
     --yasb-accent-fg: #000000;
     --icons-font: "Segoe Fluent Icons";
     --icons-font-fallback: "JetBrainsMono NFP", "JetBrainsMono Nerd Font Propo", "JetBrainsMono NF", "JetBrainsMono Nerd Font";
-    --system-font: "Segoe UI Variable", "Segoe UI";
+    --system-font: "JetBrainsMono NF", "JetBrainsMono Nerd Font", "Segoe UI Variable";
+    --nerd-font: "JetBrainsMono NF", "JetBrainsMono Nerd Font";
+    --bar-outline: #2A2B2D;
 }
 
 /* Global Defaults */
@@ -46,10 +48,19 @@
     color: var(--yasb-fg);
 }
 
-/* Bar */
+/* Bar: floats 6 px from the screen edges (config.yaml padding), rounded, with a thin outline.
+   menubar.exe draws its menu inside the left end and matches these numbers (menubar.cpp). */
 .yasb-bar {
     background-color: var(--yasb-bar-bg);
-    padding: 0px 12px
+    border: 1px solid var(--bar-outline);
+    border-radius: 10px;
+    padding: 0px 8px;
+}
+/* The clock bar sits inside the main bar's outline, so it has none of its own */
+.centre-bar {
+    background-color: var(--yasb-bar-bg);
+    border: none;
+    padding: 0px;
 }
 
 /* Tooltip */
@@ -142,10 +153,10 @@
 
 /* Base Widget Styles */
 .widget {
-    padding: 0px 6px;
-    margin: 4px 0;
-    border-radius: 4px;
-    transition: background-color 0.1s 
+    padding: 0px 7px;
+    margin: 4px 1px;
+    border-radius: 6px;
+    transition: background-color 0.1s
 }
 
 .widget .icon {
@@ -619,3 +630,43 @@
 /* Next calendar event (next to the clock) */
 .calendar-event-widget .label { color: var(--yasb-fg-muted); font-weight: 500; padding-left: 4px; }
 .calendar-event-widget:hover { background-color: var(--yasb-white-alpha-08); }
+
+/* ===== Floating-bar extras: quick icons pill, weather, power ===== */
+/* Quick icons next to the clock, in a pill of their own */
+.quick-apps { background-color: var(--yasb-white-alpha-06); border-radius: 8px; margin: 5px 4px; padding: 0 3px; }
+.quick-apps .label { font-family: var(--nerd-font); font-size: 13px; color: #B4B6B8; padding: 0 5px; }
+.quick-apps .label:hover { color: #FFFFFF; }
+
+/* Weather: icon and temperature in grey (Nerd Font weather glyphs); the card in the popup style */
+.open-meteo-widget .label { color: var(--yasb-fg-muted); font-weight: 600; }
+.open-meteo-widget .icon { font-family: var(--nerd-font); font-size: 14px; color: var(--yasb-fg-muted); padding-right: 4px; }
+.open-meteo-widget:hover { background-color: var(--yasb-white-alpha-08); }
+.open-meteo-card { background-color: #0A0A0A; border: 1px solid #35373A; padding: 6px; }
+.open-meteo-card .label { font-size: 11px; color: #8E9194; }
+.open-meteo-card .label.location { font-size: 13px; font-weight: 600; color: #E6E6E6; }
+.open-meteo-card .open-meteo-card-day { background-color: transparent; border-radius: 6px; padding: 4px 6px; margin: 0 1px; }
+.open-meteo-card .open-meteo-card-day.active, .open-meteo-card .open-meteo-card-day:hover { background-color: #1E1F21; }
+.open-meteo-card .day-name { font-size: 11px; color: #B4B6B8; }
+.open-meteo-card .day-temp-max { font-size: 11px; color: #E6E6E6; }
+.open-meteo-card .day-temp-min { font-size: 11px; color: #8E9194; }
+
+/* Power button at the far right */
+.power-widget .label { font-family: var(--nerd-font); font-size: 14px; color: #8E9194; padding: 0 2px; }
+.power-widget:hover { background-color: var(--yasb-white-alpha-08); }
+.power-widget:hover .label { color: #FFFFFF; }
+
+/* CPU / RAM / GPU: grey text in the bar, a small monochrome popup with a graph on click */
+.cpu-widget .label, .memory-widget .label, .gpu-widget .label { color: var(--yasb-fg-muted); font-weight: 600; }
+.cpu-widget:hover, .memory-widget:hover, .gpu-widget:hover { background-color: var(--yasb-white-alpha-08); }
+.cpu-popup, .memory-popup, .gpu-popup { background-color: #0A0A0A; border: 1px solid #35373A; min-width: 280px; padding: 0 0 8px 0; }
+.cpu-popup .header, .memory-popup .header, .gpu-popup .header { padding: 10px 14px; border-bottom: 1px solid #1E1F21; }
+.cpu-popup .header .text, .memory-popup .header .text, .gpu-popup .header .text { font-size: 13px; color: #E6E6E6; }
+.cpu-popup .pin-btn, .memory-popup .pin-btn, .gpu-popup .pin-btn { font-family: var(--icons-font); color: #8E9194; background: transparent; border: none; }
+.cpu-popup .pin-btn:hover, .memory-popup .pin-btn:hover, .gpu-popup .pin-btn:hover, .cpu-popup .pin-btn.pinned, .memory-popup .pin-btn.pinned, .gpu-popup .pin-btn.pinned { color: #FFFFFF; }
+.cpu-popup .graph-container, .memory-popup .graph-container, .gpu-popup .graph-container { margin: 8px 14px 4px 14px; min-height: 70px; }
+.cpu-popup .graph, .memory-popup .graph, .gpu-popup .graph { color: #B4B6B8; }
+.cpu-popup .graph-title, .memory-popup .graph-title, .gpu-popup .graph-title { font-size: 11px; color: #8E9194; margin: 6px 14px 0 14px; }
+.cpu-popup .stats, .memory-popup .stats, .gpu-popup .stats { margin: 4px 14px 0 14px; }
+.cpu-popup .stat-item, .memory-popup .stat-item, .gpu-popup .stat-item { padding: 4px 0; }
+.cpu-popup .stat-label, .memory-popup .stat-label, .gpu-popup .stat-label { font-size: 11px; color: #8E9194; }
+.cpu-popup .stat-value, .memory-popup .stat-value, .gpu-popup .stat-value { font-size: 13px; font-weight: 600; color: #E6E6E6; }

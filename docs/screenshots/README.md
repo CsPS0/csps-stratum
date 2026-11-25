@@ -2,10 +2,13 @@
 
 Reference shots of the finished **OLED Monochrome** setup, taken with no windows on screen
 (Windows: Show Desktop). Windows shots: 25 November 2026 (the search-only Start menu: 22 November);
-laptop and phone: 22 November 2026. Wallpaper: [OLED Span](../../strata/40-apps/oled-span/) (contours style) on the laptop
-and the Windows second screen; the Windows main screen had a Wallpaper Engine Workshop contours
-wallpaper with a warm glow at the edges when it was taken. Use them to check a rebuild (the
+laptop and phone: 22 November 2026. Wallpaper: [OLED Span](../../strata/40-apps/oled-span/) (contours style) everywhere;
+it only draws greys. Use them to check a rebuild (the
 [`INSTALL-WITH-AI.md`](../../INSTALL-WITH-AI.md) prompt tells the agent to compare against them).
+
+Taking them with an agent: the Claude desktop app draws a warm glowing frame around the main screen
+while it controls the screen, and it stays for the rest of that turn, so capture in a turn that
+hasn't used screen control (and check the edges are pure black).
 
 ## Windows 11 desktop
 

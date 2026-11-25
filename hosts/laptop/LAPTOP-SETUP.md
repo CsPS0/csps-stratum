@@ -272,12 +272,35 @@ agy plugin list
 ```
 
 `~/.gemini/antigravity-cli/settings.json`: merge by hand, keep your keys:
-- `"allowNonWorkspaceAccess": false`
+- `"allowNonWorkspaceAccess": false`. agy drops this key when it rewrites the file during a run. Absent means false, so there is no need to add it back.
 - `"trustedWorkspaces"`: only your repo root and the project folders you trust; never `$HOME` or `/`.
-- `"permissions": { "deny": [...] }` with Linux targets, for example `read_file(<home>/.ssh)`, `write_file(<home>/.ssh)`, `command(git push --force)`, `command(git push -f)`, `command(rm -rf)`, `command(rm -fr)`. Replace `<home>` with the output of `echo $HOME` (the docs only show absolute paths).
+- `"permissions": { "deny": [...] }` with Linux targets, for example `read_file(<home>/.ssh)`, `write_file(<home>/.ssh)`, `command(git push --force)`, `command(git push -f)`, `command(rm -rf)`, `command(rm -fr)`. Replace `<home>` with the output of `echo $HOME`.
 - `"enableTerminalSandbox": true` only after checking the Linux requirement in the sandbox docs.
 
-In the Antigravity app: **Settings > General > Global Permissions > Permission Preset** → Default or Auto (not Turbo). **Settings > Application > Enable Remote Control** → off.
+**File rules take full absolute paths only.** Write every `read_file(...)` and `write_file(...)` rule with the full path, such as `read_file(/home/<you>/.ssh)`. Never use `~`, `$HOME` or a relative path such as `.env`. This holds for the CLI settings and for the app's **File reads** and **File writes** rules: the app saves those in `~/.gemini/config/config.json`, and the CLI loads them too.
+
+Why: on the Windows desktop (agy 1.5.17), any rule that is not a full path breaks the terminal sandbox ("sandbox configuration error: ... non-absolute file path"), and agy then reruns commands outside it. A rule without the drive letter (`/Users/<you>/.ssh`) also matches nothing there. That drive-letter bug is Windows-specific. Linux paths have no drive letter, so `/home/<you>/.ssh` is already a full path, but run the test below anyway.
+
+**Test the sandbox after adding or changing rules.** Use a throwaway repo with no remote under your repo root (a trusted workspace). Replace `<home>` and `<key>.pub` with a real public key path; the test never prints the file.
+
+```sh
+T="$REPOS/agy-sandbox-probe"; mkdir -p "$T" && git -C "$T" init -q
+cd "$T"
+agy -p 'Run exactly this terminal command and nothing else: echo sandbox-ok. Then report the exact output or error.' \
+  --output-format stream-json > "$B/agy-sandbox.jsonl" 2>&1
+grep -c 'non-absolute' "$B/agy-sandbox.jsonl"               # expect 0
+grep -o '"output":"[^"]*sandbox-ok' "$B/agy-sandbox.jsonl"  # expect a match: the command ran
+agy -p 'Read <home>/.ssh/<key>.pub with your file read tool. Do not print its contents. Answer ALLOWED or DENIED with the exact error.' \
+  --output-format stream-json > "$B/agy-ssh.jsonl" 2>&1
+grep -o 'Matches user-configured deny rule' "$B/agy-ssh.jsonl" | head -n 1   # expect this line
+cd ~ && mv "$T" "$B/agy-sandbox-probe"
+```
+
+To try a rule before saving it, pass the whole settings block for one run with `agy --settings '<json>' -p ...`. Nothing is saved.
+
+**No `.env` glob rule for Antigravity.** File rules take no wildcards. On the desktop (agy 1.5.17), `read_file(D:/REPOS/**/.env)` and `read_file(D:/REPOS/*/.env)` did not block the file. The sandbox then failed with "deny ...: globs not supported". Only an exact full path, such as `read_file(<home>/REPOS/<repo>/.env)`, blocks a file. Claude Code's `Read(**/.env)` and `Read(**/.env.*)` deny rules still cover Claude Code.
+
+In the Antigravity app: **Settings > Permissions > This Computer > Permission Preset** → **Default** (on versions without remote agents: Settings > General > Global Permissions > Permission Preset). **Settings > Application > Enable Remote Control** → off.
 
 ## 9. Check
 

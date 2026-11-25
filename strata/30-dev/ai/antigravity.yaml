@@ -1,20 +1,25 @@
 # Google Antigravity Configuration & Tooling Profile
 assistant:
   name: "Google Antigravity"
-  version: "2.34.0"
-  cli: "agy 1.5.16"
+  version: "2.35.1"
+  cli: "agy 1.5.17"
   config_path: "~/.gemini"
 
 permissions:
-  preset: "Auto"                      # Settings > General > Global Permissions > Permission Preset
+  preset: "Default"                   # Settings > Permissions > This Computer > Permission Preset (Settings > General > Global Permissions without remote agents)
   terminal_sandbox: true              # config.json enableTerminalSandbox, CLI enableTerminalSandbox
-  non_workspace_file_access: "ask"    # CLI allowNonWorkspaceAccess: false
+  non_workspace_file_access: "ask"    # CLI allowNonWorkspaceAccess false (agy drops the key when it rewrites the file; the default is false)
   remote_control: false
   cli_deny_rules:                     # ~/.gemini/antigravity-cli/settings.json permissions.deny
-    - "read_file / write_file on ~/.ssh"
+    - "read_file / write_file on C:/Users/<you>/.ssh (Windows needs the drive letter: /Users/... does not match and breaks the terminal sandbox)"
     - "git push --force and -f (prefix and regex forms)"
     - "rm -rf / Remove-Item -Recurse -Force (prefix and regex forms)"
     - "format, diskpart, reg delete"
+  app_deny_rules:                     # app File reads / File writes screens; stored in config.json userSettings.globalPermissionGrants.deny, the CLI loads them too
+    - "read_file(C:/Users/<you>/.ssh)"
+    - "write_file(C:/Users/<you>/.ssh)"
+  file_rule_format: "full absolute path with drive letter; ~, /Users/... or relative rules break the Windows terminal sandbox (agy 1.5.17)"
+  env_file_rules: "none: file rules take no globs (D:/REPOS/**/.env, D:/REPOS/*/.env and D:\\REPOS\\**\\.env give 'globs not supported', break the sandbox and block nothing); Claude Code's Read(**/.env) rules cover Claude Code only"
 
 rules:
   global_file: "~/.gemini/GEMINI.md"

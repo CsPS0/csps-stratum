@@ -50,8 +50,10 @@ Both screens get the same bar (YASB's `top-bar` and `centre-bar`, `screens: ['*'
     title, the app name, play / pause, the desktop dots or the number of players; a long app name
     only shortens the title.
 
-  The strip ends `reserve` px (`menubar.ini`, 290) before the clock bar, which keeps room for
-  YASB's CPU / RAM / GPU and weather; the song title is shortened to fit. The strip hides on a screen
+  The strip ends just before YASB's CPU / RAM / GPU and weather, which start at a fixed 380 px from
+  the screen's left edge (`.yasb-bar .container-left` margin in `styles.css`; `stats_x` in
+  `menubar.ini` must match). Fixed, not measured from the clock bar: that one changes width with
+  the calendar event, which used to move the player and could push the strip over CPU. The strip hides on a screen
   while the focused app covers that whole screen (games, videos), including apps that go
   fullscreen after they take focus. It also hides on any screen with no YASB bar (YASB closed or
   not started yet), where it would otherwise sit over the top of maximised windows, and comes

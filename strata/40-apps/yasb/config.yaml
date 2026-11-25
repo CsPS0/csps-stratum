@@ -34,10 +34,10 @@ bars:
       bottom: 6
       right: 6
     layouts:
-      # the left section's widgets sit at its right end, just left of the clock; menubar.exe's strip
-      # stops short of them ([bar] reserve in menubar.ini)
+      # the left section's widgets (CPU, RAM, GPU, weather) start at a fixed 380 px from the screen's
+      # left edge (margin in styles.css); menubar.exe's strip ends just before ([bar] stats_x)
       left:
-        alignment: right
+        alignment: left
         stretch: true
     widgets:
       # left end is drawn by menubar.exe: app name, desktop dots (2+ desktops), what's playing with

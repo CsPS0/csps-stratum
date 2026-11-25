@@ -56,6 +56,10 @@
     border-radius: 10px;
     padding: 0px 8px;
 }
+/* CPU, RAM, GPU and weather start at a fixed 380 px from the screen's left edge (6 gap + 1 outline
+   + 8 padding + 365), clear of menubar.exe's strip and of the clock bar, whatever their widths.
+   menubar.ini [bar] stats_x must match. */
+.yasb-bar .container-left { margin-left: 365px; }
 /* The clock bar sits inside the main bar's outline, so it has none of its own */
 .centre-bar {
     background-color: var(--yasb-bar-bg);

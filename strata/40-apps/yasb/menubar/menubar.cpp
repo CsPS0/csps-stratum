@@ -23,7 +23,6 @@
 #include <audioclient.h>
 #include <algorithm>
 #include <atomic>
-#include <climits>
 #include <cmath>
 #include <complex>
 #include <mutex>
@@ -99,8 +98,9 @@ static std::atomic<bool> g_vizWanted{ false };
 static HANDLE g_vizWake;
 
 // Room left free just before the clock bar for YASB's own left-side widgets (CPU, RAM, GPU,
-// weather), in px; menubar.ini [bar] reserve
-static int g_reserve = 290;
+// weather): where they start, in px from the screen's left edge; menubar.ini [bar] stats_x, which
+// has to match the left section's margin in styles.css (bar edge 6 + outline 1 + padding 8 + margin)
+static int g_statsX = 380;
 static const COLORREF MUTED = RGB(142, 145, 148), SOFT = RGB(180, 182, 184);
 
 static const COLORREF BG = RGB(0, 0, 0), FG = RGB(230, 230, 230), DIM = RGB(110, 112, 116), HOVER = RGB(42, 43, 45), SEP = RGB(42, 42, 42);
@@ -206,7 +206,7 @@ static void LoadMenus()
     g_menus.clear();
     g_showLogo = IniValue(L"bar", L"logo") != L"0";
     g_showMenus = IniValue(L"bar", L"menus") != L"0";
-    if (std::wstring r = IniValue(L"bar", L"reserve"); !r.empty()) g_reserve = _wtoi(r.c_str());
+    if (std::wstring r = IniValue(L"bar", L"stats_x"); !r.empty()) g_statsX = _wtoi(r.c_str());
     if (!g_showMenus) return;
     const std::wstring keys[] = { g_appKey, L"*" };
     for (const auto& k : keys)
@@ -590,26 +590,12 @@ static bool IsWideBar(HWND h, HMONITOR mon)
         && (r.right - r.left) * 2 > mi.rcMonitor.right - mi.rcMonitor.left;
 }
 
-// Where the strip has to stop on its screen: the clock bar's left edge (or the screen's middle while
-// it's hidden), less the room kept for YASB's left-side widgets
-struct ClockFind { HMONITOR mon; int left; };
-
-static BOOL CALLBACK FindClockBar(HWND h, LPARAM lp)
-{
-    ClockFind& f = *(ClockFind*)lp;
-    if (!IsWindowVisible(h) || StripOf(h) || !IsBarWindow(h)) return TRUE;
-    HMONITOR mon = MonitorFromWindow(h, MONITOR_DEFAULTTONEAREST);
-    RECT r;
-    if (mon == f.mon && !IsWideBar(h, mon) && GetWindowRect(h, &r)) { f.left = r.left; return FALSE; }
-    return TRUE;
-}
-
+// Where the strip has to stop on its screen: just before YASB's left-side widgets (CPU, RAM, GPU,
+// weather), which styles.css starts at a fixed distance from the screen's left edge. Fixed, so
+// nothing in the strip moves when the clock bar changes width (a longer or missing calendar event).
 static int StripRight(const Strip& s)
 {
-    ClockFind f = { s.mon, INT_MAX };
-    EnumWindows(FindClockBar, (LPARAM)&f);
-    int right = f.left != INT_MAX ? f.left : (s.monRect.left + s.monRect.right) / 2 - S(s, 280);
-    return right - S(s, g_reserve);
+    return s.monRect.left + S(s, g_statsX - 10);
 }
 
 // A reappearing full-width bar also lands above YASB's narrow centre bar (date, time, next event)

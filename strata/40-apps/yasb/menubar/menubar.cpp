@@ -335,6 +335,21 @@ static void Layout(Strip& s)
         };
         while (right - fixedWidth() < x + S(s, 12) && titleChars > 6) titleChars--;
         if (right - fixedWidth() < x + S(s, 12)) titleChars = 0;
+        // Still no room (a very long app name, "Wallpaper Engine User Interface"): shorten the app
+        // name instead of letting it run under the buttons, and lay the left part out again
+        if (right - fixedWidth() < x + S(s, 12))
+        {
+            size_t app = g_showLogo ? 1 : 0;
+            std::wstring name = s.slots[app].text;
+            int limit = right - fixedWidth() - S(s, 12);
+            auto leftEnd = [&]() {
+                int lx = S(s, 2);
+                for (size_t i = 0; i < firstPlayer; i++) { lx += gapBefore(i); int w = widthOf(s.slots[i]); s.slots[i].rc = { lx, 0, lx + w, h }; lx += w; }
+                return lx;
+            };
+            for (size_t n = name.size(); n > 1 && leftEnd() > limit; n--) s.slots[app].text = name.substr(0, n - 1) + L"\x2026";
+            x = leftEnd();
+        }
         title.text = titleChars == 0 ? L"" : (int)full.size() > titleChars ? full.substr(0, titleChars - 1) + L"\x2026" : full;
         int bx = right - fixedWidth();
         for (size_t i = firstPlayer; i < s.slots.size(); i++)

@@ -43,7 +43,12 @@ Both screens get the same bar (YASB's `top-bar` and `centre-bar`, `screens: ['*'
     with all paused, Windows' current one). It comes from Windows' media controls (the ones in the
     volume flyout), followed through events. Browsers only report audible media, so a muted video
     doesn't show. The visualizer listens to what the speakers play (WASAPI loopback) only while
-    something plays; it replaced cava (uninstalled).
+    something plays (flat and dim while paused); it replaced cava (uninstalled).
+    The player keeps one position for muscle memory: it's anchored just left of the CPU widget, with
+    a fixed-width title box (20 characters), buttons as wide as the wider of play and pause, the
+    visualizer always there and room for the dropdown always kept. So ⏮ ⏯ ⏭ don't move with the
+    title, the app name, play / pause, the desktop dots or the number of players; a long app name
+    only shortens the title.
 
   The strip ends `reserve` px (`menubar.ini`, 290) before the clock bar, which keeps room for
   YASB's CPU / RAM / GPU and weather; the song title is shortened to fit. The strip hides on a screen

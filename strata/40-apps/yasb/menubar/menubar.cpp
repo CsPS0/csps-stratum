@@ -269,53 +269,84 @@ static void Layout(Strip& s)
     // Virtual desktops, like the video's workspace dots: a pill for the current one, rings for the rest
     if (g_deskCount >= 2)
         for (int i = 0; i < g_deskCount; i++) s.slots.push_back({ K_DESK, L"", i, {} });
+    size_t firstPlayer = s.slots.size();
     // What's playing (or paused, so it can be resumed): note, title, previous / play-pause / next,
-    // the visualizer while it plays, and a dropdown with every player when there are several
-    size_t titleAt = 0;
+    // the visualizer (flat while paused), and a dropdown with every player when there are several
     if (!g_media.empty())
     {
         const MediaEntry& m = g_media[0];
         s.slots.push_back({ K_NOTE, L"\xF001", -1, {} });
-        titleAt = s.slots.size();
-        s.slots.push_back({ K_TITLE, m.title.size() > 32 ? m.title.substr(0, 31) + L"\x2026" : m.title, -1, {} });
+        s.slots.push_back({ K_TITLE, m.title, -1, {} });
         s.slots.push_back({ K_MEDIA, L"\xF048", 0, {} });
         s.slots.push_back({ K_MEDIA, m.playing ? L"\xF04C" : L"\xF04B", 1, {} });
         s.slots.push_back({ K_MEDIA, L"\xF051", 2, {} });
-        if (m.playing) s.slots.push_back({ K_VIZ, L"", -1, {} });
+        s.slots.push_back({ K_VIZ, L"", -1, {} });
         if (g_media.size() > 1) s.slots.push_back({ K_MORE, L"\xF078 " + std::to_wstring(g_media.size()), -1, {} });
     }
+
     // The strip may run from the bar's left corner to just before the clock bar, less the room kept
-    // for YASB's own left-side widgets (CPU, RAM, GPU, weather); the title is shortened to fit
+    // for YASB's own left-side widgets (CPU, RAM, GPU, weather)
     int left = s.monRect.left + S(s, BAR_GAP + BAR_RADIUS);
     int width = StripRight(s) - left;
     HDC dc = GetDC(s.hwnd);
     int h = S(s, BAR_HEIGHT) - 2; // inside the bar's 1 px outline
+    auto textWidth = [&](HFONT f, const std::wstring& t) {
+        SelectObject(dc, f); SIZE sz; GetTextExtentPoint32W(dc, t.c_str(), (int)t.size(), &sz); return (int)sz.cx;
+    };
+    // The player is built from fixed-width parts (title in a box of TITLE_CHARS, buttons as wide as
+    // the wider of play and pause, the visualizer always there) so the buttons don't move with the
+    // title, the app name or play / pause: the same spot every time, for muscle memory
+    const int TITLE_CHARS = 20;
+    int titleChars = TITLE_CHARS; // lowered only when there's no room
+    int charW = textWidth(s.font, L"0");
+    int buttonW = std::max(textWidth(s.font, L"\xF04B"), textWidth(s.font, L"\xF04C")) + S(s, 12);
     auto widthOf = [&](const Slot& sl) {
-        if (sl.kind == K_DESK) return S(s, sl.menu == g_deskCurrent ? 26 : 14);
-        if (sl.kind == K_VIZ) return S(s, VIZ_BARS * 4 + 10);
-        if (sl.kind == K_TITLE && sl.text.empty()) return 0;
-        SelectObject(dc, FontFor(s, sl));
-        SIZE sz; GetTextExtentPoint32W(dc, sl.text.c_str(), (int)sl.text.size(), &sz);
-        return (int)sz.cx + S(s, sl.kind == K_LOGO ? 22 : sl.kind == K_MEDIA || sl.kind == K_NOTE ? 12 : 18);
+        switch (sl.kind)
+        {
+        case K_DESK: return S(s, sl.menu == g_deskCurrent ? 26 : 14);
+        case K_VIZ: return S(s, VIZ_BARS * 4 + 10);
+        case K_TITLE: return titleChars > 0 ? charW * titleChars + S(s, 12) : 0;
+        case K_MEDIA: return buttonW;
+        default: return textWidth(FontFor(s, sl), sl.text) + S(s, sl.kind == K_LOGO ? 22 : sl.kind == K_NOTE ? 12 : 18);
+        }
     };
     auto gapBefore = [&](size_t i) {
         Kind k = s.slots[i].kind;
-        return i > 0 && (k == K_DESK || k == K_NOTE || k == K_VIZ) && s.slots[i - 1].kind != k ? S(s, 8) : 0;
+        return i > 0 && (k == K_DESK || k == K_VIZ) && s.slots[i - 1].kind != k ? S(s, 8) : 0;
     };
-    auto totalWidth = [&]() { int w = S(s, 2); for (size_t i = 0; i < s.slots.size(); i++) w += gapBefore(i) + widthOf(s.slots[i]); return w; };
 
-    // Shorten the title until everything fits (at least 6 characters, else drop it)
-    if (titleAt)
-    {
-        std::wstring full = s.slots[titleAt].text;
-        size_t n = full.size();
-        while (totalWidth() + S(s, 12) > width && n > 6)
-            s.slots[titleAt].text = full.substr(0, --n) + L"\x2026";
-        if (totalWidth() + S(s, 12) > width) s.slots[titleAt].text.clear();
-    }
-
+    // App name, menus and desktop dots from the left
     int x = S(s, 2);
-    for (size_t i = 0; i < s.slots.size(); i++) { x += gapBefore(i); int w = widthOf(s.slots[i]); s.slots[i].rc = { x, 0, x + w, h }; x += w; }
+    for (size_t i = 0; i < firstPlayer; i++) { x += gapBefore(i); int w = widthOf(s.slots[i]); s.slots[i].rc = { x, 0, x + w, h }; x += w; }
+
+    if (firstPlayer < s.slots.size())
+    {
+        // Anchored to the right end, just before the CPU widget, with room for the dropdown always kept:
+        // the buttons, visualizer and dropdown sit at the same spot whatever the title, the app name or
+        // the number of players. Only the title (on the left) gets shorter when the app name is long.
+        Slot& title = s.slots[firstPlayer + 1];
+        std::wstring full = title.text;
+        int moreW = textWidth(s.font, L"\xF078 9") + S(s, 18);
+        int right = width - S(s, 4) - moreW;
+        auto fixedWidth = [&]() { // everything but the dropdown, from the note on
+            int w = 0;
+            for (size_t i = firstPlayer; i < s.slots.size(); i++) if (s.slots[i].kind != K_MORE) w += gapBefore(i) + widthOf(s.slots[i]);
+            return w;
+        };
+        while (right - fixedWidth() < x + S(s, 12) && titleChars > 6) titleChars--;
+        if (right - fixedWidth() < x + S(s, 12)) titleChars = 0;
+        title.text = titleChars == 0 ? L"" : (int)full.size() > titleChars ? full.substr(0, titleChars - 1) + L"\x2026" : full;
+        int bx = right - fixedWidth();
+        for (size_t i = firstPlayer; i < s.slots.size(); i++)
+        {
+            if (s.slots[i].kind == K_MORE) { s.slots[i].rc = { right, 0, right + widthOf(s.slots[i]), h }; continue; }
+            bx += gapBefore(i);
+            int w = widthOf(s.slots[i]);
+            s.slots[i].rc = { bx, 0, bx + w, h };
+            bx += w;
+        }
+        x = right + moreW;
+    }
     ReleaseDC(s.hwnd, dc);
 
     // Sits inside the floating bar, right of its rounded left corner, so the corner and outline show
@@ -354,7 +385,7 @@ static void Paint(Strip& s, HDC dc)
         {
             int bw = S(s, 3), gap = S(s, 1), maxH = S(s, 14), base = (sl.rc.top + sl.rc.bottom) / 2 + maxH / 2;
             int x0 = sl.rc.left + S(s, 5);
-            HBRUSH b = CreateSolidBrush(SOFT);
+            HBRUSH b = CreateSolidBrush(!g_media.empty() && g_media[0].playing ? SOFT : DIM); // flat and dim while paused
             for (int k = 0; k < VIZ_BARS; k++)
             {
                 int bh = (int)(g_viz[k].load() * maxH);
@@ -388,7 +419,9 @@ static void Paint(Strip& s, HDC dc)
         SetTextColor(mem, c);
         SelectObject(mem, FontFor(s, sl));
         RECT r = sl.rc;
-        DrawTextW(mem, sl.text.c_str(), (int)sl.text.size(), &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_NOPREFIX);
+        UINT align = DT_CENTER;
+        if (sl.kind == K_TITLE) { r.left += S(s, 6); align = DT_LEFT; } // the title starts at the left of its fixed box
+        DrawTextW(mem, sl.text.c_str(), (int)sl.text.size(), &r, align | DT_VCENTER | DT_SINGLELINE | DT_NOPREFIX);
     }
     SelectObject(mem, oldPen);
     DeleteObject(hover);

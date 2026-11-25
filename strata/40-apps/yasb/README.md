@@ -35,14 +35,15 @@ Both screens get the same bar (YASB's `top-bar` and `centre-bar`, `screens: ['*'
     (`HKCU\...\Explorer\VirtualDesktops`) when it changes and switches with Ctrl+Win+Left/Right,
     since Windows has no public call for it. YASB's `windows_desktops` widget can't hide itself
     with one desktop, so it isn't used.
-  - **What's playing**, only while something actually plays: a note, the title, previous / pause /
-    next and a 12-band visualizer right next to them (click the title or the bars to pause). It comes
-    from Windows' media controls (the ones in the volume flyout), followed through events. A paused
-    browser tab or player disappears from the bar; YASB's media widget kept showing paused players,
-    so it was removed. Browsers only report audible media, so a muted video doesn't show. The
-    visualizer listens to what the speakers play (WASAPI loopback) only while something plays; it
-    replaced cava, which couldn't sit beside the player (`winget uninstall karlstav.cava` if it's
-    still installed).
+  - **What's playing**, whenever a player is open (playing or paused, so a paused song can be
+    resumed from the bar): a note, the title, previous / play-pause / next, and while it plays a
+    12-band visualizer right next to them (click the title or the bars to play / pause). With
+    several players open (a song and a video), a `⌄ 2` dropdown lists each one with Play or Pause,
+    its title and app, and toggles just that one; the bar itself shows whichever is playing (or,
+    with all paused, Windows' current one). It comes from Windows' media controls (the ones in the
+    volume flyout), followed through events. Browsers only report audible media, so a muted video
+    doesn't show. The visualizer listens to what the speakers play (WASAPI loopback) only while
+    something plays; it replaced cava (uninstalled).
 
   The strip ends `reserve` px (`menubar.ini`, 290) before the clock bar, which keeps room for
   YASB's CPU / RAM / GPU and weather; the song title is shortened to fit. The strip hides on a screen

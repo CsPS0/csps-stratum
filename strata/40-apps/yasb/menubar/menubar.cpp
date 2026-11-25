@@ -48,8 +48,15 @@ struct Action { std::wstring keys, cmd; };
 struct Item { std::wstring label, hint; Action act; bool sep = false; };
 struct Menu { std::wstring title; std::vector<Item> items; };
 // K_DESK: one virtual desktop dot; K_NOTE / K_TITLE / K_MEDIA / K_VIZ: what's playing, its buttons
-// and the visualizer
-enum Kind { K_LOGO, K_APP, K_MENU, K_DESK, K_NOTE, K_TITLE, K_MEDIA, K_VIZ };
+// and the visualizer; K_MORE: the dropdown with every player when there are several
+enum Kind { K_LOGO, K_APP, K_MENU, K_DESK, K_NOTE, K_TITLE, K_MEDIA, K_VIZ, K_MORE };
+// One player (a Windows media session) that is playing or paused
+struct MediaEntry
+{
+    std::wstring title, app;
+    bool playing = false;
+    bool operator==(const MediaEntry& o) const { return title == o.title && app == o.app && playing == o.playing; }
+};
 struct Slot { Kind kind; std::wstring text; int menu; RECT rc; };
 
 // One strip per screen
@@ -82,8 +89,8 @@ static HWND g_msgWnd; // message-only window the media thread posts to (strips c
 static int g_deskCount = 1, g_deskCurrent = 0;
 static const wchar_t* DESKTOPS_KEY = L"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VirtualDesktops";
 
-// What's playing, as the UI thread last saw it; empty while nothing plays
-static std::wstring g_mediaTitle;
+// Every player as the UI thread last saw it (playing first); empty when no player is open
+static std::vector<MediaEntry> g_media;
 
 // Visualizer: VIZ_BARS levels (0..1) from the audio thread, which runs only while something plays
 static const int VIZ_BARS = 12;
@@ -262,17 +269,20 @@ static void Layout(Strip& s)
     // Virtual desktops, like the video's workspace dots: a pill for the current one, rings for the rest
     if (g_deskCount >= 2)
         for (int i = 0; i < g_deskCount; i++) s.slots.push_back({ K_DESK, L"", i, {} });
-    // What's playing, only while something plays: note, title, previous / pause / next, visualizer
+    // What's playing (or paused, so it can be resumed): note, title, previous / play-pause / next,
+    // the visualizer while it plays, and a dropdown with every player when there are several
     size_t titleAt = 0;
-    if (!g_mediaTitle.empty())
+    if (!g_media.empty())
     {
+        const MediaEntry& m = g_media[0];
         s.slots.push_back({ K_NOTE, L"\xF001", -1, {} });
         titleAt = s.slots.size();
-        s.slots.push_back({ K_TITLE, g_mediaTitle.size() > 32 ? g_mediaTitle.substr(0, 31) + L"\x2026" : g_mediaTitle, -1, {} });
+        s.slots.push_back({ K_TITLE, m.title.size() > 32 ? m.title.substr(0, 31) + L"\x2026" : m.title, -1, {} });
         s.slots.push_back({ K_MEDIA, L"\xF048", 0, {} });
-        s.slots.push_back({ K_MEDIA, L"\xF04C", 1, {} });
+        s.slots.push_back({ K_MEDIA, m.playing ? L"\xF04C" : L"\xF04B", 1, {} });
         s.slots.push_back({ K_MEDIA, L"\xF051", 2, {} });
-        s.slots.push_back({ K_VIZ, L"", -1, {} });
+        if (m.playing) s.slots.push_back({ K_VIZ, L"", -1, {} });
+        if (g_media.size() > 1) s.slots.push_back({ K_MORE, L"\xF078 " + std::to_wstring(g_media.size()), -1, {} });
     }
     // The strip may run from the bar's left corner to just before the clock bar, less the room kept
     // for YASB's own left-side widgets (CPU, RAM, GPU, weather); the title is shortened to fit
@@ -374,7 +384,7 @@ static void Paint(Strip& s, HDC dc)
             continue;
         }
         // like macOS: the screen without the focused app shows the menus dimmed (the logo stays bright)
-        COLORREF c = !lit ? DIM : i == s.hover ? FG : sl.kind == K_NOTE || sl.kind == K_TITLE ? MUTED : sl.kind == K_MEDIA ? SOFT : FG;
+        COLORREF c = !lit ? DIM : i == s.hover ? FG : sl.kind == K_NOTE || sl.kind == K_TITLE ? MUTED : sl.kind == K_MEDIA || sl.kind == K_MORE ? SOFT : FG;
         SetTextColor(mem, c);
         SelectObject(mem, FontFor(s, sl));
         RECT r = sl.rc;
@@ -760,44 +770,66 @@ static void SwitchDesktop(int target)
 // ---------- what's playing ----------
 
 // Windows' media controls (the same ones the volume flyout shows). A worker thread follows every
-// player's sessions through events and posts WM_MEDIA when the playing title changes; the strip
-// shows it only while something is actually playing, so a paused tab or player disappears.
+// player's sessions through events and posts WM_MEDIA when anything changes. Every player that is
+// playing or paused is listed, playing ones first; the strip shows the first, so a paused song
+// stays there to be resumed, and a dropdown lists the rest when there are several.
 namespace wmc = winrt::Windows::Media::Control;
 static std::mutex g_mediaLock;
 static wmc::GlobalSystemMediaTransportControlsSessionManager g_mediaMgr{ nullptr };
-static wmc::GlobalSystemMediaTransportControlsSession g_mediaSession{ nullptr }; // the playing one
-static std::wstring g_mediaShared; // its title, for the UI thread
+static std::vector<wmc::GlobalSystemMediaTransportControlsSession> g_mediaSessions; // same order as g_mediaShared
+static std::vector<MediaEntry> g_mediaShared; // for the UI thread
 static std::vector<wmc::GlobalSystemMediaTransportControlsSession::PlaybackInfoChanged_revoker> g_playRevokers;
 static std::vector<wmc::GlobalSystemMediaTransportControlsSession::MediaPropertiesChanged_revoker> g_propRevokers;
 
+// "sonora.exe" -> "sonora", "Claude_pzs8sxrjxfjjc!Claude" -> "Claude", "Brave" stays
+static std::wstring AppLabel(const std::wstring& id)
+{
+    std::wstring a = id.substr(id.find_last_of(L"!\\") == std::wstring::npos ? 0 : id.find_last_of(L"!\\") + 1);
+    if (a.size() > 4 && _wcsicmp(a.c_str() + a.size() - 4, L".exe") == 0) a.resize(a.size() - 4);
+    if (!a.empty()) a[0] = towupper(a[0]);
+    return a;
+}
+
 static void RefreshMedia()
 {
-    wmc::GlobalSystemMediaTransportControlsSession playing{ nullptr };
-    std::wstring title;
+    std::vector<wmc::GlobalSystemMediaTransportControlsSession> sessions;
+    std::vector<MediaEntry> entries;
     try
     {
         auto mgr = g_mediaMgr;
         if (!mgr) return;
-        auto isPlaying = [](const wmc::GlobalSystemMediaTransportControlsSession& s) {
-            auto info = s.GetPlaybackInfo();
-            return info && info.PlaybackStatus() == wmc::GlobalSystemMediaTransportControlsSessionPlaybackStatus::Playing;
-        };
-        if (auto cur = mgr.GetCurrentSession(); cur && isPlaying(cur)) playing = cur;
-        if (!playing)
-            for (const auto& s : mgr.GetSessions()) if (isPlaying(s)) { playing = s; break; }
-        if (playing)
+        auto cur = mgr.GetCurrentSession();
+        std::vector<std::pair<int, size_t>> order; // (rank, index) to sort: playing first, Windows' current first
+        for (const auto& s : mgr.GetSessions())
         {
-            auto props = playing.TryGetMediaPropertiesAsync().get();
-            title = props.Title().c_str();
-            if (title.empty()) title = props.Artist().c_str();
-            if (title.empty()) title = L"Playing";
+            auto info = s.GetPlaybackInfo();
+            if (!info) continue;
+            auto st = info.PlaybackStatus();
+            bool playing = st == wmc::GlobalSystemMediaTransportControlsSessionPlaybackStatus::Playing;
+            if (!playing && st != wmc::GlobalSystemMediaTransportControlsSessionPlaybackStatus::Paused) continue;
+            auto props = s.TryGetMediaPropertiesAsync().get();
+            MediaEntry e;
+            e.title = props.Title().c_str();
+            if (e.title.empty()) e.title = props.Artist().c_str();
+            if (e.title.empty()) e.title = L"Untitled";
+            e.app = AppLabel(s.SourceAppUserModelId().c_str());
+            e.playing = playing;
+            order.push_back({ (playing ? 0 : 2) + (cur && s == cur ? 0 : 1), entries.size() });
+            entries.push_back(e);
+            sessions.push_back(s);
         }
+        std::stable_sort(order.begin(), order.end());
+        std::vector<MediaEntry> e2; std::vector<wmc::GlobalSystemMediaTransportControlsSession> s2;
+        for (auto& o : order) { e2.push_back(entries[o.second]); s2.push_back(sessions[o.second]); }
+        entries.swap(e2); sessions.swap(s2);
     }
-    catch (...) { playing = nullptr; title.clear(); }
+    catch (...) { entries.clear(); sessions.clear(); }
     {
         std::lock_guard<std::mutex> lock(g_mediaLock);
-        if (title == g_mediaShared && playing == g_mediaSession) return;
-        g_mediaSession = playing; g_mediaShared = title;
+        bool same = entries == g_mediaShared;
+        g_mediaSessions = sessions; // always take the fresh objects
+        if (same) return;
+        g_mediaShared = entries;
     }
     if (g_msgWnd) PostMessageW(g_msgWnd, WM_MEDIA, 0, 0);
 }
@@ -958,10 +990,11 @@ static void VizThread()
     }
 }
 
-static void MediaCommand(int which)
+// which: 0 previous, 1 play / pause, 2 next; on the player at that place in the list (0 = shown)
+static void MediaCommand(int which, size_t player = 0)
 {
     wmc::GlobalSystemMediaTransportControlsSession s{ nullptr };
-    { std::lock_guard<std::mutex> lock(g_mediaLock); s = g_mediaSession; }
+    { std::lock_guard<std::mutex> lock(g_mediaLock); if (player < g_mediaSessions.size()) s = g_mediaSessions[player]; }
     if (!s) return;
     try
     {
@@ -1018,6 +1051,31 @@ static void OpenIniMenu(const std::wstring& section)
     PostMessageW(hwnd, WM_NULL, 0, 0);
     DestroyMenu(m);
     if (id > 0 && id <= (int)g_actions.size()) Run(hwnd, g_actions[id - 1]);
+}
+
+// The dropdown next to the player when several are open (a song and a video): one line per player,
+// "Pause" or "Play" with its title and app; picking one toggles just that player
+static void OpenPlayersMenu(Strip& s, int i)
+{
+    HWND hwnd = s.hwnd;
+    RECT rc = s.slots[i].rc;
+    std::vector<MediaEntry> list = g_media;
+    HMENU m = CreatePopupMenu();
+    for (size_t k = 0; k < list.size(); k++)
+    {
+        std::wstring title = list[k].title.size() > 48 ? list[k].title.substr(0, 47) + L"\x2026" : list[k].title, safe;
+        for (wchar_t c : title) { safe += c; if (c == L'&') safe += L'&'; } // a lone & would underline the next letter
+        std::wstring text = std::wstring(list[k].playing ? L"Pause    " : L"Play     ") + safe + L"\t" + list[k].app;
+        AppendMenuW(m, MF_STRING, k + 1, text.c_str());
+    }
+    s.pressed = i; s.hover = -1; InvalidateRect(hwnd, nullptr, FALSE); UpdateWindow(hwnd);
+    POINT pt = { rc.left, rc.bottom }; ClientToScreen(hwnd, &pt);
+    SetForegroundWindow(hwnd);
+    int id = (int)TrackPopupMenuEx(m, TPM_RETURNCMD | TPM_LEFTALIGN | TPM_TOPALIGN | TPM_NONOTIFY, pt.x, pt.y, hwnd, nullptr);
+    PostMessageW(hwnd, WM_NULL, 0, 0);
+    DestroyMenu(m);
+    if (Strip* again = StripOf(hwnd)) { again->pressed = -1; InvalidateRect(hwnd, nullptr, FALSE); }
+    if (id > 0 && id <= (int)list.size()) MediaCommand(1, (size_t)id - 1);
 }
 
 static void OpenSlot(Strip& s, int i)
@@ -1099,16 +1157,18 @@ static LRESULT CALLBACK WndProc(HWND h, UINT msg, WPARAM wp, LPARAM lp)
             const Slot sl = s->slots[i];
             if (sl.kind == K_DESK) SwitchDesktop(sl.menu);
             else if (sl.kind == K_MEDIA) MediaCommand(sl.menu);
-            else if (sl.kind == K_NOTE || sl.kind == K_TITLE || sl.kind == K_VIZ) MediaCommand(1); // click the title to pause            else OpenSlot(*s, i);
+            else if (sl.kind == K_NOTE || sl.kind == K_TITLE || sl.kind == K_VIZ) MediaCommand(1); // click the title to play / pause
+            else if (sl.kind == K_MORE) OpenPlayersMenu(*s, i);
+            else OpenSlot(*s, i);
         }
         return 0;
     case WM_DESKTOPS: if (ReadDesktops()) LayoutAll(); return 0;
     case WM_MEDIA:
     {
-        std::wstring t;
-        { std::lock_guard<std::mutex> lock(g_mediaLock); t = g_mediaShared; }
-        if (t != g_mediaTitle) { g_mediaTitle = t; LayoutAll(); }
-        bool want = !t.empty(); // the visualizer listens only while something plays
+        std::vector<MediaEntry> list;
+        { std::lock_guard<std::mutex> lock(g_mediaLock); list = g_mediaShared; }
+        if (!(list == g_media)) { g_media = list; LayoutAll(); }
+        bool want = !g_media.empty() && g_media[0].playing; // the visualizer listens only while something plays
         if (want != g_vizWanted) { g_vizWanted = want; if (want) SetEvent(g_vizWake); }
         return 0;
     }

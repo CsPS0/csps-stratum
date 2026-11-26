@@ -18,10 +18,20 @@ desktop copies. Most of it is KDE settings rather than files, listed here so it 
 
 ## Panels
 
-- **Top panel:** application launcher, global menu, spacer, date and time (custom date `ddd d MMM`,
-  date beside the time), spacer, then the AI usage widget and the system tray. The two flexible
-  spacers keep the clock in the exact centre. See the root README's laptop section and
-  [`strata/40-apps/ai-usage/`](../../strata/40-apps/ai-usage/).
+- **Top panel (floating):** application launcher, global menu, virtual desktop pager, media player,
+  spacer, date and time (custom date `ddd d MMM`, date beside the time), a Quick Launch pill
+  (Dolphin, WezTerm, System Monitor, System Settings), spacer, then the AI usage widget and the
+  system tray. The two flexible spacers keep the clock near the centre. See the root README's
+  laptop section and [`strata/40-apps/ai-usage/`](../../strata/40-apps/ai-usage/).
+  - It follows the Windows YASB bar ([`strata/40-apps/yasb/`](../../strata/40-apps/yasb/)) with
+    built-in, event-driven widgets only, to spare the battery. Left out on purpose: the audio
+    visualizer (captures audio all the time), CPU / RAM / GPU (polls every 2 s) and the
+    next-event label (needs a polling script; the clock's calendar shows events). Weather stays
+    in the tray until it has a location.
+  - Recreate it: add `org.kde.plasma.pager`, `org.kde.plasma.mediacontroller` (and remove it from the
+    tray's `extraItems`) and `org.kde.plasma.quicklaunch` (`launcherUrls`), set the panel to
+    floating, then fix `AppletOrder` in `plasma-org.kde.plasma.desktop-appletsrc` while
+    `plasma-plasmashell.service` is stopped.
 - **Bottom panel:** a floating, fit-to-content dock running the custom dock widget
   [`strata/40-apps/kde-dock/`](../../strata/40-apps/kde-dock/): hover magnification, bounce, dots,
   dividers between app groups.

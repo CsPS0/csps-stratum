@@ -101,6 +101,11 @@ t allow "force-with-lease (left to the ask rule)" "$REPO" 'git push --force-with
 t allow "push option value is not a flag"         "$REPO" 'git push -o ci.skip origin main'
 # --- recursive deletes: scratch dir and outside ---
 t allow "rm -rf under the Claude scratch dir"     "$H"    'rm -rf /tmp/claude/abc/scratchpad/old'
+uid=$("$py" -c 'import os; print(os.getuid() if hasattr(os, "getuid") else "")')
+if [ -n "$uid" ]; then
+  t allow "rm -rf under the per-user scratch dir"  "$H"    "rm -rf /tmp/claude-$uid/abc/scratchpad/old"
+  t BLOCK "rm -rf under another user's scratch"    "$H"    "rm -rf /tmp/claude-$((uid + 1))/abc"
+fi
 t BLOCK "rm -rf in home, outside REPOS"           "$REPO" "rm -rf $H/guard-test"
 t BLOCK "rm -rf under /etc"                       "$REPO" 'rm -rf /etc/guard-test'
 t BLOCK "rm -rf /"                                "$REPO" 'rm -rf /'

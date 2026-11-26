@@ -11,8 +11,9 @@ $REPOS (also written ${NAME}) and a leading ~ are filled in from this hook's
 environment. A target that still holds a variable, $(...) or backticks after that
 is blocked.
 
-Allowed roots: $HOME/REPOS, the Claude scratch directory (${TMPDIR:-/tmp}/claude),
-and any extra roots in GUARD_ALLOW_ROOTS (colon-separated).
+Allowed roots: $HOME/REPOS, the Claude scratch directory (${TMPDIR:-/tmp}/claude,
+or ${TMPDIR:-/tmp}/claude-<uid> as Claude Code names it on Linux), and any extra
+roots in GUARD_ALLOW_ROOTS (colon-separated).
 
 Exit 2 blocks the call (stderr goes back to Claude). Exit 0 means no decision.
 The hook fails closed: malformed input or any internal error also exits 2.
@@ -44,6 +45,8 @@ def allow_roots():
     home = os.environ.get("HOME", "")
     tmp = os.environ.get("TMPDIR") or "/tmp"
     roots = [posixpath.join(home, "REPOS"), posixpath.join(tmp, "claude")]
+    if hasattr(os, "getuid"):  # not on Windows Python, where the suite may also run
+        roots.append(posixpath.join(tmp, f"claude-{os.getuid()}"))
     roots += [r for r in os.environ.get("GUARD_ALLOW_ROOTS", "").split(":") if r]
     return [posixpath.normpath(r) for r in roots if r.startswith("/")]
 

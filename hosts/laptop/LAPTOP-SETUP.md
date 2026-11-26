@@ -1,6 +1,6 @@
 # Applying the 2026-11-24 agent setup on the laptop (Arch Linux)
 
-Nothing here has been run on the laptop. Commands are for zsh/bash on the laptop unless marked.
+Steps 2-8 were applied on the laptop on 2026-11-26; what is still open is listed in step 9. Commands are for zsh/bash on the laptop unless marked.
 No tokens, auth headers or machine-specific paths: set `REPOS` once and everything else uses `$HOME` and `$REPOS`.
 
 ```sh
@@ -132,7 +132,7 @@ Back up cache folders first if you want them: `cp -a ~/.claude/plugins/cache "$B
 - `autoMode`. Change two `environment` lines for the laptop: "Primary use: ... on Arch Linux (Flutter, web, Minecraft modding)" and "Local repos: ~/REPOS/<name> ...". Put your private repo names into the "Repository visibility" line (the snapshot leaves them out on purpose).
 - **Do not copy the snapshot's `hooks.PreToolUse` block**: it runs the Windows `.ps1`. Use the Linux block below instead.
 
-**Guard hook (Linux port).** It blocks git force pushes and recursive deletes outside `$HOME/REPOS` and the Claude scratch directory (`${TMPDIR:-/tmp}/claude`). It needs `python3`.
+**Guard hook (Linux port).** It blocks git force pushes and recursive deletes outside `$HOME/REPOS` and the Claude scratch directory (`${TMPDIR:-/tmp}/claude` or `${TMPDIR:-/tmp}/claude-<uid>`). It needs `python3`.
 
 - **Fails closed:** malformed input or an internal error also blocks the command, with a "guard-destructive: internal error" message.
 - **Variables:** in `rm` targets it fills in `$HOME`, `$TMPDIR`, `$REPOS` and `~` from its own environment. `$REPOS` resolves only if it is set in the environment Claude Code starts with. Otherwise `rm -rf "$REPOS/..."` is blocked as unresolved, which is safe.
@@ -147,7 +147,7 @@ cp "$REPOS/csps-stratum/strata/30-dev/ai/hooks/guard-destructive.py" ~/.claude/h
 chmod +x ~/.claude/hooks/guard-destructive.py
 # 1. The suite must pass on the laptop BEFORE the hooks block goes into settings.json:
 if bash "$REPOS/csps-stratum/strata/30-dev/ai/hooks/test-guard-destructive.sh" > "$B/guard-tests.txt" 2>&1; then
-  tail -n 1 "$B/guard-tests.txt"   # expect: passed: 61  failed: 0  of 61
+  tail -n 1 "$B/guard-tests.txt"   # expect: passed: 63  failed: 0  of 63
 else
   echo "guard hook tests FAILED: do not add the hooks block; see $B/guard-tests.txt"
 fi
@@ -174,7 +174,7 @@ fi
 }
 ```
 
-Check the scratch directory once: in a `claude` session, the system prompt's "Scratchpad directory" line should start with `${TMPDIR:-/tmp}/claude`. If it is somewhere else, the hook will block cleanups there. Add that folder through the `env` block of `~/.claude/settings.json`: `"env": { "GUARD_ALLOW_ROOTS": "<that folder>" }`, colon-separated for more than one. I have not confirmed that hook processes inherit `env` from settings, so re-run the live test below afterwards.
+Check the scratch directory once: in a `claude` session, the system prompt's "Scratchpad directory" line should start with `${TMPDIR:-/tmp}/claude-<uid>` (on the laptop, `/tmp/claude-1000`), which the hook allows. If it is somewhere else, the hook will block cleanups there. Add that folder through the `env` block of `~/.claude/settings.json`: `"env": { "GUARD_ALLOW_ROOTS": "<that folder>" }`, colon-separated for more than one. Hook processes do inherit `env` from settings (checked on the laptop, 2026-11-26), but re-run the live test below afterwards.
 
 Live test: in a fresh `claude` session, ask it to run `rm -rf /tmp/guard-hook-test-does-not-exist`. It should be refused with "Blocked by guard-destructive hook".
 - Check JSON after editing: `python -m json.tool ~/.claude/settings.json >/dev/null && echo ok`.
@@ -275,13 +275,13 @@ agy plugin list
 - `"allowNonWorkspaceAccess": false`. agy drops this key when it rewrites the file during a run. Absent means false, so there is no need to add it back.
 - `"trustedWorkspaces"`: only your repo root and the project folders you trust; never `$HOME` or `/`.
 - `"permissions": { "deny": [...] }` with Linux targets, for example `read_file(<home>/.ssh)`, `write_file(<home>/.ssh)`, `command(git push --force)`, `command(git push -f)`, `command(rm -rf)`, `command(rm -fr)`. Replace `<home>` with the output of `echo $HOME`.
-- `"enableTerminalSandbox": true` only after checking the Linux requirement in the sandbox docs.
+- `"enableTerminalSandbox": true` only after checking the Linux requirement in the sandbox docs. The only Linux requirement they name is unprivileged user namespaces: `unshare -Urn true && echo ok` must print `ok`.
 
 **File rules take full absolute paths only.** Write every `read_file(...)` and `write_file(...)` rule with the full path, such as `read_file(/home/<you>/.ssh)`. Never use `~`, `$HOME` or a relative path such as `.env`. This holds for the CLI settings and for the app's **File reads** and **File writes** rules: the app saves those in `~/.gemini/config/config.json`, and the CLI loads them too.
 
-Why: on the Windows desktop (agy 1.5.17), any rule that is not a full path breaks the terminal sandbox ("sandbox configuration error: ... non-absolute file path"), and agy then reruns commands outside it. A rule without the drive letter (`/Users/<you>/.ssh`) also matches nothing there. That drive-letter bug is Windows-specific. Linux paths have no drive letter, so `/home/<you>/.ssh` is already a full path, but run the test below anyway.
+Why: on the Windows desktop (agy 1.5.17; the laptop ran 1.5.14 and passed the test below), any rule that is not a full path breaks the terminal sandbox ("sandbox configuration error: ... non-absolute file path"), and agy then reruns commands outside it. A rule without the drive letter (`/Users/<you>/.ssh`) also matches nothing there. That drive-letter bug is Windows-specific. Linux paths have no drive letter, so `/home/<you>/.ssh` is already a full path, but run the test below anyway.
 
-**Test the sandbox after adding or changing rules.** Use a throwaway repo with no remote under your repo root (a trusted workspace). Replace `<home>` and `<key>.pub` with a real public key path; the test never prints the file.
+**Test the sandbox after adding or changing rules.** Use a throwaway repo with no remote under your repo root (a trusted workspace). Replace `<home>` and `<key>.pub` with a real public key path, or use `<home>/.ssh/authorized_keys` if there is no `.pub` file (the laptop has none); the test never prints the file.
 
 ```sh
 T="$REPOS/agy-sandbox-probe"; mkdir -p "$T" && git -C "$T" init -q
@@ -303,6 +303,8 @@ To try a rule before saving it, pass the whole settings block for one run with `
 In the Antigravity app: **Settings > Permissions > This Computer > Permission Preset** → **Default** (on versions without remote agents: Settings > General > Global Permissions > Permission Preset). **Settings > Application > Enable Remote Control** → off.
 
 ## 9. Check
+
+Still open after the 2026-11-26 run: `~/.agents/RULES.md` (copy from the desktop), the Antigravity app's Permission Preset and Remote Control (GUI), the second school repo in step 6, and the fresh-session checks below.
 
 - `claude plugin list`, `claude mcp list` (from `~`, from `$REPOS/pala`, from a school repo), `agy mcp list`, `agy plugin list`.
 - Fresh Claude session in a school repo: ponytail skills listed; `/memory` shows `~/.agents/RULES.md`.

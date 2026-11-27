@@ -15,28 +15,38 @@ The still is `../stills/contours-1920x1080.png`, made by `../render-still.py` (a
 shader's contours style). Make a new one with `python3 ../render-still.py --time <seconds>`; the time
 picks the pattern.
 
-## No blur on the lock screen (sudo)
+## Lock screen: no blur, fixed clock (sudo)
 
-While the password form shows, KDE's lock screen blurs the wallpaper and lifts its blacks to grey
-(Breeze's `WallpaperFader`). The lock screen QML belongs to `plasma-desktop`
+KDE's lock screen has two problems here:
+- While the password form shows, it blurs the wallpaper and lifts its blacks to grey (Breeze's
+  `WallpaperFader`).
+- Its clock follows the locale, and the Hungarian one writes the time as `0:41`.
+
+The lock screen QML belongs to `plasma-desktop`
 (`/usr/share/plasma/shells/org.kde.plasma.desktop/contents/lockscreen/LockScreenUi.qml`), and only
-test mode can choose another, so the fix patches that file:
-- [`lockscreen/oled-lockscreen-noblur`](lockscreen/oled-lockscreen-noblur) replaces the line that
-  gives the fader its source with `visible: false`. The fader then draws nothing, and its states
-  still fade the form in and out. The original file is kept in `/var/lib/csps-stratum/`.
-- A pacman hook ([`oled-lockscreen-noblur.hook`](lockscreen/oled-lockscreen-noblur.hook)) runs it
-  again after every `plasma-desktop` install or upgrade. If Breeze changes that line, it only prints
-  a warning and never fails the update.
+test mode can choose another, so the fix patches that folder.
+
+[`lockscreen/oled-lockscreen-noblur`](lockscreen/oled-lockscreen-noblur):
+- **Blur:** it replaces the line that gives the fader its source with `visible: false`. The fader
+  then draws nothing, and its states still fade the form in and out.
+- **Clock:** it replaces `Clock {` with `OledClock {`, the login screen's clock
+  ([`sddm/OledClock.qml`](sddm/OledClock.qml): `00:41` and `2026-11-28`). It copies that file next to
+  the lock screen QML from `/usr/local/share/csps-stratum/` and lists it in the folder's `qmldir`.
+- **Backups:** the original files are kept in `/var/lib/csps-stratum/`.
+
+A pacman hook ([`oled-lockscreen-noblur.hook`](lockscreen/oled-lockscreen-noblur.hook)) runs it again
+after every `plasma-desktop` install or upgrade. If Breeze changes either line, it skips that part
+with a warning and never fails the update.
 
 ```sh
 cd ~/REPOS/csps-stratum
 strata/40-apps/oled-span/kde-screens/lockscreen/install-lockscreen-noblur.sh --dry-run
 sudo strata/40-apps/oled-span/kde-screens/lockscreen/install-lockscreen-noblur.sh
-sudo strata/40-apps/oled-span/kde-screens/lockscreen/install-lockscreen-noblur.sh --undo   # blur back, hook removed
+sudo strata/40-apps/oled-span/kde-screens/lockscreen/install-lockscreen-noblur.sh --undo   # Breeze's lock screen back, hook removed
 ```
 
-Check it by locking (Meta+L) and moving the mouse: the contours stay sharp and black behind the
-form. The test mode (`kscreenlocker_greet --testing`) starts with the form hidden, so it can't show
+Check it by locking (Meta+L) and moving the mouse. The clock reads `00:41` / `2026-11-28`, and the
+contours stay sharp and black behind the form. The test mode (`kscreenlocker_greet --testing`) starts with the form hidden, so it can't show
 the blur.
 
 ## Lock screen and splash (no sudo)

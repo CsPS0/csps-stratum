@@ -1,42 +1,75 @@
 #!/usr/bin/env bash
-# Removes the blur and grey haze from the KDE lock screen, so the OLED Span wallpaper stays sharp and
-# black while the password form shows. Breeze's WallpaperFader blurs the wallpaper once its source is
-# set (`Component.onCompleted: source = wallpaper`); this replaces that one line with `visible: false`.
-# The fader then draws nothing, and its states still fade the form in and out.
+# Patches the KDE lock screen (it belongs to plasma-desktop) in two ways:
+#  - No blur: Breeze's WallpaperFader blurs the wallpaper and greys its blacks once its source is set
+#    (`Component.onCompleted: source = wallpaper`). That line becomes `visible: false`, so the fader
+#    draws nothing and its states still fade the form in and out.
+#  - Fixed clock: Breeze's Clock follows the locale, and the Hungarian one writes "0:41". It becomes
+#    OledClock ("00:41" and "2026-11-28", like the top bar). The file is copied next to the lock
+#    screen QML from /usr/local/share/csps-stratum/OledClock.qml and listed in that folder's qmldir.
 #
-# The file belongs to plasma-desktop, so a pacman hook (oled-lockscreen-noblur.hook) runs this again
-# after every plasma-desktop install or upgrade. It never fails a pacman transaction: if Breeze changes
-# the line, it only prints a warning.
+# A pacman hook (oled-lockscreen-noblur.hook) runs this again after every plasma-desktop install or
+# upgrade. It never fails a pacman transaction: a part whose line has changed is skipped with a
+# warning.
 #   oled-lockscreen-noblur          patch (idempotent)
-#   oled-lockscreen-noblur --undo   put Breeze's line back
+#   oled-lockscreen-noblur --undo   put Breeze's lock screen back
 set -uo pipefail
 
-f=/usr/share/plasma/shells/org.kde.plasma.desktop/contents/lockscreen/LockScreenUi.qml
-mark='visible: false // csps-stratum: no blur on the lock screen'
+dir=/usr/share/plasma/shells/org.kde.plasma.desktop/contents/lockscreen
+f="$dir/LockScreenUi.qml"
+qmldir="$dir/qmldir"
+clock_src=/usr/local/share/csps-stratum/OledClock.qml
 backup_dir=/var/lib/csps-stratum
+fader_mark='visible: false // csps-stratum: no blur on the lock screen'
+clock_mark='OledClock { // csps-stratum: fixed 00:41 / 2026-11-28 clock'
+clock_entry='OledClock 1.0 OledClock.qml'
+say() { echo "oled-lockscreen-noblur: $*"; }
 
-[ -f "$f" ] || { echo "oled-lockscreen-noblur: $f not found, nothing to do"; exit 0; }
+[ -f "$f" ] || { say "$f not found, nothing to do"; exit 0; }
 
 if [ "${1:-}" = "--undo" ]; then
-  if grep -qF "$mark" "$f"; then
-    sed -i "s|^\([[:space:]]*\)${mark//|/\\|}\$|\1Component.onCompleted: source = wallpaper|" "$f"
-    echo "oled-lockscreen-noblur: Breeze's blur is back"
-  else
-    echo "oled-lockscreen-noblur: not patched, nothing to undo"
-  fi
+  sed -i "s|^\([[:space:]]*\)${fader_mark}\$|\1Component.onCompleted: source = wallpaper|" "$f"
+  sed -i "s|^\([[:space:]]*\)${clock_mark}\$|\1Clock {|" "$f"
+  [ -f "$qmldir" ] && sed -i "\|^${clock_entry}\$|d" "$qmldir"
+  rm -f "$dir/OledClock.qml"
+  say "Breeze's lock screen is back (blur and locale clock)"
   exit 0
 fi
 
-if grep -qF "$mark" "$f"; then
-  echo "oled-lockscreen-noblur: already patched"
-  exit 0
+stamp="$(date +%Y%m%d-%H%M%S)"
+backed_up=0
+backup() {
+  [ "$backed_up" = 1 ] && return
+  mkdir -p "$backup_dir"
+  cp -a "$f" "$backup_dir/LockScreenUi.qml.$stamp.orig"
+  [ -f "$qmldir" ] && cp -a "$qmldir" "$backup_dir/qmldir.$stamp.orig"
+  backed_up=1
+}
+
+# 1. no blur
+if grep -qF "$fader_mark" "$f"; then
+  say "blur: already off"
+elif [ "$(grep -c '^[[:space:]]*Component.onCompleted: source = wallpaper$' "$f")" = 1 ]; then
+  backup
+  sed -i "s|^\([[:space:]]*\)Component.onCompleted: source = wallpaper\$|\1${fader_mark}|" "$f"
+  say "blur: turned off"
+else
+  say "WARNING: blur line not found (LockScreenUi.qml changed); blur left as it is"
 fi
-if [ "$(grep -c '^[[:space:]]*Component.onCompleted: source = wallpaper$' "$f")" != 1 ]; then
-  echo "oled-lockscreen-noblur: WARNING: LockScreenUi.qml changed, the blur line was not found; left as it is"
-  exit 0
+
+# 2. fixed clock
+if [ ! -f "$clock_src" ]; then
+  say "WARNING: $clock_src missing; clock left as it is"
+elif grep -qF "$clock_mark" "$f"; then
+  install -m 644 "$clock_src" "$dir/OledClock.qml"
+  grep -qx "$clock_entry" "$qmldir" 2>/dev/null || echo "$clock_entry" >> "$qmldir"
+  say "clock: already fixed"
+elif [ "$(grep -c '^[[:space:]]*Clock {$' "$f")" = 1 ]; then
+  backup
+  install -m 644 "$clock_src" "$dir/OledClock.qml"
+  grep -qx "$clock_entry" "$qmldir" 2>/dev/null || echo "$clock_entry" >> "$qmldir"
+  sed -i "s|^\([[:space:]]*\)Clock {\$|\1${clock_mark}|" "$f"
+  say "clock: fixed to 00:41 / 2026-11-28"
+else
+  say "WARNING: clock line not found (LockScreenUi.qml changed); clock left as it is"
 fi
-mkdir -p "$backup_dir"
-cp -a "$f" "$backup_dir/LockScreenUi.qml.$(date +%Y%m%d-%H%M%S).orig"
-sed -i "s|^\([[:space:]]*\)Component.onCompleted: source = wallpaper\$|\1${mark}|" "$f"
-grep -qF "$mark" "$f" && echo "oled-lockscreen-noblur: patched $f"
 exit 0

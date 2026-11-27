@@ -2,7 +2,7 @@
 
 Reference shots of the finished **OLED Monochrome** setup, taken with no windows on screen
 (Windows: Show Desktop). Windows shots: 28 November 2026 (the dock: 25 November, the search-only Start
-menu: 22 November); laptop: 27 November 2026; phone: 22 November 2026. Both top bars show the date
+menu: 22 November); laptop: 28 November 2026; phone: 22 November 2026. Both top bars show the date
 as `2026-11-28`. Wallpaper: [OLED Span](../../strata/40-apps/oled-span/) (contours style) everywhere;
 it only draws greys. Use them to check a rebuild (the
 [`INSTALL-WITH-AI.md`](../../INSTALL-WITH-AI.md) prompt tells the agent to compare against them).
@@ -30,7 +30,7 @@ Setup: [`strata/40-apps/windhawk/`](../../strata/40-apps/windhawk/), [`strata/40
 
 | File | What it shows |
 |---|---|
-| [`laptop-desktop.png`](laptop-desktop.png) | The rounded, bordered top bar laid out like Windows (focused app name, playing track with visualizer, CPU / RAM / GPU and weather; centred `yyyy-MM-dd` clock and quick-app glyphs; Claude usage, tray, power), and the bordered dock with group dividers. |
+| [`laptop-desktop.png`](laptop-desktop.png) | The rounded, bordered top bar laid out like Windows (focused app name, CPU / RAM / GPU and weather; centred `yyyy-MM-dd` clock and quick-app glyphs; Claude usage, tray, power), and the bordered dock with group dividers. |
 | [`laptop-top-panel.png`](laptop-top-panel.png) | The top bar on its own (1920x48: the panel floats a few pixels from the edges). |
 | [`laptop-dock.png`](laptop-dock.png) | The dock on its own. |
 

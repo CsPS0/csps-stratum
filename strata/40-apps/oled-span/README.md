@@ -92,6 +92,28 @@ named `dbus` + the signal name) and keeps animating while it is on. Measured on 
 | No maximized window (animating) | ~2% of one core |
 | A window maximized or fullscreen (paused) | 0% |
 
+## Lock, login and splash screens
+
+The screens around the desktop use the same look, the contours style:
+
+- **Pictures** (Windows lock and sign-in screens, the laptop's login screen and login splash):
+  a still frame, [`stills/contours-1920x1080.png`](stills/contours-1920x1080.png).
+  - [`render-still.py`](render-still.py) makes it: a NumPy port of the shader's contours style, so
+    it needs no browser or GPU.
+  - Run `python render-still.py out.png [--width W --height H --time SECONDS]`; the time picks the
+    pattern.
+- **Laptop:** the lock screen runs the live plugin. The login splash, the SDDM login screen and the
+  Plymouth boot splash are in [`kde-screens/`](kde-screens/README.md); the last two need sudo.
+- **Windows:** [`Set-LockScreen.ps1`](Set-LockScreen.ps1) (`-WhatIf` previews) sets the lock screen
+  picture.
+  - It saves the old one to `~/.stratum_backups/lockscreen/` first. Undo with
+    `.\Set-LockScreen.ps1 -Image <that backup>`.
+  - It needs no administrator rights.
+  - The sign-in screen shows the same picture, unless "Show the lock screen background picture on
+    the sign-in screen" is off in Settings → Personalization → Lock screen.
+- **Not changed:** the boot logo (the PC's firmware draws it) and the "Signing out" and shutdown
+  screens are system screens with no picture setting.
+
 ## Phone: Wallpaper Engine for Android
 
 The free [Wallpaper Engine Android app](https://wallpaperengine.io/android) gets wallpapers from the

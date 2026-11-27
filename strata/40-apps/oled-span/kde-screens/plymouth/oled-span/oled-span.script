@@ -1,0 +1,51 @@
+# OLED Span boot splash: pure black with a thin grey quarter arc that turns once a second, at the
+# same spot as the login splash's spinner (72% down). No logo.
+
+Window.SetBackgroundTopColor(0, 0, 0);
+Window.SetBackgroundBottomColor(0, 0, 0);
+
+arc = Image("arc.png");
+spinner = Sprite(arc);
+cx = Window.GetX() + Window.GetWidth() / 2;
+cy = Window.GetY() + Window.GetHeight() * 0.72;
+spinner.SetX(cx - arc.GetWidth() / 2);
+spinner.SetY(cy - arc.GetHeight() / 2);
+angle = 0;
+
+fun refresh_callback() {
+    # 50 refreshes a second, a full turn (2 pi) a second
+    angle = angle + 0.1257;
+    if (angle > 6.2832) angle = angle - 6.2832;
+    spinner.SetImage(arc.Rotate(angle));
+}
+Plymouth.SetRefreshFunction(refresh_callback);
+
+# Password prompt (an encrypted disk): the prompt and one dot per typed character, in grey.
+prompt_sprite = Sprite();
+dots_sprite = Sprite();
+
+fun display_password_callback(prompt, bullets) {
+    p = Image.Text(prompt, 0.56, 0.57, 0.58);
+    prompt_sprite.SetImage(p);
+    prompt_sprite.SetX(cx - p.GetWidth() / 2);
+    prompt_sprite.SetY(cy + 40);
+    prompt_sprite.SetOpacity(1);
+    s = "";
+    i = 0;
+    while (i < bullets) { s = s + "*"; i = i + 1; }
+    d = Image.Text(s, 0.9, 0.9, 0.9);
+    dots_sprite.SetImage(d);
+    dots_sprite.SetX(cx - d.GetWidth() / 2);
+    dots_sprite.SetY(cy + 64);
+    dots_sprite.SetOpacity(1);
+    spinner.SetOpacity(0);
+}
+
+fun display_normal_callback() {
+    prompt_sprite.SetOpacity(0);
+    dots_sprite.SetOpacity(0);
+    spinner.SetOpacity(1);
+}
+
+Plymouth.SetDisplayPasswordFunction(display_password_callback);
+Plymouth.SetDisplayNormalFunction(display_normal_callback);

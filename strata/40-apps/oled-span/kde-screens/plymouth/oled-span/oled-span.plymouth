@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=OLED Span
+Description=Black with a thin grey spinner, to match the OLED Span desktop (csps-stratum)
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/oled-span
+ScriptFile=/usr/share/plymouth/themes/oled-span/oled-span.script

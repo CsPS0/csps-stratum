@@ -1,0 +1,12 @@
+{
+  "KPackageStructure": "Plasma/LookAndFeel",
+  "KPlugin": {
+    "Id": "org.csps.oledspan.splash",
+    "Name": "OLED Span splash",
+    "Description": "Only a login splash: the OLED Span contours with a thin grey spinner. Pick it under Splash Screen, not as a Global Theme.",
+    "Authors": [{ "Name": "csps-stratum" }],
+    "License": "MIT",
+    "Version": "1.0"
+  },
+  "X-Plasma-APIVersion": "2"
+}

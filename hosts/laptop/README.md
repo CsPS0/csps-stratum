@@ -7,31 +7,36 @@ desktop copies. Most of it is KDE settings rather than files, listed here so it 
 |---|---|---|
 | Colour scheme | **OLED Monochrome** | [`OLED_Monochrome.colors`](OLED_Monochrome.colors) → `~/.local/share/color-schemes/` |
 | Global theme base | Breeze Dark (`org.kde.breezedark.desktop`) | KDE |
-| Plasma style | WhiteSur-dark-mono | [WhiteSur KDE](https://github.com/vinceliuice/WhiteSur-kde) install script |
+| Plasma style | **OLED Monochrome**: WhiteSur-dark-mono with a black, rounded, bordered panel background | [WhiteSur KDE](https://github.com/vinceliuice/WhiteSur-kde) install script, then [`strata/40-apps/kde-bar/`](../../strata/40-apps/kde-bar/) (`install-kde-bar.sh --style`) |
 | Application style | Kvantum | `kvantum`, `kvantum-qt5` |
 | Window decoration | Breeze | KDE |
 | Icons | yet-another-monochrome-icon-set | AUR `yamis-icon-theme-git` |
 | Cursor | Bibata Modern Classic | AUR `bibata-cursor-theme-bin` (Windows: [`strata/10-os/windows/cursors/`](../../strata/10-os/windows/cursors/)) |
 | Fonts | Inter 10 (UI, 9 toolbars, 8 smallest), JetBrainsMono Nerd Font 10 (fixed) | `inter-font`, `ttf-jetbrains-mono-nerd` |
 | Wallpaper | **OLED Span**, an animated black-and-white Plasma wallpaper plugin (15 fps) | [`strata/40-apps/oled-span/`](../../strata/40-apps/oled-span/) (`install-kde.sh --apply`) |
-| Shell | zsh + Starship | [`strata/20-shell/`](../../strata/20-shell/) |
+| Desktop | No icons: the **Desktop** layout (`org.kde.desktopcontainment`), not Folder View, so `~/Desktop` stays out of sight | Right-click the desktop → Desktop and Wallpaper → Layout |
+| Lock screen | The live OLED Span wallpaper | [`strata/40-apps/oled-span/kde-screens/`](../../strata/40-apps/oled-span/kde-screens/) (`--lock`) |
+| Login splash | OLED Span still with a thin grey spinner | same (`--splash`) |
+| Login screen (SDDM) | Theme `oled-span`: Breeze with the OLED Span still and a fixed `23:49` / `2026-11-27` clock | same (`sddm/install-sddm-theme.sh`, sudo) |
+| Boot splash | Plymouth `bgrt` (the laptop maker's logo). The `oled-span` theme booted the main kernel to a black screen on 2026-11-27, so it's on hold | same README |
+| Shell | zsh + Starship | [`strata/20-shell/zsh/`](../../strata/20-shell/zsh/), [`strata/20-shell/starship/`](../../strata/20-shell/starship/) |
 
 ## Panels
 
-- **Top panel (floating):** application launcher, global menu, virtual desktop pager, media player,
-  spacer, date and time (custom date `ddd d MMM`, date beside the time), a Quick Launch pill
-  (Dolphin, WezTerm, System Monitor, System Settings), spacer, then the AI usage widget and the
-  system tray. The two flexible spacers keep the clock near the centre. See the root README's
-  laptop section and [`strata/40-apps/ai-usage/`](../../strata/40-apps/ai-usage/).
-  - It follows the Windows YASB bar ([`strata/40-apps/yasb/`](../../strata/40-apps/yasb/)) with
-    built-in, event-driven widgets only, to spare the battery. Left out on purpose: the audio
-    visualizer (captures audio all the time), CPU / RAM / GPU (polls every 2 s) and the
-    next-event label (needs a polling script; the clock's calendar shows events). Weather stays
-    in the tray until it has a location.
-  - Recreate it: add `org.kde.plasma.pager`, `org.kde.plasma.mediacontroller` (and remove it from the
-    tray's `extraItems`) and `org.kde.plasma.quicklaunch` (`launcherUrls`), set the panel to
-    floating, then fix `AppletOrder` in `plasma-org.kde.plasma.desktop-appletsrc` while
-    `plasma-plasmashell.service` is stopped.
+- **Top panel (floating, rounded, bordered):** laid out like the Windows YASB bar
+  ([`strata/40-apps/yasb/`](../../strata/40-apps/yasb/)), with the widgets in
+  [`strata/40-apps/kde-bar/`](../../strata/40-apps/kde-bar/):
+  - **Left:** the focused app's name, the global menu, the playing track
+    with ⏮ ⏯ ⏭ and a visualizer (`cava`), then CPU / RAM / GPU and the weather.
+  - **Centre:** date and time (`2026-11-27 23:23`: custom date `yyyy-MM-dd`, JetBrains Mono), the
+    next calendar event, and the quick-apps pill (Dolphin, WezTerm, System Monitor, System Settings).
+  - **Right:** the AI usage widget ([`strata/40-apps/ai-usage/`](../../strata/40-apps/ai-usage/)),
+    the system tray and a power button that opens the leave screen.
+  - The two flexible spacers keep the clock near the centre.
+  - No launcher on the bar, as on Windows: **Meta** opens KRunner (search apps, files and
+    commands), like the Windows key opens the search-only Start menu.
+  - Recreate it with `strata/40-apps/kde-bar/install-kde-bar.sh --style --layout` (back up first;
+    `--dry-run` previews).
 - **Bottom panel:** a floating, fit-to-content dock running the custom dock widget
   [`strata/40-apps/kde-dock/`](../../strata/40-apps/kde-dock/): hover magnification, bounce, dots,
   dividers between app groups.

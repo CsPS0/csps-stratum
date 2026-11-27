@@ -1,0 +1,13 @@
+{
+  "KPackageStructure": "Plasma/Applet",
+  "KPlugin": {
+    "Id": "org.csps.nextevent",
+    "Name": "Next Calendar Event",
+    "Description": "The next event from KDE's calendars (Akonadi, e.g. Google Calendar), like the Windows top bar",
+    "Icon": "view-calendar-upcoming-events",
+    "Category": "Date and Time",
+    "License": "MIT",
+    "Version": "1.0"
+  },
+  "X-Plasma-API-Minimum-Version": "6.0"
+}

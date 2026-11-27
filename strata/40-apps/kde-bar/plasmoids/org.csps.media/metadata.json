@@ -1,0 +1,13 @@
+{
+  "KPackageStructure": "Plasma/Applet",
+  "KPlugin": {
+    "Id": "org.csps.media",
+    "Name": "Now Playing",
+    "Description": "The playing track with previous, play/pause and next, and a small audio visualizer (cava), like the Windows menu bar",
+    "Icon": "media-playback-start",
+    "Category": "Multimedia",
+    "License": "MIT",
+    "Version": "1.0"
+  },
+  "X-Plasma-API-Minimum-Version": "6.0"
+}

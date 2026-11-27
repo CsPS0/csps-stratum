@@ -1,0 +1,13 @@
+{
+  "KPackageStructure": "Plasma/Applet",
+  "KPlugin": {
+    "Id": "org.csps.quickapps",
+    "Name": "Quick Apps",
+    "Description": "Glyph buttons for Dolphin, WezTerm, System Monitor and System Settings in a grey pill, like the Windows top bar",
+    "Icon": "applications-all",
+    "Category": "Application Launchers",
+    "License": "MIT",
+    "Version": "1.0"
+  },
+  "X-Plasma-API-Minimum-Version": "6.0"
+}

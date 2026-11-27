@@ -80,6 +80,8 @@ PlasmoidItem {
                 PlasmaComponents.Label {
                     required property string modelData
                     text: root.usage[modelData] ? root.usage[modelData].text : ""
+                    font.family: "JetBrainsMono Nerd Font"
+                    font.pixelSize: 13
                     font.weight: Font.DemiBold
                     color: Kirigami.Theme.textColor
                     opacity: 0.8

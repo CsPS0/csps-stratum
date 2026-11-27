@@ -304,7 +304,7 @@ In the Antigravity app: **Settings > Permissions > This Computer > Permission Pr
 
 ## 9. Check
 
-Still open after the 2026-11-26 run: `~/.agents/RULES.md` (copy from the desktop), the Antigravity app's Permission Preset and Remote Control (GUI), the second school repo in step 6, and the fresh-session checks below.
+`~/.agents/RULES.md` was copied from the desktop on 2026-11-27; a fresh `claude -p` on the laptop loads both it and `~/.agents/ENV.md`. Still open: the Antigravity app's Permission Preset and Remote Control (GUI), the second school repo in step 6, and the rest of the fresh-session checks below.
 
 - `claude plugin list`, `claude mcp list` (from `~`, from `$REPOS/pala`, from a school repo), `agy mcp list`, `agy plugin list`.
 - Fresh Claude session in a school repo: ponytail skills listed; `/memory` shows `~/.agents/RULES.md`.

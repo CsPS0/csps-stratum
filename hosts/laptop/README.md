@@ -15,7 +15,7 @@ desktop copies. Most of it is KDE settings rather than files, listed here so it 
 | Fonts | Inter 10 (UI, 9 toolbars, 8 smallest), JetBrainsMono Nerd Font 10 (fixed) | `inter-font`, `ttf-jetbrains-mono-nerd` |
 | Wallpaper | **OLED Span**, an animated black-and-white Plasma wallpaper plugin (15 fps) | [`strata/40-apps/oled-span/`](../../strata/40-apps/oled-span/) (`install-kde.sh --apply`) |
 | Desktop | No icons: the **Desktop** layout (`org.kde.desktopcontainment`), not Folder View, so `~/Desktop` stays out of sight | Right-click the desktop → Desktop and Wallpaper → Layout |
-| Lock screen | The live OLED Span wallpaper | [`strata/40-apps/oled-span/kde-screens/`](../../strata/40-apps/oled-span/kde-screens/) (`--lock`) |
+| Lock screen | The live OLED Span wallpaper, no blur behind the form | [`strata/40-apps/oled-span/kde-screens/`](../../strata/40-apps/oled-span/kde-screens/) (`--lock`; `lockscreen/` patch, sudo) |
 | Login splash | OLED Span still with a thin grey spinner | same (`--splash`) |
 | Login screen (SDDM) | Theme `oled-span`: Breeze with the OLED Span still and a fixed `23:49` / `2026-11-27` clock | same (`sddm/install-sddm-theme.sh`, sudo) |
 | Boot splash | Plymouth `bgrt` (the laptop maker's logo). The `oled-span` theme booted the main kernel to a black screen on 2026-11-27, so it's on hold | same README |

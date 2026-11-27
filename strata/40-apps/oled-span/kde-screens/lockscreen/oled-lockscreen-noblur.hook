@@ -1,0 +1,10 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = plasma-desktop
+
+[Action]
+Description = Removing the blur from the KDE lock screen (csps-stratum)...
+When = PostTransaction
+Exec = /usr/local/bin/oled-lockscreen-noblur

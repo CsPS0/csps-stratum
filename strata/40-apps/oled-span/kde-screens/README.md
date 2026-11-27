@@ -5,7 +5,7 @@ black with a thin grey spinner where only simple graphics work, no logos.
 
 | Screen | Look | Set up with | Needs |
 |---|---|---|---|
-| Lock screen | The live OLED Span wallpaper, moving | `install-kde-screens.sh --lock` | the wallpaper plugin (`../install-kde.sh --apply`) |
+| Lock screen | The live OLED Span wallpaper, moving, with no blur behind the password form | `install-kde-screens.sh --lock`, then [`lockscreen/`](lockscreen/) for the blur | the wallpaper plugin (`../install-kde.sh --apply`); sudo for the blur |
 | Splash after login | The contours still, thin grey spinner; the desktop fades in over it | `install-kde-screens.sh --splash` | — |
 | Login screen (SDDM) | Breeze with the contours still and a `23:49` / `2026-11-27` clock (theme `oled-span`) | [`sddm/install-sddm-theme.sh`](sddm/install-sddm-theme.sh) | sudo |
 | Boot splash (Plymouth) | Black, thin grey spinner (password prompt in grey if a disk is encrypted) | [`plymouth/oled-span/`](plymouth/oled-span/), commands below | sudo |
@@ -14,6 +14,30 @@ black with a thin grey spinner where only simple graphics work, no logos.
 The still is `../stills/contours-1920x1080.png`, made by `../render-still.py` (a NumPy port of the
 shader's contours style). Make a new one with `python3 ../render-still.py --time <seconds>`; the time
 picks the pattern.
+
+## No blur on the lock screen (sudo)
+
+While the password form shows, KDE's lock screen blurs the wallpaper and lifts its blacks to grey
+(Breeze's `WallpaperFader`). The lock screen QML belongs to `plasma-desktop`
+(`/usr/share/plasma/shells/org.kde.plasma.desktop/contents/lockscreen/LockScreenUi.qml`), and only
+test mode can choose another, so the fix patches that file:
+- [`lockscreen/oled-lockscreen-noblur`](lockscreen/oled-lockscreen-noblur) replaces the line that
+  gives the fader its source with `visible: false`. The fader then draws nothing, and its states
+  still fade the form in and out. The original file is kept in `/var/lib/csps-stratum/`.
+- A pacman hook ([`oled-lockscreen-noblur.hook`](lockscreen/oled-lockscreen-noblur.hook)) runs it
+  again after every `plasma-desktop` install or upgrade. If Breeze changes that line, it only prints
+  a warning and never fails the update.
+
+```sh
+cd ~/REPOS/csps-stratum
+strata/40-apps/oled-span/kde-screens/lockscreen/install-lockscreen-noblur.sh --dry-run
+sudo strata/40-apps/oled-span/kde-screens/lockscreen/install-lockscreen-noblur.sh
+sudo strata/40-apps/oled-span/kde-screens/lockscreen/install-lockscreen-noblur.sh --undo   # blur back, hook removed
+```
+
+Check it by locking (Meta+L) and moving the mouse: the contours stay sharp and black behind the
+form. The test mode (`kscreenlocker_greet --testing`) starts with the form hidden, so it can't show
+the blur.
 
 ## Lock screen and splash (no sudo)
 

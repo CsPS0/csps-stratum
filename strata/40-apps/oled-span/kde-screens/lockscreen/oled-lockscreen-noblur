@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# Removes the blur and grey haze from the KDE lock screen, so the OLED Span wallpaper stays sharp and
+# black while the password form shows. Breeze's WallpaperFader blurs the wallpaper once its source is
+# set (`Component.onCompleted: source = wallpaper`); this replaces that one line with `visible: false`.
+# The fader then draws nothing, and its states still fade the form in and out.
+#
+# The file belongs to plasma-desktop, so a pacman hook (oled-lockscreen-noblur.hook) runs this again
+# after every plasma-desktop install or upgrade. It never fails a pacman transaction: if Breeze changes
+# the line, it only prints a warning.
+#   oled-lockscreen-noblur          patch (idempotent)
+#   oled-lockscreen-noblur --undo   put Breeze's line back
+set -uo pipefail
+
+f=/usr/share/plasma/shells/org.kde.plasma.desktop/contents/lockscreen/LockScreenUi.qml
+mark='visible: false // csps-stratum: no blur on the lock screen'
+backup_dir=/var/lib/csps-stratum
+
+[ -f "$f" ] || { echo "oled-lockscreen-noblur: $f not found, nothing to do"; exit 0; }
+
+if [ "${1:-}" = "--undo" ]; then
+  if grep -qF "$mark" "$f"; then
+    sed -i "s|^\([[:space:]]*\)${mark//|/\\|}\$|\1Component.onCompleted: source = wallpaper|" "$f"
+    echo "oled-lockscreen-noblur: Breeze's blur is back"
+  else
+    echo "oled-lockscreen-noblur: not patched, nothing to undo"
+  fi
+  exit 0
+fi
+
+if grep -qF "$mark" "$f"; then
+  echo "oled-lockscreen-noblur: already patched"
+  exit 0
+fi
+if [ "$(grep -c '^[[:space:]]*Component.onCompleted: source = wallpaper$' "$f")" != 1 ]; then
+  echo "oled-lockscreen-noblur: WARNING: LockScreenUi.qml changed, the blur line was not found; left as it is"
+  exit 0
+fi
+mkdir -p "$backup_dir"
+cp -a "$f" "$backup_dir/LockScreenUi.qml.$(date +%Y%m%d-%H%M%S).orig"
+sed -i "s|^\([[:space:]]*\)Component.onCompleted: source = wallpaper\$|\1${mark}|" "$f"
+grep -qF "$mark" "$f" && echo "oled-lockscreen-noblur: patched $f"
+exit 0

@@ -74,6 +74,9 @@ def processes():
                 argv = fh.read().decode(errors="replace").rstrip("\0").split("\0")
         except OSError:
             continue
+        # Electron apps (the Claude desktop app) rewrite their command line as one space-separated string.
+        if len(argv) == 1 and " " in argv[0] and not os.path.exists(argv[0]):
+            argv = argv[0].split(" ")
         if argv and argv[0]:
             procs.append((pid, os.path.basename(argv[0]).lower(), argv))
     return procs

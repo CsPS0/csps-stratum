@@ -12,6 +12,7 @@ WezTerm  ♫ Track ⏮⏯⏭ ▁▃▅▂  CPU 3%  RAM 28%  GPU 2%  ☁ 1°C    
 | `org.csps.appname` | The focused app's name, or `Desktop` | KDE's task manager model |
 | `org.csps.media` | The current player's track, ⏮ ⏯ ⏭, a 12-bar visualizer; hidden without a player | Plasma's MPRIS model; levels from `cava-levels.py` |
 | `org.csps.stats` | `CPU n%  RAM n%  GPU n%` and the weather | ksystemstats every 2 s; [wttr.in](https://wttr.in) every 30 min (located by IP; hover for the place) |
+| `org.csps.clock` | `2026-11-28  00:44`, a fixed format like the Windows bar; click for the month calendar and the picked day's events | KDE's calendar plugins (`holidaysevents`, `pimevents`) |
 | `org.csps.nextevent` | The next event, with the Windows widget's rules (`14:00  Title`, `tomorrow 09:00  …`, `now  …`); hover for the next 8 | The clock's calendar plugins (`pimevents`: Akonadi, which syncs Google Calendar), 30 days ahead |
 | `org.csps.quickapps` | Dolphin, WezTerm, System Monitor and System Settings as glyphs in a grey pill | — |
 | `org.csps.power` | ⏻; click opens the leave screen | `org.kde.LogoutPrompt.promptAll` |
@@ -20,9 +21,10 @@ There is no launcher on the bar, as on Windows. `--layout` sets **Meta** to open
 (`kwinrc [ModifierOnlyShortcuts] Meta=org.kde.krunner,/App,,toggleDisplay`), the counterpart of the
 Windows key opening the search-only Start menu.
 
-All text is JetBrainsMono Nerd Font 13 px, in the YASB colours. The clock is KDE's own (it keeps
-its calendar popup with the Google events), set to JetBrains Mono and the date to `yyyy-MM-dd`. It scales its text to the panel
-height, so it is slightly larger than the rest.
+All text is JetBrainsMono Nerd Font 13 px, in the YASB colours. The clock is a widget of its own
+rather than KDE's: KDE's clock follows the locale, and the Hungarian one writes the time as `0:41`.
+It also scaled its text to the panel height, so it was larger than the rest. The popup is KDE's own
+month view (`org.kde.plasma.workspace.calendar` `MonthView`), so it shows the same events.
 
 ## Plasma style
 
@@ -57,8 +59,8 @@ strata/40-apps/kde-bar/install-kde-bar.sh --style --layout
   afterwards (`systemctl --user restart plasma-plasmashell`), since Plasma caches loaded widgets.
 - **`--style`:** backs up `~/.config/plasmarc` and applies the style.
 - **`--layout`:** backs up `~/.config/plasma-org.kde.plasma.desktop-appletsrc`, then:
-  - removes the launcher, the pager, the stock media player and Quick Launch from the top panel;
-  - adds the widgets and sets the clock's font and `yyyy-MM-dd` date;
+  - removes the launcher, the pager, the stock media player, Quick Launch and KDE's clock from the top panel;
+  - replaces KDE's clock with `org.csps.clock` and adds the other widgets;
   - backs up `~/.config/kwinrc` and sets Meta to open KRunner;
   - with plasmashell stopped, puts everything in the Windows order;
   - leaves other widgets in place after the tray.

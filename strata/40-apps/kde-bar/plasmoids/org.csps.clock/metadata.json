@@ -1,0 +1,13 @@
+{
+  "KPackageStructure": "Plasma/Applet",
+  "KPlugin": {
+    "Id": "org.csps.clock",
+    "Name": "Clock (yyyy-MM-dd HH:mm)",
+    "Description": "Date and time in one fixed format, 2026-11-28  00:41, like the Windows top bar; click for the month calendar with KDE's calendar events",
+    "Icon": "preferences-system-time",
+    "Category": "Date and Time",
+    "License": "MIT",
+    "Version": "1.0"
+  },
+  "X-Plasma-API-Minimum-Version": "6.0"
+}

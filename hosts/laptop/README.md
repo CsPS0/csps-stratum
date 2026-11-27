@@ -28,7 +28,7 @@ desktop copies. Most of it is KDE settings rather than files, listed here so it 
   [`strata/40-apps/kde-bar/`](../../strata/40-apps/kde-bar/):
   - **Left:** the focused app's name, the global menu, the playing track
     with ⏮ ⏯ ⏭ and a visualizer (`cava`), then CPU / RAM / GPU and the weather.
-  - **Centre:** date and time (`2026-11-27 23:23`: custom date `yyyy-MM-dd`, JetBrains Mono), the
+  - **Centre:** date and time (`2026-11-28  00:44`, a fixed format like Windows; click for the month calendar), the
     next calendar event, and the quick-apps pill (Dolphin, WezTerm, System Monitor, System Settings).
   - **Right:** the AI usage widget ([`strata/40-apps/ai-usage/`](../../strata/40-apps/ai-usage/)),
     the system tray and a power button that opens the leave screen.

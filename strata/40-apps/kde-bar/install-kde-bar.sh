@@ -99,17 +99,18 @@ if [ "$layout" = 1 ]; then
   # clock); anything else on the panel stays, after the tray. No launcher on the bar, as on Windows:
   # Meta opens KRunner instead, like the Windows key opens the search-only Start menu.
   order="org.csps.appname org.kde.plasma.appmenu org.csps.media org.csps.stats
-org.kde.plasma.panelspacer org.kde.plasma.digitalclock org.csps.nextevent org.csps.quickapps
+org.kde.plasma.panelspacer org.csps.clock org.csps.nextevent org.csps.quickapps
 org.kde.plasma.panelspacer org.csps.aiusage org.kde.plasma.systemtray org.csps.power"
-  remove="org.kde.plasma.kicker org.kde.plasma.kickoff org.kde.plasma.pager org.kde.plasma.mediacontroller org.kde.plasma.quicklaunch"
-  add="org.csps.appname org.csps.media org.csps.stats org.csps.nextevent org.csps.quickapps org.csps.power"
+  # KDE's clock follows the locale, which writes "0:41" in Hungarian; org.csps.clock has a fixed
+  # "2026-11-28  00:41", like Windows.
+  remove="org.kde.plasma.kicker org.kde.plasma.kickoff org.kde.plasma.pager org.kde.plasma.mediacontroller org.kde.plasma.quicklaunch org.kde.plasma.digitalclock"
+  add="org.csps.appname org.csps.media org.csps.stats org.csps.clock org.csps.nextevent org.csps.quickapps org.csps.power"
   meta="org.kde.krunner,/App,,toggleDisplay"
   backup "$rc"
   backup "$config/kwinrc"
   if [ "$dry" = 1 ]; then
     echo "would remove from the top panel: $remove"
     echo "would add to the top panel: $add"
-    echo "would set the clock to JetBrainsMono Nerd Font 10 and the date to yyyy-MM-dd"
     echo "would set Meta to open KRunner ($meta)"
     echo "would stop plasmashell, set the order to: $(echo $order)"
   else
@@ -119,14 +120,6 @@ org.kde.plasma.panelspacer org.csps.aiusage org.kde.plasma.systemtray org.csps.p
 if (p) {
   "'"$remove"'".split(" ").forEach(function (pl) { p.widgets(pl).forEach(function (w) { w.remove(); }); });
   "'"$add"'".split(" ").forEach(function (pl) { if (p.widgets(pl).length === 0) p.addWidget(pl); });
-  p.widgets("org.kde.plasma.digitalclock").forEach(function (c) {
-    c.currentConfigGroup = ["Appearance"];
-    c.writeConfig("autoFontAndSize", false);
-    c.writeConfig("fontFamily", "JetBrainsMono Nerd Font");
-    c.writeConfig("fontSize", 10);
-    c.writeConfig("dateFormat", "custom");
-    c.writeConfig("customDateFormat", "yyyy-MM-dd");
-  });
   print(p.id);
 }'
     cid="$(qdbus6 org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript "$js")"

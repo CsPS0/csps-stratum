@@ -124,6 +124,7 @@ PlasmoidItem {
         font.family: "JetBrainsMono Nerd Font"
         font.pixelSize: 13
         color: "#A0A3A7"
+        leftPadding: 12   // room after the clock
         verticalAlignment: Text.AlignVCenter
         Layout.preferredWidth: root.head ? implicitWidth : 0
         Layout.fillHeight: true

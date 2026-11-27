@@ -2,6 +2,8 @@
 # Builds the "oled-span" SDDM login theme and makes it the current one:
 #   - a copy of the installed Breeze login theme (/usr/share/sddm/themes/breeze)
 #   - its clock replaced by OledClock.qml: fixed 24-hour "23:49" and "2026-11-27"
+#   - its WallpaperFader replaced by OledFader.qml: the form still fades, but the picture is not
+#     blurred or greyed
 #   - the OLED Span contours picture as background (theme.conf.user)
 # Run with sudo. --dry-run previews; --build-to <dir> only builds a copy there (no sudo, for
 # `sddm-greeter-qt6 --test-mode --theme <dir>`). Undo: set Current=breeze in
@@ -26,20 +28,23 @@ done
 
 [ -d "$src" ] || { echo "missing: $src (the Breeze SDDM theme, package plasma-desktop)" >&2; exit 1; }
 [ -f "$still" ] || { echo "missing: $still" >&2; exit 1; }
-[ "$(grep -c '^[[:space:]]*Clock {$' "$src/Main.qml")" = 1 ] \
-  || { echo "Breeze's Main.qml changed: no single 'Clock {' line to replace; not touching anything" >&2; exit 1; }
+for part in Clock WallpaperFader; do
+  [ "$(grep -c "^[[:space:]]*$part {\$" "$src/Main.qml")" = 1 ] \
+    || { echo "Breeze's Main.qml changed: no single '$part {' line to replace; not touching anything" >&2; exit 1; }
+done
 
-# Build the theme in a folder: Breeze, our clock, our picture settings, our name.
+# Build the theme in a folder: Breeze, our clock and fader, our picture settings, our name.
 build() {
   local out="$1" bg="$2"
   mkdir -p "$out"
   cp -r "$src/." "$out/"
   rm -f "$out"/theme.conf.user*
-  cp "$here/OledClock.qml" "$out/OledClock.qml"
-  sed -i 's/^\([[:space:]]*\)Clock {$/\1OledClock {/' "$out/Main.qml"
+  cp "$here/OledClock.qml" "$here/OledFader.qml" "$out/"
+  sed -i -e 's/^\([[:space:]]*\)Clock {$/\1OledClock {/' \
+         -e 's/^\([[:space:]]*\)WallpaperFader {$/\1OledFader {/' "$out/Main.qml"
   sed -i -e '/^\(Name\|Description\)\[/d' \
          -e 's/^Name=.*/Name=OLED Span/' \
-         -e 's/^Description=.*/Description=Breeze with the OLED Span contours and a 24-hour yyyy-MM-dd clock/' \
+         -e 's/^Description=.*/Description=Breeze with the OLED Span contours (no blur) and a 24-hour yyyy-MM-dd clock/' \
          -e 's/^Theme-Id=.*/Theme-Id=oled-span/' "$out/metadata.desktop"
   printf '[General]\ntype=image\nbackground=%s\nshowClock=true\n' "$bg" > "$out/theme.conf.user"
 }
@@ -52,7 +57,7 @@ fi
 
 if [ "$dry" = 1 ]; then
   echo "would install $still as $picture"
-  echo "would build $dest from $src with OledClock.qml"
+  echo "would build $dest from $src with OledClock.qml and OledFader.qml"
   echo "would back up $conf and set Current=oled-span"
   echo "dry run, nothing changed"
   exit 0

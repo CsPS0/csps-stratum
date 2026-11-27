@@ -39,7 +39,10 @@ The login screen uses its own theme, `oled-span`:
 - a copy of the installed Breeze login theme;
 - the contours picture behind the form;
 - its clock fixed to `23:49` and `2026-11-27` ([`sddm/OledClock.qml`](sddm/OledClock.qml)), like
-  the top bar.
+  the top bar;
+- no blur ([`sddm/OledFader.qml`](sddm/OledFader.qml)). While the form shows, Breeze's
+  `WallpaperFader` blurs the picture and lifts its blacks to a grey haze; this copy keeps only its
+  fading of the form, so the contours stay sharp and black.
 
 The locale can't set the format here, because the SDDM greeter ignores `LC_TIME`: with
 `GreeterEnvironment=...,LC_TIME=hu_HU.UTF-8` it still showed `Friday 27 November 2026`.
@@ -54,13 +57,10 @@ sudo strata/40-apps/oled-span/kde-screens/sddm/install-sddm-theme.sh   # install
 - The script copies the picture to `/usr/share/wallpapers/oled-span-contours.png` and builds
   `/usr/share/sddm/themes/oled-span`.
 - It backs up `/etc/sddm.conf.d/kde_settings.conf` and sets `Current=oled-span`.
-- It refuses to run if Breeze's `Main.qml` no longer has exactly one `Clock {` line to replace.
+- It refuses to run if Breeze's `Main.qml` no longer has exactly one `Clock {` and one
+  `WallpaperFader {` line to replace.
 - Run it again after a Plasma update, so the copy picks up Breeze's changes.
 - Undo: set `Current=breeze` in that file (with sudo), or copy its `.bak` back.
-
-While the login form is visible, Breeze blurs the picture and lays a grey haze over it (its
-`WallpaperFader`). After a few seconds without input the form fades out and the crisp black contours
-come back, as on the lock screen.
 
 ## Time format
 

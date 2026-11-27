@@ -161,7 +161,7 @@ off for now (`[bar]` in `menubar.ini`); what follows describes them when they're
 
 YASB's own calendar can only show public holidays, so `calendar/next-event.py` feeds a Custom
 widget instead. Every 5 minutes it reads your calendar's private iCal link, and the bar shows the
-next event within 30 days (`now`, `14:00`, `tomorrow 09:00`, `Mon 18:00`, `04 Dec 07:30` when
+next event within 30 days (`now`, `14:00`, `tomorrow 09:00`, `Mon 18:00`, `12-04 07:30` when
 it's over a week away; all-day events show just the day). Nothing shows while there's no link or
 nothing coming up.
 

@@ -4,7 +4,7 @@ Makes the laptop's top panel look like the Windows YASB bar ([`../yasb/`](../yas
 panels like the Windows bar and dock: black, rounded, with a thin grey border.
 
 ```
-WezTerm  ♫ Track ⏮⏯⏭ ▁▃▅▂  CPU 3%  RAM 28%  GPU 2%  ☁ 1°C     2026-11-27 23:10  04 Dec 07:30 Event [  >_  ⚙]     Claude 11% used  tray  ⏻
+WezTerm  ♫ Track ⏮⏯⏭ ▁▃▅▂  CPU 3%  RAM 28%  GPU 2%  ☁ 1°C     2026-11-27 23:10  12-04 07:30 Event [  >_  ⚙]     Claude 11% used  tray  ⏻
 ```
 
 | Widget | Shows | Data |

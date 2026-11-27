@@ -1,6 +1,6 @@
 // The next calendar event beside the clock, with the same rules as the Windows widget
 // (strata/40-apps/yasb/calendar/next-event.py): "14:00  Standup", "tomorrow 09:00  ...",
-// "Mon 09:00  ...", "now  ..." while it runs, today's all-day event if nothing timed is coming.
+// "Mon 09:00  ...", "12-04 07:30  ..." from a week on, "now  ..." while it runs, today's all-day event if nothing timed is coming.
 // Events come from the same calendar plugins as the clock's calendar (pimevents = Akonadi, which
 // syncs Google Calendar), so no private calendar link is needed. Hidden when there is none.
 import QtQuick
@@ -101,7 +101,7 @@ PlasmoidItem {
         const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
         const days = Math.round((new Date(e.start.getFullYear(), e.start.getMonth(), e.start.getDate()) - today) / 86400000);
         const day = days <= 0 ? "today" : days === 1 ? "tomorrow"
-            : days < 7 ? Qt.formatDate(e.start, "ddd") : Qt.formatDate(e.start, "dd MMM");
+            : days < 7 ? Qt.formatDate(e.start, "ddd") : Qt.formatDate(e.start, "MM-dd");
         if (e.allDay)
             return day;
         if (e.start <= now)
@@ -115,7 +115,7 @@ PlasmoidItem {
         const timed = evs.filter(e => !e.allDay);
         const todayAllDay = evs.filter(e => e.allDay && sameDay(e.start, now));
         head = timed.length ? timed[0] : (todayAllDay.length ? todayAllDay[0] : (evs.length ? evs[0] : null));
-        tooltip = evs.slice(0, 8).map(e => Qt.formatDate(e.start, "ddd dd MMM") + (e.allDay ? "  all day" : "  " + hhmm(e.start)) + "   " + e.title).join("\n");
+        tooltip = evs.slice(0, 8).map(e => Qt.formatDate(e.start, "yyyy-MM-dd ddd") + (e.allDay ? "  all day" : "  " + hhmm(e.start)) + "   " + e.title).join("\n");
     }
 
     fullRepresentation: PlasmaComponents.Label {

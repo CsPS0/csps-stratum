@@ -353,7 +353,7 @@ def short(title):
 def when(e, now_local):
     s = e["start"]
     days = (s.date() - now_local.date()).days
-    day = "today" if days <= 0 else "tomorrow" if days == 1 else s.strftime("%a") if days < 7 else s.strftime("%d %b")
+    day = "today" if days <= 0 else "tomorrow" if days == 1 else s.strftime("%a") if days < 7 else s.strftime("%m-%d")
     if e["allday"]:
         return day
     if s <= now_local:
@@ -374,7 +374,7 @@ def main():
     head = timed[0] if timed else (today_allday[0] if today_allday else evs[0])
     lines = []
     for e in evs[:8]:
-        t = e["start"].strftime("%a %d %b") + ("  all day" if e["allday"] else e["start"].strftime("  %H:%M"))
+        t = e["start"].strftime("%Y-%m-%d %a") + ("  all day" if e["allday"] else e["start"].strftime("  %H:%M"))
         lines.append(f"{t}   {e['title']}")
     print(json.dumps({"text": f"{when(head, now_local)}  {short(head['title'])}", "tooltip": "\n".join(lines)}))
 

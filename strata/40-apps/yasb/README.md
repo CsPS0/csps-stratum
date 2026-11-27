@@ -20,7 +20,7 @@ a small native program in this folder.
 Both screens get the same bar (YASB's `top-bar` and `centre-bar`, `screens: ['*']`):
 
 ```
-[App]  ● ○  ♪ Title ⏮ ⏸ ⏭ ▂▅▃▇  ···  CPU 5%  RAM 53%  GPU 4%  ☁ 7°  | Wed 25 Nov 15:21  next event  [▭ >_ ◔ ⚙] |  Claude 21% used  tray…  en 🎤 🔊 🔔 ⏻
+[App]  ● ○  ♪ Title ⏮ ⏸ ⏭ ▂▅▃▇  ···  CPU 5%  RAM 53%  GPU 4%  ☁ 7°  | 2026-11-25 15:21  next event  [▭ >_ ◔ ⚙] |  Claude 21% used  tray…  en 🎤 🔊 🔔 ⏻
 └────────── menubar.exe strip ──────────┘    └──── top-bar, left ────┘ └──────── centre-bar ─────────┘    └──────────── top-bar, right ────────┘
 ```
 

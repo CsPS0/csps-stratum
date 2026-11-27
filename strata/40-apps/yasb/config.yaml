@@ -226,8 +226,8 @@ widgets:
   clock:
     type: yasb.clock.ClockWidget
     options:
-      label: '{%a %d %b  %H:%M}<span>{alarm}</span>'
-      label_alt: '{%A, %d %B %Y  %H:%M:%S}'
+      label: '{%Y-%m-%d  %H:%M}<span>{alarm}</span>'
+      label_alt: '{%Y-%m-%d, %A  %H:%M:%S}'
       timezones: []
       calendar:
         blur: false

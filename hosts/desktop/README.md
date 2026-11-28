@@ -33,8 +33,10 @@ screen, are in [`docs/screenshots/`](../../docs/screenshots/).
 |---|---|---|
 | **Dock / Shell** | [Windhawk](https://windhawk.net/) (v1.7.3) | [`strata/40-apps/windhawk/`](../../strata/40-apps/windhawk/) |
 | **Dock Look** | No theme: own rules for a black pill, dots and dividers; monochrome icons | `windows-11-taskbar-styler` ([`oled-dock.reg`](../../strata/40-apps/windhawk/oled-dock.reg)), [`dock-icons/`](../../strata/10-os/windows/dock-icons/), `icon-resource-redirect` |
-| **Top Bar** | YASB + native one-line menu bar | [`strata/40-apps/yasb/`](../../strata/40-apps/yasb/) |
+| **Top Bar** | YASB + native one-line menu bar; clock `2026-11-28  00:21`, events a week or more away as `12-04 07:30` | [`strata/40-apps/yasb/`](../../strata/40-apps/yasb/) |
 | **Wallpaper** | Wallpaper Engine (`wallpaper64`) | OLED Span scene, stretched across both monitors ([`strata/40-apps/oled-span/`](../../strata/40-apps/oled-span/)) |
+| **Lock & Sign-in Screens** | A still of the OLED Span contours | [`Set-LockScreen.ps1`](../../strata/40-apps/oled-span/Set-LockScreen.ps1) (no admin; old picture backed up) |
+| **Dates & Times** | Short date `yyyy-MM-dd`, time `HH:mm` (user region settings) | Settings → Time & language → Region |
 | **Terminal (Primary)** | [WezTerm](https://wezfurlong.org/wezterm/) | [`strata/20-shell/wezterm/`](../../strata/20-shell/wezterm/) |
 | **Terminal (Secondary)** | Windows Terminal | [`strata/20-shell/windows-terminal/`](../../strata/20-shell/windows-terminal/) |
 | **Shell & Prompt**| PowerShell 7+ with Oh My Posh | [`strata/20-shell/pwsh/`](../../strata/20-shell/pwsh/), [`strata/20-shell/oh-my-posh/`](../../strata/20-shell/oh-my-posh/) |

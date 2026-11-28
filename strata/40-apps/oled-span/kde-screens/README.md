@@ -8,7 +8,7 @@ black with a thin grey spinner where only simple graphics work, no logos.
 | Lock screen | The live OLED Span wallpaper, moving, with no blur behind the password form | `install-kde-screens.sh --lock`, then [`lockscreen/`](lockscreen/) for the blur | the wallpaper plugin (`../install-kde.sh --apply`); sudo for the blur |
 | Splash after login | The contours still, thin grey spinner; the desktop fades in over it | `install-kde-screens.sh --splash` | — |
 | Login screen (SDDM) | Breeze with the contours still and a `23:49` / `2026-11-27` clock (theme `oled-span`) | [`sddm/install-sddm-theme.sh`](sddm/install-sddm-theme.sh) | sudo |
-| Boot splash (Plymouth) | Black, thin grey spinner (password prompt in grey if a disk is encrypted) | [`plymouth/oled-span/`](plymouth/oled-span/), commands below | sudo |
+| Boot splash (Plymouth) | **On hold:** black, thin grey spinner. It booted the main kernel to a black screen; see below | [`plymouth/oled-span/`](plymouth/oled-span/), commands below | sudo |
 | Boot menu (systemd-boot) | Unchanged | — | — |
 
 The still is `../stills/contours-1920x1080.png`, made by `../render-still.py` (a NumPy port of the

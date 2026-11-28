@@ -1,7 +1,9 @@
 # Dock for the laptop (KDE Plasma 6)
 
 The laptop's bottom panel uses this small dock widget instead of KDE's icon-only task manager, to
-match the Windows dock (Windhawk `taskbar-dock-animation`):
+match the Windows dock (Windhawk `taskbar-dock-animation`). The black, rounded pill with its thin
+grey border comes from the OLED-Monochrome Plasma style in [`../kde-bar/`](../kde-bar/)
+(`install-kde-bar.sh --style`), which draws every panel. The widget itself does:
 
 - **Hover magnification:** the icon under the mouse grows to 130 % (`maxScale`), its neighbours less,
   with a smooth falloff, as on macOS and the Windows dock.

@@ -48,6 +48,8 @@ policies there and writes the other 34: the result is as stripped as Windows.
   - Saves the previous values to `~/.config/csps-stratum/backups/colors-*.json` first. `-Restore <file>` undoes it, and `-WhatIf` previews it.
 - `dock-icons/`: monochrome icons for the dock, Start menu and the apps' own windows (see its README).
 - Taskbar, Start, notification centre, Explorer and window tint: Windhawk stylers in `strata/40-apps/windhawk/`.
+- Lock and sign-in screens: a still of the OLED Span contours, set by
+  `strata/40-apps/oled-span/Set-LockScreen.ps1` (per user, no elevation, `-WhatIf`).
 - Terminals and prompt: `strata/20-shell/` (WezTerm, Windows Terminal, Oh My Posh).
 
 Some apps theme themselves and ignore all of the above (Brave, Discord, Zed, VS Code). Their own theme settings decide their colours.

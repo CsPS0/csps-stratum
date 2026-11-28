@@ -7,7 +7,8 @@
     KDE Breeze's login clock (org.kde.breeze.components Clock.qml) with fixed formats: 24-hour
     "23:49" and "2026-11-27", like the top bar, instead of the locale's. The SDDM greeter ignores
     LC_TIME, so the locale gave "Friday 27 November 2026". Used by the oled-span SDDM theme
-    (install-sddm-theme.sh).
+    (install-sddm-theme.sh) and by the lock screen patch (../lockscreen/oled-lockscreen-noblur),
+    where the Hungarian locale gave "0:41".
 */
 
 import QtQuick

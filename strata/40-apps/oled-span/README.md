@@ -102,8 +102,14 @@ The screens around the desktop use the same look, the contours style:
     it needs no browser or GPU.
   - Run `python render-still.py out.png [--width W --height H --time SECONDS]`; the time picks the
     pattern.
-- **Laptop:** the lock screen runs the live plugin. The login splash, the SDDM login screen and the
-  Plymouth boot splash are in [`kde-screens/`](kde-screens/README.md); the last two need sudo.
+- **Laptop:** everything is in [`kde-screens/`](kde-screens/README.md).
+  - **Lock screen:** runs the live plugin. A patch (sudo, kept by a pacman hook) removes Breeze's
+    blur behind the password form and gives it the fixed `00:41` / `2026-11-28` clock.
+  - **Login splash:** the still with a thin spinner.
+  - **Login screen:** its own SDDM theme, `oled-span`: Breeze with the still, no blur and the same
+    clock (sudo).
+  - **Boot splash:** the Plymouth theme is **on hold**. It booted the main kernel to a black screen,
+    so the laptop keeps `bgrt`.
 - **Windows:** [`Set-LockScreen.ps1`](Set-LockScreen.ps1) (`-WhatIf` previews) sets the lock screen
   picture.
   - It saves the old one to `~/.stratum_backups/lockscreen/` first. Undo with

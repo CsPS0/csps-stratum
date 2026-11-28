@@ -1,5 +1,13 @@
 # Laptop Top Bar Implementation Plan
 
+> **Status, 2026-11-28:** built, then changed while using it:
+> - **Launcher:** removed; Meta opens KRunner.
+> - **Clock:** KDE's clock was replaced by `org.csps.clock`, fixed to `2026-11-28  00:44` (the Hungarian
+>   locale gave `0:41`).
+> - **Event dates:** a week or more away, they read `12-04`.
+>
+> The current state is in `strata/40-apps/kde-bar/README.md`.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Make the laptop's KDE panels look like, and show what, the Windows YASB bar and dock do.

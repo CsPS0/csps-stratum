@@ -7,7 +7,7 @@ desktop copies. Most of it is KDE settings rather than files, listed here so it 
 |---|---|---|
 | Colour scheme | **OLED Monochrome** | [`OLED_Monochrome.colors`](OLED_Monochrome.colors) → `~/.local/share/color-schemes/` |
 | Global theme base | Breeze Dark (`org.kde.breezedark.desktop`) | KDE |
-| Plasma style | **OLED Monochrome**: WhiteSur-dark-mono with a black, rounded, bordered panel background | [WhiteSur KDE](https://github.com/vinceliuice/WhiteSur-kde) install script, then [`strata/40-apps/kde-bar/`](../../strata/40-apps/kde-bar/) (`install-kde-bar.sh --style`) |
+| Plasma style | **OLED Monochrome**: WhiteSur-dark-mono (a hand-made greyscale copy of WhiteSur-dark) with a black, rounded, bordered panel background | [WhiteSur KDE](https://github.com/vinceliuice/WhiteSur-kde) install script, then [`strata/40-apps/kde-bar/`](../../strata/40-apps/kde-bar/) (`install-kde-bar.sh --style`) |
 | Application style | Kvantum | `kvantum`, `kvantum-qt5` |
 | Window decoration | Breeze | KDE |
 | Icons | yet-another-monochrome-icon-set | AUR `yamis-icon-theme-git` |
@@ -17,8 +17,9 @@ desktop copies. Most of it is KDE settings rather than files, listed here so it 
 | Desktop | No icons: the **Desktop** layout (`org.kde.desktopcontainment`), not Folder View, so `~/Desktop` stays out of sight | Right-click the desktop → Desktop and Wallpaper → Layout |
 | Lock screen | The live OLED Span wallpaper, no blur behind the form, a fixed `00:41` / `2026-11-28` clock | [`strata/40-apps/oled-span/kde-screens/`](../../strata/40-apps/oled-span/kde-screens/) (`--lock`; `lockscreen/` patch, sudo) |
 | Login splash | OLED Span still with a thin grey spinner | same (`--splash`) |
-| Login screen (SDDM) | Theme `oled-span`: Breeze with the OLED Span still and a fixed `23:49` / `2026-11-27` clock | same (`sddm/install-sddm-theme.sh`, sudo) |
+| Login screen (SDDM) | Theme `oled-span`: Breeze with the OLED Span still, no blur behind the form, a fixed `00:41` / `2026-11-28` clock | same (`sddm/install-sddm-theme.sh`, sudo) |
 | Boot splash | Plymouth `bgrt` (the laptop maker's logo). The `oled-span` theme booted the main kernel to a black screen on 2026-11-27, so it's on hold | same README |
+| Time format | Hungarian (`LC_TIME=hu_HU.UTF-8`): 24-hour, year-first dates in KDE apps. `LC_ALL` is set only in `~/.zshrc` (terminals), never in `~/.zshenv`, which would override the whole Plasma session | System Settings → Region & Language; [`strata/20-shell/zsh/`](../../strata/20-shell/zsh/) |
 | Shell | zsh + Starship | [`strata/20-shell/zsh/`](../../strata/20-shell/zsh/), [`strata/20-shell/starship/`](../../strata/20-shell/starship/) |
 
 ## Panels
@@ -40,8 +41,8 @@ desktop copies. Most of it is KDE settings rather than files, listed here so it 
 - **Bottom panel:** a floating, fit-to-content dock running the custom dock widget
   [`strata/40-apps/kde-dock/`](../../strata/40-apps/kde-dock/): hover magnification, bounce, dots,
   dividers between app groups.
-- The clock's calendar shows Google Calendar events through KDE's Google connector (Akonadi
-  `kdepim-runtime`) and the PIM events plugin (`kdepim-addons`); sign in from Merkuro Calendar's
+- The clock's month calendar and the next-event label show Google Calendar events through KDE's
+  Google connector (Akonadi `kdepim-runtime`) and the PIM events plugin (`kdepim-addons`); sign in from Merkuro Calendar's
   **Settings → Configure Merkuro Calendar → Accounts** (the menu is in the top panel's global menu).
 
 ## Agent tooling
@@ -51,6 +52,8 @@ desktop copies. Most of it is KDE settings rather than files, listed here so it 
 
 ## Apply
 
+Colours and cursor first:
+
 ```sh
 mkdir -p ~/.local/share/color-schemes
 cp hosts/laptop/OLED_Monochrome.colors ~/.local/share/color-schemes/
@@ -58,5 +61,7 @@ plasma-apply-colorscheme OLED_Monochrome
 plasma-apply-cursortheme Bibata-Modern-Classic
 ```
 
-Then pick the Plasma style, icons, application style and fonts in System Settings.
-`docs/screenshots/` shows the finished result.
+Then pick the icons, application style (Kvantum) and fonts in System Settings. The Plasma style,
+wallpaper, panels, dock and screens come from the install scripts, in the order listed in the
+[root README's laptop section](../../README.md#laptop-arch-linux); each has a `--dry-run`.
+[`docs/screenshots/`](../../docs/screenshots/) shows the finished result.

@@ -36,8 +36,8 @@ Like geological strata, your working environment is composed of hierarchical lay
 - **`10-os`**: Operating system plumbing (WinGet and Scoop package manifests, Topgrade updater config, the monochrome system colours and the monochrome dock and in-app icons).
 - **`20-shell`**: Interactive shell experience (PowerShell 7 profile, Oh My Posh theme, WezTerm, Windows Terminal, Fastfetch; the laptop's zsh and Starship).
 - **`30-dev`**: Language toolchains, package managers, and the AI coding assistant configs (Antigravity, Claude Code, Codex).
-- **`40-apps`**: Application-level preferences (Zed, VS Code Insiders, Rider, Visual Studio, Windhawk, the YASB top bar, the AI usage widgets, the KDE dock and top bar, the OLED Span wallpaper (Windows, KDE and phone), Steam, Sonora, Vencord, Aliucord, Minecraft, gaming and system tools).
-- **`hosts/`**: Final overlay matching the exact machine role (workstation desktop, laptop or handheld device). The laptop profile documents its KDE look; the laptop still pulls the repo and installs the shared editor themes by hand (see [Laptop](#laptop-arch-linux)).
+- **`40-apps`**: Application-level preferences (Zed, VS Code Insiders, Rider, Visual Studio, Windhawk, the YASB top bar, the AI usage widgets, the KDE dock and top bar, the OLED Span wallpaper (Windows, KDE and phone) and the lock, login and splash screens around it, Steam, Sonora, Vencord, Aliucord, Minecraft, gaming and system tools).
+- **`hosts/`**: Final overlay matching the exact machine role (workstation desktop, laptop or handheld device). The laptop profile documents its KDE look; the laptop pulls the repo and runs each part's install script (see [Laptop](#laptop-arch-linux)).
 
 ---
 
@@ -47,12 +47,12 @@ Like geological strata, your working environment is composed of hierarchical lay
 |---|---|---|---|
 | **Primary OS** | Windows 11 Pro | Arch Linux, KDE Plasma | Android 14 (One UI 6.1) |
 | **Form Factor** | Dual-monitor, high-performance workstation | Single screen, battery-constrained | Touchscreen, compact CLI companion |
-| **Look** | OLED Monochrome: Windhawk + YASB top bar + native menu bar | OLED Monochrome KDE colour scheme (the original) | Stock |
+| **Look** | OLED Monochrome: Windhawk + YASB top bar + native menu bar | OLED Monochrome: KDE colour scheme (the original) + kde-bar top bar + kde-dock | Stock |
 | **Power Strategy** | Uncapped performance, GPU acceleration | Battery-aware, aggressive sleep | Minimal background wakeups |
 | **Primary Shell** | PowerShell 7 + Oh My Posh | Zsh + Starship | Bash (stock Termux) |
 | **Terminal** | WezTerm / Windows Terminal | WezTerm (own config) | Termux |
 | **Toolchains** | Full development suites (Rust, Flutter, .NET, Node, Python) | Lightweight dev toolchains, remote SSH | Clang, Node, Python, OpenSSH in Termux |
-| **Sync Strategy** | `bin/stratum.ps1 sync` (backup + copy) | `git pull` + manual theme install | Inventory only (no automated deploy) |
+| **Sync Strategy** | `bin/stratum.ps1 sync` (backup + copy) | `git pull` + each part's install script (`--dry-run` first) | Inventory only (no automated deploy) |
 
 ---
 
@@ -74,9 +74,11 @@ csps-stratum/
 │                            # system-tools, gaming
 ├── hosts/                   # Machine-specific profiles
 │   ├── desktop/             # Workstation profile, profile.yaml, setup.ps1, software-inventory.md
-│   ├── laptop/              # KDE Plasma look: OLED_Monochrome.colors, theme/icon/font settings
+│   ├── laptop/              # KDE Plasma look (OLED_Monochrome.colors, settings), LAPTOP-SETUP.md, ENV.md
 │   └── mobile/              # Samsung Galaxy A52s 5G companion profile & package inventory
-├── docs/screenshots/        # Reference screenshots of both machines
+├── docs/
+│   ├── screenshots/         # Reference screenshots of both machines
+│   └── superpowers/         # Design notes and plans for the bigger changes
 ├── INSTALL-WITH-AI.md       # Paste-in prompt for an AI agent to rebuild this setup on your machine
 ├── .gitattributes           # Line ending & encoding rules (LF on Unix, CRLF on PS1, UTF-16 .reg)
 ├── .gitignore               # Exclusion of secrets, keys, machine caches, and local agent files
@@ -116,12 +118,34 @@ cd "$HOME\Projects\csps-stratum"
 
 ### Laptop (Arch Linux)
 
-The laptop's KDE Plasma setup is configured by hand; [`hosts/laptop/`](hosts/laptop/) lists its look (colour scheme, Plasma style, icons, cursor, fonts) and the repo shares the editor themes with it. Pull, then install them (each settings file is backed up first):
+The laptop's KDE Plasma 6 setup is listed in [`hosts/laptop/`](hosts/laptop/) (colour scheme, Plasma
+style, icons, cursor, fonts, panels, screens). Every script below has a `--dry-run`; run that first.
+They back up the config files they change (the AI usage installer just replaces its own installed
+copy). In order:
 
 ```sh
 cd ~/REPOS/csps-stratum && git pull --ff-only
 
-# Zed: copy the theme, then pick "OLED Monochrome" as the dark theme
+# 1. Wallpaper: the OLED Span Plasma wallpaper plugin
+strata/40-apps/oled-span/install-kde.sh --apply
+
+# 2. Top bar and panel look: the bordered OLED-Monochrome Plasma style and the Windows-order bar
+strata/40-apps/kde-bar/install-kde-bar.sh --style --layout
+
+# 3. AI usage label in the bar
+strata/40-apps/ai-usage/install-kde.sh --add-to-panel
+
+# 4. Dock: swap KDE's task manager for the kde-dock widget (--restore swaps back)
+strata/40-apps/kde-dock/install-kde-dock.sh --replace
+
+# 5. Lock screen wallpaper and login splash (no sudo)
+strata/40-apps/oled-span/kde-screens/install-kde-screens.sh --lock --splash
+
+# 6. sudo: login screen theme, and the lock screen's blur and clock patch (pacman hook keeps it)
+sudo strata/40-apps/oled-span/kde-screens/sddm/install-sddm-theme.sh
+sudo strata/40-apps/oled-span/kde-screens/lockscreen/install-lockscreen-noblur.sh
+
+# Editors: Zed theme, then pick "OLED Monochrome" as the dark theme
 mkdir -p ~/.config/zed/themes
 cp strata/40-apps/zed/themes/oled-monochrome.json ~/.config/zed/themes/
 
@@ -130,13 +154,26 @@ python3 strata/40-apps/vscode/oled-monochrome/pack-vsix.py /tmp/oled-monochrome.
 code-insiders --profile CsPS --install-extension /tmp/oled-monochrome.vsix --force
 ```
 
-The top panel copies the desktop's bar and shows the same things. On the left: the focused app's name, the global menu, the playing track with a visualizer, CPU / RAM / GPU and the weather. In the centre: the date and time (`2026-11-27 23:40`), the next calendar event and quick-app glyphs. On the right: the Claude / Antigravity usage, the tray and a power button. As on Windows there is no launcher button: Meta opens KRunner. Both panels are black, rounded and bordered like the Windows bar and dock. The widgets and that Plasma style are in [`kde-bar/`](strata/40-apps/kde-bar/): `strata/40-apps/kde-bar/install-kde-bar.sh --style --layout`.
+What that gives:
+- **Top bar** ([`kde-bar/`](strata/40-apps/kde-bar/)), showing the same things as the desktop's bar:
+  - left: the focused app's name, the global menu, the playing track with a visualizer, CPU / RAM /
+    GPU and the weather;
+  - centre: the clock (`2026-11-28  00:44`, a fixed format), the next calendar event and quick-app
+    glyphs;
+  - right: the Claude / Antigravity usage, the tray and a power button.
+  - As on Windows there is no launcher button: Meta opens KRunner.
+- **Panels:** both are black, rounded and bordered like the Windows bar and dock.
+- **Dock** ([`kde-dock/`](strata/40-apps/kde-dock/)): the same hover magnification as the Windows
+  dock, and dividers between app groups.
+- **Screens around the desktop** ([`oled-span/kde-screens/`](strata/40-apps/oled-span/kde-screens/)):
+  the lock screen and login screen show the contours with no blur and the same clock. The Plymouth
+  boot splash is on hold: it booted the main kernel to a black screen.
 
-The usage widget shows the Claude and Antigravity quota used (click for details), each only while its app runs: run `strata/40-apps/ai-usage/install-kde.sh --add-to-panel` once (see [`ai-usage/`](strata/40-apps/ai-usage/)).
-
-The bottom dock is a small widget of its own, [`kde-dock/`](strata/40-apps/kde-dock/), with the same hover magnification as the Windows dock and dividers between app groups and between pinned and unpinned apps: `strata/40-apps/kde-dock/install-kde-dock.sh --replace` swaps it in for KDE's task manager, keeping the pinned apps (`--restore` swaps back).
-
-Then set `"workbench.colorTheme": "OLED Monochrome"` and `"material-icon-theme.saturation": 0` in the profile settings. Rider's theme is built by a PowerShell script on Windows. Copy the built jar to `~/.local/share/JetBrains/Rider<version>/` while Rider is closed, then pick **OLED Monochrome** under **Settings → Appearance**. The Windows-only strata (Windhawk, YASB, the menu bar, dock icons, system colours) don't apply.
+Then set `"workbench.colorTheme": "OLED Monochrome"` and `"material-icon-theme.saturation": 0` in the
+VS Code profile settings. Rider's theme is built by a PowerShell script on Windows. Copy the built jar
+to `~/.local/share/JetBrains/Rider<version>/` while Rider is closed, then pick **OLED Monochrome** under
+**Settings → Appearance**. The Windows-only strata (Windhawk, YASB, the menu bar, dock icons, system
+colours) don't apply.
 
 ---
 
@@ -155,8 +192,9 @@ Zed and VS Code Insiders share the same theme, keymap, fonts, layout and equival
 The desktop copies the style of the laptop's KDE `OLED_Monochrome` colour scheme without changing its own layout:
 - **Shell**: Windhawk overrides make the dock, Start menu, Settings and File Explorer black and grey ([`windhawk/`](strata/40-apps/windhawk/)). The Windows accent, selection and cursor colours are set to match ([`monochrome-colors/`](strata/10-os/windows/monochrome-colors/)).
 - **Icons**: monochrome dock, title-bar and Alt+Tab icons ([`dock-icons/`](strata/10-os/windows/dock-icons/)).
-- **Top bar**: a macOS-style [YASB](strata/40-apps/yasb/) bar on both monitors, with clock, the next Google Calendar event, tray, keyboard layout, microphone, volume, notifications and the Claude / Antigravity quota used ([`ai-usage/`](strata/40-apps/ai-usage/), on the laptop's panel too). A small native menu bar shows the focused app's menus in one line.
+- **Top bar**: a macOS-style [YASB](strata/40-apps/yasb/) bar on both monitors, with the clock (`2026-11-28  00:21`), the next Google Calendar event, tray, keyboard layout, microphone, volume, notifications and the Claude / Antigravity quota used ([`ai-usage/`](strata/40-apps/ai-usage/), on the laptop's panel too). A small native menu bar shows the focused app's menus in one line.
 - **Terminals and prompt**: WezTerm, Windows Terminal and Oh My Posh use the same palette.
+- **Around the desktop**: the lock and sign-in screens show a still of the OLED Span contours on both machines ([`oled-span/`](strata/40-apps/oled-span/README.md#lock-login-and-splash-screens)).
 
 ### 4. Strict Secret & Credential Hygiene
 No private keys, auth tokens, or passwords are ever stored in this repository:

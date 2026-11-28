@@ -5,6 +5,6 @@ Type = Package
 Target = plasma-desktop
 
 [Action]
-Description = Removing the blur from the KDE lock screen (csps-stratum)...
+Description = Patching the KDE lock screen: no blur, fixed clock (csps-stratum)...
 When = PostTransaction
 Exec = /usr/local/bin/oled-lockscreen-noblur

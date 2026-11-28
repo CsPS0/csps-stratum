@@ -12,7 +12,13 @@ Claude 37% used    Antigravity 12% used
   its bar, percent used and reset time. Click again, press Esc or click elsewhere to close it.
 - Each one disappears when its app is closed, and takes no room in the bar. The `claude.exe` a
   browser starts for the Claude browser extension (Brave → `cmd` → `claude.exe`) doesn't count as
-  Claude being open; it runs whenever the browser does.
+  Claude being open; it runs whenever the browser does. On Linux the same goes for
+  `claude --chrome-native-host`.
+- **Linux detection:** the Claude desktop app is Electron, which rewrites its command line in
+  `/proc/<pid>/cmdline` as one space-separated string. The script splits such lines before matching
+  `claude-desktop`; otherwise the label hid while only the desktop app ran.
+- **Font:** the KDE label uses JetBrainsMono Nerd Font 13 px, like the rest of the laptop's top bar
+  ([`../kde-bar/`](../kde-bar/)).
 
 | File | Deploys to | Purpose |
 |---|---|---|

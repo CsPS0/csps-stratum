@@ -2,6 +2,14 @@
 
 Date: 2026-11-27. Approved in conversation ("Build it").
 
+> **Status, 2026-11-28:** built, then changed while using it:
+> - **Launcher:** removed; Meta opens KRunner.
+> - **Clock:** KDE's clock was replaced by `org.csps.clock`, fixed to `2026-11-28  00:44` (the Hungarian
+>   locale gave `0:41`).
+> - **Event dates:** a week or more away, they read `12-04`.
+>
+> The current state is in `strata/40-apps/kde-bar/README.md`.
+
 ## Intent
 
 The laptop's KDE Plasma 6 panels should look like, and show the same things as, the Windows YASB top

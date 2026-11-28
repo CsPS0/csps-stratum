@@ -2,8 +2,9 @@
 # Puts OLED Span on the laptop's lock screen and login splash (KDE Plasma 6, no sudo needed):
 #   --lock    the lock screen shows the live OLED Span wallpaper (needs the plugin from ../install-kde.sh)
 #   --splash  the splash after login: the contours still (../stills/) with a thin grey spinner
-# Both back up their config file first. The login screen (SDDM) and boot splash (Plymouth) need sudo;
-# see README.md in this folder.
+# Both back up their config file first. The sudo parts are separate scripts (see README.md here):
+# sddm/install-sddm-theme.sh (login screen) and lockscreen/install-lockscreen-noblur.sh (no blur and a
+# fixed clock on the lock screen). The Plymouth boot splash in plymouth/ is on hold.
 # Usage:
 #   ./install-kde-screens.sh [--dry-run] [--lock] [--splash]
 set -euo pipefail

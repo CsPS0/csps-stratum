@@ -32,7 +32,9 @@ month view (`org.kde.plasma.workspace.calendar` `MonthView`), so it shows the sa
 - Opaque black, with 10 px corners and a 1 px `#2A2B2D` border (`--bar-outline` in YASB).
 - 3 px content margins at the top and bottom, 8 px at the ends.
 
-`--style` copies the installed WhiteSur-dark-mono to `~/.local/share/plasma/desktoptheme/OLED-Monochrome`,
+`--style` copies the installed WhiteSur-dark-mono (a greyscale copy of WhiteSur-dark made by hand on
+the original laptop; no package ships it) or, without it, WhiteSur-dark minus its own colours, so it
+follows the OLED Monochrome colour scheme. It copies that to `~/.local/share/plasma/desktoptheme/OLED-Monochrome`,
 swaps in this background and applies it. Everything else (popups, tooltips, colours) stays
 WhiteSur's. WhiteSur's own panel is 45% black with a faint white edge, so on a black wallpaper its
 corners didn't show.
@@ -64,12 +66,12 @@ strata/40-apps/kde-bar/install-kde-bar.sh --style --layout
   - backs up `~/.config/kwinrc` and sets Meta to open KRunner;
   - with plasmashell stopped, puts everything in the Windows order;
   - leaves other widgets in place after the tray.
-- **Needs:** `kpackagetool6`, `qdbus6`, `python3`, WhiteSur-dark-mono (for `--style`) and `cava`
+- **Needs:** `kpackagetool6`, `qdbus6`, `python3`, WhiteSur-dark (for `--style`) and `cava`
   (for the visualizer).
 
 ## Undo
 
-- **Style:** `plasma-apply-desktoptheme WhiteSur-dark-mono`.
+- **Style:** `plasma-apply-desktoptheme <your old style>` (here `WhiteSur-dark-mono`).
 - **Meta:** copy `kwinrc.<time>.bak` back, then `qdbus6 org.kde.KWin /KWin reconfigure`.
 - **Layout:** stop plasmashell (`systemctl --user stop plasma-plasmashell`), copy the
   `plasma-org.kde.plasma.desktop-appletsrc.<time>.bak` back, and start it again.

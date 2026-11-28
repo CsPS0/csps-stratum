@@ -16,3 +16,10 @@ gh release download v2.0.7 -R ful1e5/Bibata_Cursor -p Bibata-Modern-Classic-Wind
 ```
 
 `Set-MonochromeColors.ps1` saves the previous values first; `-Restore <backup>` puts them back.
+
+**Run these in a normal terminal** (Windows Terminal or WezTerm started from Start or the dock), not
+from a terminal inside an MSIX-packaged app such as the Claude desktop app. A packaged app's shells
+get a private copy of `%LOCALAPPDATA%` and of the user registry (`HKCU`). The cursors then land in
+`%LOCALAPPDATA%\Packages\<app>\LocalCache\Local\Cursors` and the scheme in the app's own registry
+copy. Inside the app everything looks installed, but Windows keeps the default pointer. That
+happened here on 2026-11-22 and was noticed on 2026-11-28.

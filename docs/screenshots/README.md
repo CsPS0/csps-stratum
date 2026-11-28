@@ -1,8 +1,8 @@
 # Screenshots
 
 Reference shots of the finished **OLED Monochrome** setup, taken with no windows on screen
-(Windows: Show Desktop). Windows shots: 28 November 2026 (the dock: 25 November, the search-only Start
-menu: 22 November); laptop: 28 November 2026; phone: 22 November 2026. Both top bars show the date
+(Windows: Show Desktop). Windows shots: 28 November 2026, with the black Bibata Modern Classic pointer (the
+search-only Start menu: 22 November); laptop: 28 November 2026; phone: 22 November 2026. Both top bars show the date
 as `2026-11-28`. Wallpaper: [OLED Span](../../strata/40-apps/oled-span/) (contours style) everywhere;
 it only draws greys. Use them to check a rebuild (the
 [`INSTALL-WITH-AI.md`](../../INSTALL-WITH-AI.md) prompt tells the agent to compare against them).
@@ -12,12 +12,14 @@ while it controls the screen, and it stays for the rest of that turn, so capture
 hasn't used screen control (and check the edges are pure black). The 28 November Windows shots were
 grabbed with .NET `Graphics.CopyFromScreen` from a DPI-aware PowerShell, after
 `Shell.Application.MinimizeAll()` (then `UndoMinimizeAll()`), so no screen control was involved.
+Screen grabs leave the pointer out, so the script draws the real one (`GetCursorInfo` and
+`DrawIconEx` at its hotspot) after moving it to an empty spot, and moves it back afterwards.
 
 ## Windows 11 desktop
 
 | File | What it shows |
 |---|---|
-| [`windows-desktop.png`](windows-desktop.png) | Main monitor: the floating YASB top bar (app name and the playing track with its visualizer from `menubar.exe`; CPU, RAM, GPU and weather; centred `2026-11-28 00:21` clock and quick icons; Claude usage, tray, power); the Windhawk dock with grouped, monochrome icons. |
+| [`windows-desktop.png`](windows-desktop.png) | Main monitor: the floating YASB top bar (app name and the current track with its visualizer from `menubar.exe`; CPU, RAM, GPU and weather; centred `2026-11-28  01:09` clock and quick icons; Claude usage, tray, power), the Bibata pointer; the Windhawk dock with grouped, monochrome icons. |
 | [`windows-top-bar.png`](windows-top-bar.png) | The top bar on its own (1920x44: the bar floats 6 px from the edges). |
 | [`windows-dock.png`](windows-dock.png) | The dock on its own: separators between app groups, running dots. |
 | [`windows-start-search.png`](windows-start-search.png) | The search-only Start menu: black pane, dark grey field, monochrome search glyph. |

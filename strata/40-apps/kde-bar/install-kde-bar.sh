@@ -49,15 +49,28 @@ done
 
 # ---------------------------------------------------------------- Plasma style
 if [ "$style" = 1 ]; then
-  base=/usr/share/plasma/desktoptheme/WhiteSur-dark-mono
+  # WhiteSur-dark-mono is a greyscale copy of WhiteSur-dark made by hand on the original laptop (no
+  # package ships it). Elsewhere, use WhiteSur-dark (WhiteSur KDE's install script, or AUR
+  # whitesur-plasma-theme-git) without its own colours, so the style follows the colour scheme.
   dest="$data/plasma/desktoptheme/OLED-Monochrome"
-  [ -d "$base" ] || { echo "missing: $base (install the WhiteSur KDE theme first)" >&2; exit 1; }
+  drop_colors=0
+  if [ -d /usr/share/plasma/desktoptheme/WhiteSur-dark-mono ]; then
+    base=/usr/share/plasma/desktoptheme/WhiteSur-dark-mono
+  elif [ -d /usr/share/plasma/desktoptheme/WhiteSur-dark ]; then
+    base=/usr/share/plasma/desktoptheme/WhiteSur-dark
+    drop_colors=1
+  else
+    echo "missing: WhiteSur-dark (install the WhiteSur KDE theme first: https://github.com/vinceliuice/WhiteSur-kde)" >&2
+    exit 1
+  fi
   if [ "$dry" = 1 ]; then
     echo "would copy $base to $dest, rename it OLED-Monochrome and use plasma-style/panel-background.svg"
+    [ "$drop_colors" = 1 ] && echo "would leave out its colours, so it follows the OLED Monochrome colour scheme"
   else
     stage="$(mktemp -d)"
     trap 'rm -rf "$stage"' EXIT
     cp -r "$base/." "$stage/"
+    [ "$drop_colors" = 1 ] && rm -f "$stage/colors"
     rm -f "$stage/widgets/panel-background.svgz"
     cp "$here/plasma-style/panel-background.svg" "$stage/widgets/panel-background.svg"
     python3 - "$stage" <<'PY'
